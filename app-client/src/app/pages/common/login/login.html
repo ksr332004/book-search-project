@@ -1,0 +1,32 @@
+<div class="auth-main">
+  <div class="auth-block">
+    <h1>Log in to Book Search Service</h1>
+    <a href="/#/signup" class="auth-link">New to Book Search Service?<br><br>Sign up!</a>
+
+    <form class="form-horizontal">
+
+      <div class="form-group">
+        <label for="inputName3" class="col-sm-2 control-label">ID</label>
+
+        <div class="col-sm-10">
+          <input type="text" class="custom-form-control" id="inputName3" placeholder="ID" ng-model="userid">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPassword3" class="col-sm-2 control-label">Password</label>
+
+        <div class="col-sm-10">
+          <input type="password" class="custom-form-control" placeholder="Password" ng-model="userpw">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default custom-btn-auth" ng-click="login()">Log In</button>
+          <a href class="forgot-pass">Forgot password?</a>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>
+

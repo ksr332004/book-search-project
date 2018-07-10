@@ -1,0 +1,59 @@
+<div class="widgets">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="Form Wizard" ba-panel-class="with-scroll">
+                <ba-wizard>
+                    <ba-wizard-step title="Personal info" form="vm.personalInfoForm">
+                        <form name="vm.personalInfoForm" novalidate>
+                            <div class="row">
+                                <div class="col-md-6">
+	                                <label for="exampleInputEmail1">Email</label>
+	                            	<div class="input-group form-group has-feedback" ng-class="{'has-error': vm.personalInfoForm.email.$invalid && (vm.personalInfoForm.email.$dirty || vm.personalInfoForm.$submitted)}">
+	                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email" ng-maxlength="200" placeholder="Email" ng-model="vm.personalInfo.email" ng-pattern="/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,6}$/" required>
+	                                    <span class="help-block error-block basic-block">Proper email required</span>
+	                                    <span class="input-group-btn">
+	                                        <button class="btn btn-warning" type="button" data-toggle="modal" ng-click="idCheck(true)">Check</button>
+	                                    </span>
+	                                </div>
+	                                <div class="form-group" ng-class="{'has-error': vm.personalInfoForm.password.$invalid && (vm.personalInfoForm.password.$dirty || vm.personalInfoForm.$submitted)}">
+	                                    <label for="exampleInputPassword1">Password</label>
+	                                    <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" ng-model="vm.personalInfo.password" required>
+	                                    <span class="help-block error-block basic-block">Required</span>
+	                                </div>
+	                                <div class="form-group"  ng-class="{'has-error': !vm.arePersonalInfoPasswordsEqual() && (vm.personalInfoForm.confirmPassword.$dirty || vm.personalInfoForm.$submitted)}">
+	                                    <label for="exampleInputConfirmPassword1">Confirm Password</label>
+	                                    <input type="password" class="form-control" id="exampleInputConfirmPassword1" name="confirmPassword" placeholder="Confirm Password" ng-model="vm.personalInfo.confirmPassword"required>
+	                                    <span class="help-block error-block basic-block">Passwords should match</span>
+	                                </div>
+                                    <div class="form-group has-feedback"
+                                         ng-class="{'has-error': vm.personalInfoForm.name.$invalid && (vm.personalInfoForm.name.$dirty || vm.personalInfoForm.$submitted)}">
+                                        <label for="exampleUsername1">Name</label>
+                                        <input type="text" class="form-control" id="exampleUsername1" name="name" ng-maxlength="50" placeholder="Name" ng-model="vm.personalInfo.name" required>
+                                        <span class="help-block error-block basic-block">Proper your name required</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </ba-wizard-step>
+                    <ba-wizard-step>
+                        <div class="col-md-12">
+                            <div class="col-md-6 col-md-offset-3">
+                                <form class="form-horizontal" name="vm.finishForm" novalidate>
+                                    <h1>Welcome to Sentimental Corpus Annotation Tool.</h1>
+                                    <!-- <h3>You have successfully filled the form!</h3> -->
+                                </form>
+                                <div class="form-group" >
+                                    <div class="col-md-12" style="margin-top:20px;">
+                                        <button type="submit" class="btn btn-info custom-btn-auth" ng-click="submitSignupForm()">Submit!</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ba-wizard-step>
+                </ba-wizard>
+            </div>
+        </div>
+    </div>
+
+</div>
