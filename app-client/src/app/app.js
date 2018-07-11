@@ -15,7 +15,11 @@ var appClient = angular.module('BlurAdmin', [
 
   'BlurAdmin.theme',
   'BlurAdmin.pages',
-  'ngRoute'
+  'ngRoute',
+  
+  'ui.select',
+  'ngSanitize'
+  
 ])
 .directive('ngHtml', [ '$compile', function($compile) {
     return function(scope, elem, attrs) {
