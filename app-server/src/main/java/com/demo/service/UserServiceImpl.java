@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.demo.model.User;
 import com.demo.repository.UserRepository;
 
-@Service("userService")
+@Service
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
