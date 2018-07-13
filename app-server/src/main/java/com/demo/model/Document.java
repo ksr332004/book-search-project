@@ -1,6 +1,6 @@
 package com.demo.model;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class Document {
     private String contents;
     private String url;
     private String isbn;
-    private LocalDateTime datetime;
+    private OffsetDateTime datetime;
     @JsonProperty("authors")
     private List<String> authors = new ArrayList<>();
     private String publisher;

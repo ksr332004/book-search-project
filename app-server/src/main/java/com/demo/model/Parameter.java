@@ -1,5 +1,6 @@
 package com.demo.model;
 
+import org.assertj.core.util.Strings;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.Data;
@@ -17,7 +18,7 @@ public class Parameter {
     public String getUrl(String url) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);
         builder.queryParam("query", getQuery());
-        if (!getSort().isEmpty()) {
+        if (!Strings.isNullOrEmpty(getSort())) {
             builder.queryParam("sort", getSort());
         }
         if (getPage() != null && getPage() > 0) {
@@ -26,7 +27,7 @@ public class Parameter {
         if (getSize() != null && getSize() > 0) {
             builder.queryParam("size", getSize());
         }
-        if (!getTarget().isEmpty()) {
+        if (!Strings.isNullOrEmpty(getTarget())) {
             builder.queryParam("target", getTarget());
         }
         if (getCategory() != null && getCategory() > 0) {
