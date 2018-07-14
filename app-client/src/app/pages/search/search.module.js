@@ -11,6 +11,7 @@
             title : 'Book Search',
             templateUrl : 'app/pages/search/search.html',
             controller : 'searchPageCtrl',
+            controllerAs: 'vm',
             sidebarMeta : {
                 icon : 'ion-compose',
                 order : 1

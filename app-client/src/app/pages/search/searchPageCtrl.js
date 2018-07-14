@@ -6,74 +6,77 @@
 
     /** @ngInject */
     function searchPageCtrl($scope, $log, $state, toastr, editableOptions, editableThemes, MessageService, MenuParsingService, SessionInfo) {
-
     	var vm = this;
         vm.disabled = undefined;
 
         vm.standardItem = {};
         vm.standardSelectItems = [
-          {label: 'Option 1', value: 1},
-          {label: 'Option 2', value: 2},
-          {label: 'Option 3', value: 3},
-          {label: 'Option 4', value: 4}
+          {label:'전체', value: 'all'},
+          {label:'제목', value: 'title'},
+          {label:'ISBN', value: 'isbn'},
+          {label:'주제어', value: 'keyword'},
+          {label:'목차', value: 'contents'},
+          {label:'책소개', value: 'overview'},
+          {label:'출판사', value: 'publisher'}
         ];
         
         vm.withSearchItem = {};
         vm.selectWithSearchItems = [
-          {label: 'Hot Dog, Fries and a Soda', value: 1},
-          {label: 'Burger, Shake and a Smile', value: 2},
-          {label: 'Sugar, Spice and all things nice', value: 3},
-          {label: 'Baby Back Ribs', value: 4}
+          {query: 'Hot Dog, Fries and a Soda'},
+          {query: 'Burger, Shake and a Smile'}
         ];
 
-        $scope.peopleTableData = [
-            {
-              id: 1,
-              firstName: 'Mark',
-              lastName: 'Otto',
-              username: '@mdo',
-              email: 'mdo@gmail.com',
-              age: '28',
-              status: 'info'
-            },
-            {
-              id: 2,
-              firstName: 'Jacob',
-              lastName: 'Thornton',
-              username: '@fat',
-              email: 'fat@yandex.ru',
-              age: '45',
-              status: 'primary'
-            },
-            {
-              id: 3,
-              firstName: 'Larry',
-              lastName: 'Bird',
-              username: '@twitter',
-              email: 'twitter@outlook.com',
-              age: '18',
-              status: 'success'
-            },
-            {
-              id: 4,
-              firstName: 'John',
-              lastName: 'Snow',
-              username: '@snow',
-              email: 'snow@gmail.com',
-              age: '20',
-              status: 'danger'
-            },
-            {
-              id: 5,
-              firstName: 'Jack',
-              lastName: 'Sparrow',
-              username: '@jack',
-              email: 'jack@yandex.ru',
-              age: '30',
-              status: 'warning'
+        $scope.hasPrev = false;
+        $scope.hasNext = false;
+
+        vm.searchQuery = "";
+
+        $scope.searchBookList = function(currentPage) {
+          var dataObject = {
+            query: vm.searchQuery,
+            target: (angular.isUndefined(vm.standardItem.selected)) ? "" : vm.standardItem.selected.value,
+            page: currentPage
+          };
+          console.log(dataObject);
+          MessageService.interactWithServer('/search/book', dataObject).success(function(data, status) {
+            if (data) {
+              console.log(data);
+              $scope.bookListTableData = data.documents;
+              $scope.hasPrev = (currentPage == 1) ? false : true;
+              $scope.hasNext = !data.meta._end;
+              $scope.currentPage = currentPage;
+            } else {
+              $log.warn(data);
             }
-        ];
+          }).error(function(data, status, headers, config) {
+            $log.error(status);
+          });
+        };
         
+
+        $scope.searchBookListNext = function(nextPageNum) {
+          var dataObject = {
+            query: vm.searchQuery,
+            target: (angular.isUndefined(vm.standardItem.selected)) ? "" : vm.standardItem.selected.value,
+            page: nextPageNum
+          };
+          console.log(dataObject);
+            MessageService.interactWithServer('/search/book', dataObject).success(function(data, status) {
+                if (data) {
+                    console.log(data);
+                  $scope.bookListTableData = data.documents;
+                  $scope.hasPrev = (nextPageNum == 1) ? false : true;
+                  $scope.hasNext = !data.meta._end;
+                  $scope.currentPage = nextPageNum;
+                  console.log($scope.currentPage);
+                } else {
+                    $log.warn(data);
+                }
+            }).error(function(data, status, headers, config) {
+                $log.error(status);
+            });
+        };
+
     }
 
 })();

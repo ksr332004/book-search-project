@@ -40,7 +40,7 @@ var appClient = angular.module('BlurAdmin', [
     factory.interactWithServer = function(serviceName, conditionData) {
         return $http({
             method : 'POST',
-            url : 'http://localhost:8080/api/' + serviceName,
+            url : 'http://localhost:8080/api' + serviceName,
             data : conditionData,
             dataType : "json",
             headers : {
