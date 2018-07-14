@@ -1,4 +1,4 @@
-package com.demo.model;
+package com.seran.model;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -33,5 +33,29 @@ public class Document {
     private String barcode;
     private String ebook_barcode;
     private String status;
+    
+    public String getAuthorString() {
+        String author = "";
+        if (!authors.isEmpty()) {
+            if (authors.size() > 1) {
+                author = authors.get(0) + " 외 " + (authors.size() - 1) + " 명 지음";
+            } else {
+                author = authors.get(0) + " 지음";
+            }
+        }
+        return author;
+    }
+
+    public String getTranslatorString() {
+        String translator = "";
+        if (!translators.isEmpty()) {
+            if (authors.size() > 1) {
+                translator = translators.get(0) + " 외 " + (translators.size() - 1) + " 명 번역";
+            } else {
+                translator = translators.get(0) + " 번역";
+            }
+        }
+        return translator;
+    }
     
 }

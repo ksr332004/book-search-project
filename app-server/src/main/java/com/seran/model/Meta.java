@@ -1,4 +1,4 @@
-package com.demo.model;
+package com.seran.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
