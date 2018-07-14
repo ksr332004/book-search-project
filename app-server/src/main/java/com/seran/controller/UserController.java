@@ -1,4 +1,4 @@
-package com.demo.controller;
+package com.seran.controller;
 
 import java.util.Optional;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.demo.model.User;
-import com.demo.service.UserService;
+import com.seran.model.User;
+import com.seran.service.UserService;
 
 @RestController
 @RequestMapping("/api")
@@ -39,4 +39,5 @@ public class UserController {
     	userService.saveUser(user);
     	return new ResponseEntity<>(HttpStatus.CREATED);
     }
+    
 }

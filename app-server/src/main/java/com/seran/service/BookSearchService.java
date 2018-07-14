@@ -1,9 +1,9 @@
-package com.demo.service;
+package com.seran.service;
 
 import java.util.Optional;
 
-import com.demo.model.Book;
-import com.demo.model.Parameter;
+import com.seran.model.Book;
+import com.seran.model.Parameter;
 
 public interface BookSearchService {
 

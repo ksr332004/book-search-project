@@ -1,4 +1,4 @@
-package com.demo.configuration;
+package com.seran.configuration;
 
 import javax.sql.DataSource;
 

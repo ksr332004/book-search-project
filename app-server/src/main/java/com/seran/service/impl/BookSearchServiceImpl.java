@@ -1,4 +1,4 @@
-package com.demo.service;
+package com.seran.service.impl;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
@@ -14,8 +14,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.demo.model.Book;
-import com.demo.model.Parameter;
+import com.seran.model.Book;
+import com.seran.model.Parameter;
+import com.seran.service.BookSearchService;
 
 @Service
 public class BookSearchServiceImpl implements BookSearchService {
