@@ -7,9 +7,9 @@ book-search-project
 * Spring-Boot 2.0.2
    * Gradle 2.x
    * JPA
-   * H2
    * MySQL
    * Web
+   * JWT 인증
 * Angularjs 2.X
    * Blur Admin
 
@@ -36,17 +36,31 @@ gulp serve:dist   #로컬 실행 및 배포용 소스 생성
 gulp release      #배포용 소스 생성
 ```
 
-### 개발된 기능 (서버 API)
+### 구현 된 기능
+- 서버 API
+
 | Mtehod   |Path                              | RequestParam                         | ResponseBody                 |
 |----------|:---------------------------------|:------------------------------------:|------------------------------|
 | POST     | /api/auth/login                  | email, password                      | 로그인                        |
 | POST     | /api/auth/signup                 | email, password, name                | 회원가입                      |
-| GET      | /refresh                         |                                      | 토근 재연장                   |
-| POST     | /api/search/book                 | query, sort, page, size ...          | 책 검색                      |
-| GET      | /api/search/history              |                                      | 사용자 검색 히스토리검색       |
+| GET      | /refresh                         |                                      | 토큰 재연장                   |
+| POST     | /api/search/book                 | query, sort, page, size ...          | 책 검색 / 검색 키워드 저장     |
+| GET      | /api/search/history              |                                      | 최근 검색 히스토리 (최근10건)  |
 | GET      | /api/bookmark/view               | title, sort, page                    | 북마크 검색                   |
-| POST     | /api/bookmark/add                | Document                             | 북마크 등록                  |
-| DELETE   | /api/bookmark/{id}               | 북마크 ID                            | 북마크 삭제                  |
+| POST     | /api/bookmark/add                | Document                             | 북마크 등록                   |
+| DELETE   | /api/bookmark/{id}               | 북마크 ID                             | 북마크 삭제                   |
+
+- ERD
+
+![erd_v1](https://user-images.githubusercontent.com/41044894/42737917-01076848-88b6-11e8-9645-96bf6005af3e.png)
+
+
+### 구현 중 기능
+- JWT 기반 AngulerJS Client 화면 연동
+
+### Pain Point
+- spring-security의 cors 필터에 따른 AngularJS와의 연동에 있어 시간 소요
+
 
 ### Visit
 - http://localhost:3000/
