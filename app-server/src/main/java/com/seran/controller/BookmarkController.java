@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,32 +41,32 @@ public class BookmarkController {
 	private BookmarkSearchService bookmarkSearchService;
 	
 	@GetMapping("/view")
-	public ResponseEntity<Page<Bookmark>> getUserBookmark(
+	public ResponseEntity<Page<Bookmark>> getUserBookmark(Authentication authentication,
 	        @RequestParam(defaultValue = "title") String type,
-            @RequestParam(required = true) String query,
+            @RequestParam(required = false) String query,
 	        @PageableDefault(page = 0, size = 10, sort = {"id"}, direction = Direction.DESC) Pageable pageable) {
-	    // TODO : 로그인 세션 연동
-	    Optional<User> user = userService.findUserById(123);
+	    Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
         if (user.isPresent()) {
             Integer userId = user.get().getId();
             bookmarkSearchService = bookmarkSearchServiceFactory.getBookmarkSearchService(type);
-            Page<Bookmark> bookmarks = bookmarkSearchService.findBookmarks(userId, query, pageable);
+            Page<Bookmark> bookmarks = bookmarkSearchService.searchBookmarks(userId, query, pageable);
             return new ResponseEntity<>(bookmarks, HttpStatus.OK);  
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<Void> postUserBookmark(@RequestBody Document document) {
-	    Optional<Bookmark> bookmark = bookmarkService.saveBookmark(document);
+	public ResponseEntity<Void> postUserBookmark(Authentication authentication, @RequestBody Document document) {
+	    Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
+	    bookmarkService.saveBookmark(user.get().getId(), document);
 	    return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserBookmark(@PathVariable Integer id) {
-        Optional<Bookmark> bookMark = bookmarkService.findBookmark(id);
+        Optional<Bookmark> bookMark = bookmarkService.searchBookmarkById(id);
         if (bookMark.isPresent()) {
-            bookmarkService.deleteByBookmark(id);
+            bookmarkService.deleteBookmarkById(id);
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

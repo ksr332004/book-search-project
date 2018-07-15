@@ -7,12 +7,9 @@ import com.seran.model.Document;
 
 public interface BookmarkService {
 
-    Optional<Bookmark> findUserBookmark(Integer userId, String keyBarcode);
-  
-    Optional<Bookmark> findBookmark(Integer id);
-  
-    Optional<Bookmark> saveBookmark(Document document);
-  
-    void deleteByBookmark(Integer id);
+    Optional<Bookmark> searchBookmarkByUserIdAndKeyBarcode(Integer userId, String keyBarcode);
+    Optional<Bookmark> searchBookmarkById(Integer id);
+    void saveBookmark(Integer userId, Document document);
+    void deleteBookmarkById(Integer id);
     
 }

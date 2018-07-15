@@ -1,19 +1,16 @@
 package com.seran.service;
 
-import java.util.List;
 import java.util.Optional;
 
-import com.seran.model.History;
+import org.springframework.security.core.userdetails.UserDetailsService;
+
 import com.seran.model.User;
 
-public interface UserService {
+public interface UserService extends UserDetailsService {
     
-	Optional<User> findUserById(Integer id);
-
-	Optional<User> findUserByEmail(String email);
-
+    Optional<User> searchUserById(Integer id);
+	Optional<User> searchUserByEmail(String email);
 	void saveUser(User user);
+	void deleteUserByEmail(String email);
 
-	List<History> findHistorys(Integer id);
-	
 }

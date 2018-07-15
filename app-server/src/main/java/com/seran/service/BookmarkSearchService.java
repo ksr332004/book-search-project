@@ -7,6 +7,6 @@ import com.seran.model.Bookmark;
 
 public interface BookmarkSearchService {
 
-    Page<Bookmark> findBookmarks(Integer userId, String query, Pageable pageable);
+    Page<Bookmark> searchBookmarks(Integer userId, String query, Pageable pageable);
     
 }

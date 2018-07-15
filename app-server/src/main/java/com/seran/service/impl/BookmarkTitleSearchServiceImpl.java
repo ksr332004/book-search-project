@@ -16,7 +16,7 @@ public class BookmarkTitleSearchServiceImpl implements BookmarkSearchService {
     private BookmarkSearchRepository bookmarkSearchRepository;
     
     @Override
-    public Page<Bookmark> findBookmarks(Integer userId, String query, Pageable pageable) {
+    public Page<Bookmark> searchBookmarks(Integer userId, String query, Pageable pageable) {
         return bookmarkSearchRepository.findByUserIdAndTitle(userId, query, pageable);
     }
     

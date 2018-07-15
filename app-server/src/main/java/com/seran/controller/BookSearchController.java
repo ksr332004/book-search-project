@@ -6,9 +6,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +29,20 @@ public class BookSearchController {
     @Autowired
     private BookSearchService searchService;
     
-    @CrossOrigin
     @PostMapping("/book")
-    public ResponseEntity<Book> getSearchList(@RequestBody Parameter parameter) {
-        Optional<Book> book = searchService.searchBook(parameter);
+    public ResponseEntity<Book> getSearchList(Authentication authentication, @RequestBody Parameter parameter) {
+        Optional<Book> book = searchService.searchBooks(parameter);
         
         if (!Optional.ofNullable(parameter.getQuery()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+        
+        Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
+        if (user.isPresent()) {
+            searchService.saveSearchHistory(user.get().getId(), parameter.getQuery());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        
         if (parameter.getSize() != null && 
         		(parameter.getSize() <= 0 || parameter.getSize() > 50)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -52,15 +57,12 @@ public class BookSearchController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    
-    //  TODO : 세션으로 id 값을 받아오도록 구현해야 함
-    //  @GetMapping("/history")
-    //  public ResponseEntity<List<History>> getHistorys() {
-    @GetMapping("/history/{id}")
-    public ResponseEntity<List<History>> getHistorys(@PathVariable("id") Integer id) {
-    	Optional<User> user = userService.findUserById(id);
+
+    @GetMapping("/history")
+    public ResponseEntity<List<History>> getHistorys(Authentication authentication) {
+        Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
     	if (user.isPresent()) {
-    		return new ResponseEntity<>(userService.findHistorys(id), HttpStatus.OK);
+    		return new ResponseEntity<>(searchService.searchHistorys(user.get().getId()), HttpStatus.OK);
     	}
     	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
