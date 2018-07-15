@@ -15,7 +15,11 @@ var appClient = angular.module('BlurAdmin', [
 
   'BlurAdmin.theme',
   'BlurAdmin.pages',
-  'ngRoute'
+  'ngRoute',
+  
+  'ui.select',
+  'ngSanitize'
+  
 ])
 .directive('ngHtml', [ '$compile', function($compile) {
     return function(scope, elem, attrs) {
@@ -36,7 +40,7 @@ var appClient = angular.module('BlurAdmin', [
     factory.interactWithServer = function(serviceName, conditionData) {
         return $http({
             method : 'POST',
-            url : 'http://localhost:8080/api/' + serviceName,
+            url : 'http://localhost:8080/api' + serviceName,
             data : conditionData,
             dataType : "json",
             headers : {

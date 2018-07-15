@@ -23,15 +23,61 @@ repositories {
 	mavenCentral()
 }
 
+bootJar {
+	mainClassName = 'com.seran.AppServerApplication'
+}
+
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-security')
+
 	compile('com.fasterxml.jackson.core:jackson-databind')
 	compile('com.auth0:java-jwt:3.4.0')
 	compileOnly('org.projectlombok:lombok:1.16.18')
-	runtime('com.h2database:h2')
+
+	compile('com.auth0:java-jwt:3.3.0')
+	compile('org.springframework.boot:spring-boot-starter-security')
+
+	compile('com.querydsl:querydsl-apt:4.1.4')
+	compile('com.querydsl:querydsl-jpa:4.1.4')
 	runtime('mysql:mysql-connector-java')
+
+	compile('org.springframework.boot:spring-boot-starter-logging:2.0.3.RELEASE')
+	compile('org.assertj:assertj-core:3.9.1')
+
+
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile ('org.springframework.security:spring-security-test:4.2.3.RELEASE')
+	testCompile ('com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.8.9')
+
+
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs 'src/main/java', 'src/main/generated'
+		}
+	}
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
+	file(new File(projectDir, "/src/main/generated")).deleteDir()
+	file(new File(projectDir, "/src/main/generated")).mkdirs()
+	source = sourceSets.main.java
+	classpath = configurations.compile + configurations.compileOnly
+	options.compilerArgs = [
+			"-proc:only",
+			"-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+	]
+	destinationDir = file('src/main/generated')
+}
+
+compileJava {
+	dependsOn generateQueryDSL
+}
+
+clean.doLast {
+	file(new File(projectDir, "/src/main/generated")).deleteDir()
 }

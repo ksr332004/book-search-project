@@ -1,13 +1,11 @@
 (function () {
   'use strict';
 
-  angular.module('pages.intro', [])
-      .config(routeConfig);
+  angular.module('pages.intro', []).config(routeConfig);
 
   /** @ngInject */
   function routeConfig($stateProvider) {
-    $stateProvider
-        .state('intro', {
+    $stateProvider.state('intro', {
           url: '/intro',
           title: 'Book Search',
           templateUrl: 'app/pages/intro/intro.html',

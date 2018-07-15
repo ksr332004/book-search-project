@@ -6,8 +6,8 @@
 
     'pages.intro',
 
-//    'pages.manage',
-//    'pages.mypage',
+    'pages.bookmark',
+    'pages.search',
 
     'pages.common.login',
     'pages.common.logout',
