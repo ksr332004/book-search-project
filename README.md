@@ -10,10 +10,19 @@ book-search-project
    * MySQL
    * Web
    * JWT 인증
-* Angularjs 2.X
+* Angularjs 2.x
    * Blur Admin
 
 ### Getting Started
+MySQL 설정
+```
+Host : 127.0.0.1
+Post : 3306
+Username : root
+Password : seran
+Schema : web
+```
+
 Server 실행
 book-search-project\app-server 경로에서 다음 명령어를 실행
 ```bash
