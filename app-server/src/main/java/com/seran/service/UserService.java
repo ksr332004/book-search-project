@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.seran.model.User;
+import com.seran.entity.User;
 
 public interface UserService extends UserDetailsService {
     

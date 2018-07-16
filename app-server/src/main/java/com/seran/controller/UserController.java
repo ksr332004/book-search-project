@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seran.model.User;
+import com.seran.entity.User;
 import com.seran.service.UserService;
 
 @RestController

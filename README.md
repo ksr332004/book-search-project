@@ -19,6 +19,9 @@ book-search-project\app-server 경로에서 다음 명령어를 실행
 ```bash
 #build
 gradle build
+#윈도우OS의 경우
+gradlew build
+
 #start
 gradle bootRun
 ```

@@ -3,6 +3,8 @@ package com.seran.controller;
 import java.util.List;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seran.model.Book;
-import com.seran.model.History;
-import com.seran.model.Parameter;
-import com.seran.model.User;
+import com.seran.dto.Book;
+import com.seran.dto.Parameter;
+import com.seran.entity.History;
+import com.seran.entity.User;
 import com.seran.service.BookSearchService;
 import com.seran.service.UserService;
 
@@ -30,7 +32,7 @@ public class BookSearchController {
     private BookSearchService searchService;
     
     @PostMapping("/book")
-    public ResponseEntity<Book> getSearchList(Authentication authentication, @RequestBody Parameter parameter) {
+    public ResponseEntity<Book> getSearchList(Authentication authentication, @Valid @RequestBody Parameter parameter) {
         Optional<Book> book = searchService.searchBooks(parameter);
         
         if (!Optional.ofNullable(parameter.getQuery()).isPresent()) {

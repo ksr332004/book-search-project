@@ -1,4 +1,4 @@
-package com.seran.model;
+package com.seran.dto;
 
 import org.assertj.core.util.Strings;
 import org.springframework.web.util.UriComponentsBuilder;

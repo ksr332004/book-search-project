@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.seran.model.User;
+import com.seran.entity.User;
 import com.seran.repository.UserRepository;
 import com.seran.service.UserService;
 
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
             user.setRegistrationDate(LocalDateTime.now());
             userRepository.save(user);
         } catch (Exception e) {
-            throw new BadCredentialsException("Bad request.");
+            throw new BadCredentialsException("insert error.");
         }
 	}
 	

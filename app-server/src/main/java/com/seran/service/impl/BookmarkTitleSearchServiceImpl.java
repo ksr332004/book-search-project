@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import com.seran.model.Bookmark;
+import com.seran.entity.Bookmark;
 import com.seran.repository.BookmarkSearchRepository;
 import com.seran.service.BookmarkSearchService;
 

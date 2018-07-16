@@ -1,9 +1,11 @@
-package com.seran.model;
+package com.seran.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+
 import java.time.LocalDateTime;
 
 @Data
@@ -13,14 +15,15 @@ import java.time.LocalDateTime;
 public class History {
 
     @Id
-    @Column(name = "history_id")
+    @Column(name = "history_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_history")
     private Integer id;
     
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Integer userId;
     
     @Column(name = "search")
+    @NotEmpty(message = "*Please provide your search word.")
     private String search;
     
     @Column(name = "new_date")

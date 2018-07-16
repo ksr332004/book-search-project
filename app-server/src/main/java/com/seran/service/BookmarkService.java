@@ -2,8 +2,8 @@ package com.seran.service;
 
 import java.util.Optional;
 
-import com.seran.model.Bookmark;
-import com.seran.model.Document;
+import com.seran.dto.Document;
+import com.seran.entity.Bookmark;
 
 public interface BookmarkService {
 

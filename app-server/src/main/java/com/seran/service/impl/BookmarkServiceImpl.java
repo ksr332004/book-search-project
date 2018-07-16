@@ -7,8 +7,8 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.seran.model.Bookmark;
-import com.seran.model.Document;
+import com.seran.dto.Document;
+import com.seran.entity.Bookmark;
 import com.seran.repository.BookmarkRepository;
 import com.seran.service.BookmarkService;
 
@@ -56,7 +56,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                 bookmark.setStatus(document.getStatus());
                 bookmarkRepository.save(bookmark);
             } catch (Exception e) {
-                throw new BadCredentialsException("Bad request.");
+                throw new BadCredentialsException("svae error.");
             }
         }
     }

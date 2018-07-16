@@ -1,4 +1,4 @@
-package com.seran.model;
+package com.seran.entity;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,34 +19,34 @@ public class Bookmark {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "bookmark")
     private Integer id;
     
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Integer userId;
 
-    @Column(name = "key_barcode")
+    @Column(name = "key_barcode", length = 50, nullable = false)
     private String keyBarcode;
     
-    @Column(name = "title")
+    @Column(name = "title", length = 256)
     private String title;
     
-    @Column(name = "contents")
+    @Column(name = "contents", length = 256)
     private String contents;
     
-    @Column(name = "url")
+    @Column(name = "url", length = 256)
     private String url;
     
-    @Column(name = "isbn")
+    @Column(name = "isbn", length = 100)
     private String isbn;
     
     @Column(name = "create_date")
     private OffsetDateTime createDate;
     
-    @Column(name = "authors")
+    @Column(name = "authors", length = 256)
     private String authors;
     
-    @Column(name = "publisher")
+    @Column(name = "publisher", length = 200)
     private String publisher;
     
-    @Column(name = "translators")
+    @Column(name = "translators", length = 256)
     private String translators;
     
     @Column(name = "price")
@@ -55,22 +55,22 @@ public class Bookmark {
     @Column(name = "sale_price")
     private Integer salePrice;
 
-    @Column(name = "sale_yn")
+    @Column(name = "sale_yn", length = 3)
     private String saleYN;
     
-    @Column(name = "category")
+    @Column(name = "category", length = 50)
     private String category;
     
-    @Column(name = "thumbnail")
+    @Column(name = "thumbnail", length = 256)
     private String thumbnail;
     
-    @Column(name = "barcode")
+    @Column(name = "barcode", length = 20)
     private String barcode;
     
-    @Column(name = "ebook_barcode")
+    @Column(name = "ebook_barcode", length = 20)
     private String ebookBarcode;
 
-    @Column(name = "status")
+    @Column(name = "status", length = 20)
     private String status;
     
     @Column(name = "new_date")

@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import com.seran.auth.UserDetailsImpl;
-import com.seran.model.User;
+import com.seran.entity.User;
 import com.seran.repository.UserRepository;
 
 @Component

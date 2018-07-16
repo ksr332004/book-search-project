@@ -3,9 +3,9 @@ package com.seran.service;
 import java.util.List;
 import java.util.Optional;
 
-import com.seran.model.Book;
-import com.seran.model.History;
-import com.seran.model.Parameter;
+import com.seran.dto.Book;
+import com.seran.dto.Parameter;
+import com.seran.entity.History;
 
 public interface BookSearchService {
 

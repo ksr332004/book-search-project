@@ -17,9 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
-import com.seran.model.Book;
-import com.seran.model.History;
-import com.seran.model.Parameter;
+import com.seran.dto.Book;
+import com.seran.dto.Parameter;
+import com.seran.entity.History;
 import com.seran.repository.HistoryRepository;
 import com.seran.service.BookSearchService;
 
@@ -57,7 +57,7 @@ public class BookSearchServiceImpl implements BookSearchService {
             history.setSearch(query);
             historyRepository.save(history);
         } catch (Exception e) {
-            throw new BadCredentialsException("Bad request.");
+            throw new BadCredentialsException("insert error.");
         }
     }
     

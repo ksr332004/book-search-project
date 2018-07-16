@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.seran.model.User;
+import com.seran.entity.User;
 
 public class AjaxAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
