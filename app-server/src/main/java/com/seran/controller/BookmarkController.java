@@ -60,17 +60,18 @@ public class BookmarkController {
 	@PostMapping("/add")
 	public ResponseEntity<Void> postUserBookmark(Authentication authentication, @Valid @RequestBody Document document) {
 	    Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-	    bookmarkService.saveBookmark(user.get().getId(), document);
+		user.ifPresent(u -> bookmarkService.saveBookmark(u.getId(), document));
 	    return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserBookmark(@Valid @PathVariable Integer id) {
-        Optional<Bookmark> bookMark = bookmarkService.searchBookmarkById(id);
+    public ResponseEntity<Void> deleteUserBookmark(Authentication authentication, @Valid @PathVariable Integer id) {
+		Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
+        Optional<Bookmark> bookMark = bookmarkService.searchBookmarkByUserIdAndId(user.get().getId(), id);
         if (bookMark.isPresent()) {
-            bookmarkService.deleteBookmarkById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
+			bookmarkService.deleteBookmarkById(id);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 

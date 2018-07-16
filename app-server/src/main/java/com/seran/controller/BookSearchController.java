@@ -53,20 +53,14 @@ public class BookSearchController {
         		(parameter.getPage() <= 0 || parameter.getPage() > 50)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        
-        if (book.isPresent()) {
-            return new ResponseEntity<>(book.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+	    return book.map(b -> new ResponseEntity<>(b, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @GetMapping("/history")
     public ResponseEntity<List<History>> getHistorys(Authentication authentication) {
         Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-    	if (user.isPresent()) {
-    		return new ResponseEntity<>(searchService.searchHistorys(user.get().getId()), HttpStatus.OK);
-    	}
-    	return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	    return user.map(u -> new ResponseEntity<>(searchService.searchHistorys(u.getId()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
     
 }

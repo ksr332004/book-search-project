@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Entity
-@SequenceGenerator(name = "user_history", sequenceName = "history_id", initialValue = 1, allocationSize = 1)
+@Table(name="history")
 public class History {
 
     @Id
-    @Column(name = "history_id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_history")
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
     @Column(name = "user_id", nullable = false)

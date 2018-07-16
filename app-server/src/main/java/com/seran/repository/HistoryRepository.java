@@ -9,7 +9,5 @@ import com.seran.entity.History;
 
 @Repository
 public interface HistoryRepository extends JpaRepository<History, Integer> {
-	
 	List<History> findTop10ByUserIdOrderByNewDateDesc(Integer userId);
-	
 }

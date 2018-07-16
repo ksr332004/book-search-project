@@ -19,12 +19,7 @@ public class AjaxUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
-        User user = userRepository.findByEmail(email).orElse(null);
-
-        if (user == null) {
-            throw new UsernameNotFoundException(email + "라는 사용자가 없습니다.");
-        }
-
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException(email + "라는 사용자가 없습니다."));
         return new UserDetailsImpl(email, AuthorityUtils.createAuthorityList(user.getRole()));
     }
 

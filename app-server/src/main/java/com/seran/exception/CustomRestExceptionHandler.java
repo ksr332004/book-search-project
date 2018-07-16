@@ -66,7 +66,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 	 
 	    ApiError apiError = 
 	      new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-	    return new ResponseEntity<Object>(apiError, new HttpHeaders(), apiError.getStatus());
+	    return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
 	}
 	
 	/**
@@ -85,7 +85,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 	 
 	    ApiError apiError = new ApiError(HttpStatus.UNSUPPORTED_MEDIA_TYPE, 
 	      ex.getLocalizedMessage(), builder.substring(0, builder.length() - 2));
-	    return new ResponseEntity<Object>(
+	    return new ResponseEntity<>(
 	      apiError, new HttpHeaders(), apiError.getStatus());
 	}
 	
@@ -99,7 +99,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 	public ResponseEntity<Object> handleAll(Exception ex, WebRequest request) {
 	    ApiError apiError = new ApiError(
 	      HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
-	    return new ResponseEntity<Object>(
+	    return new ResponseEntity<>(
 	      apiError, new HttpHeaders(), apiError.getStatus());
 	}
 	

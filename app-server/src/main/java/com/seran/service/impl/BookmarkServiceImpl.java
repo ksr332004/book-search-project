@@ -15,17 +15,26 @@ import com.seran.service.BookmarkService;
 @Service
 public class BookmarkServiceImpl implements BookmarkService {
 
-    @Autowired
     private BookmarkRepository bookmarkRepository;
-    
+
+    @Autowired
+    public BookmarkServiceImpl(BookmarkRepository bookmarkRepository) {
+        this.bookmarkRepository = bookmarkRepository;
+    }
+
     @Override
     public Optional<Bookmark> searchBookmarkByUserIdAndKeyBarcode(Integer userId, String keyBarcode) {
         return Optional.ofNullable(bookmarkRepository.findByUserIdAndKeyBarcode(userId, keyBarcode));
     }
-    
+
+    @Override
+    public Optional<Bookmark> searchBookmarkByUserIdAndId(Integer userId, Integer id) {
+        return Optional.ofNullable(bookmarkRepository.findByUserIdAndId(userId,id));
+    }
+
     @Override
     public Optional<Bookmark> searchBookmarkById(Integer id) {
-        return Optional.ofNullable(bookmarkRepository.findById(id).get());
+        return bookmarkRepository.findById(id);
     }
     
     @Override

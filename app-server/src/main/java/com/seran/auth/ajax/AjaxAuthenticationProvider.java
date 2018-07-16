@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class AjaxAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider {
 
@@ -34,13 +36,6 @@ public class AjaxAuthenticationProvider extends AbstractUserDetailsAuthenticatio
 
     @Override
     protected UserDetails retrieveUser(String email, UsernamePasswordAuthenticationToken authentication) throws AuthenticationException {
-        UserDetails loadedUser = userDetailsServiceImpl.loadUserByUsername(email);
-
-        if (loadedUser == null) {
-            throw new InternalAuthenticationServiceException(
-                    "UserDetailsService returned null, which is an interface contract violation");
-        }
-
-        return loadedUser;
+        return Optional.ofNullable(userDetailsServiceImpl.loadUserByUsername(email)).orElseThrow(() -> new InternalAuthenticationServiceException("UserDetailsService returned null, which is an interface contract violation"));
     }
 }

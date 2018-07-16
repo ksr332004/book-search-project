@@ -1,13 +1,18 @@
 package com.seran.dto;
 
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.assertj.core.util.Strings;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -55,6 +60,16 @@ public class Document {
             }
         }
         return translator;
+    }
+    
+    public String getPublishDate() {
+        if ("".equals(Strings.isNullOrEmpty(datetime.toString()))) {
+            return "";  
+        } else {
+            DateTimeFormatter dTF = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+            OffsetDateTime offsetDateTime = OffsetDateTime.parse(datetime.toString(), DateTimeFormatter.BASIC_ISO_DATE);
+            return offsetDateTime.format(dTF);        
+        }
     }
     
 }

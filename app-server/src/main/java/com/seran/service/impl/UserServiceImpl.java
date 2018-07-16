@@ -18,16 +18,14 @@ import com.seran.service.UserService;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
-	@Autowired
+
 	private UserRepository userRepository;
-	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
-	
-	
-	@Override
-	public Optional<User> searchUserById(Integer id) {
-	    return userRepository.findById(id);
+
+	@Autowired
+	public UserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+		this.userRepository = userRepository;
+		this.bCryptPasswordEncoder = bCryptPasswordEncoder;
 	}
 
 	@Override

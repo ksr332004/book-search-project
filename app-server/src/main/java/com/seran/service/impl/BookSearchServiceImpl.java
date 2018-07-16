@@ -1,27 +1,21 @@
 package com.seran.service.impl;
 
-import java.nio.charset.Charset;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-
 import com.seran.dto.Book;
 import com.seran.dto.Parameter;
 import com.seran.entity.History;
 import com.seran.repository.HistoryRepository;
 import com.seran.service.BookSearchService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BookSearchServiceImpl implements BookSearchService {
@@ -35,11 +29,6 @@ public class BookSearchServiceImpl implements BookSearchService {
     private RestTemplate restTemplate;
     @Autowired
     private HistoryRepository historyRepository;
-    
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
     
     @Override
     public Optional<Book> searchBooks(Parameter parameter) {

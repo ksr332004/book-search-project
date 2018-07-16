@@ -9,12 +9,16 @@ import com.seran.entity.Bookmark;
 import com.seran.repository.BookmarkSearchRepository;
 import com.seran.service.BookmarkSearchService;
 
-@Service("content")
+@Service
 public class BookmarkContentSearchServiceImpl implements BookmarkSearchService {
 
-    @Autowired
     private BookmarkSearchRepository bookmarkSearchRepository;
-    
+
+    @Autowired
+    public BookmarkContentSearchServiceImpl(BookmarkSearchRepository bookmarkSearchRepository) {
+        this.bookmarkSearchRepository = bookmarkSearchRepository;
+    }
+
     @Override
     public Page<Bookmark> searchBookmarks(Integer userId, String query, Pageable pageable) {
         return bookmarkSearchRepository.findByUserIdAndContents(userId, query, pageable);

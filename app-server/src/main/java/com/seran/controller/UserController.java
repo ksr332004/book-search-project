@@ -27,10 +27,7 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<User> getUser(Authentication authentication) {
         Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-        if (user.isPresent()) {
-            return new ResponseEntity<>(user.get(), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return user.map(u -> new ResponseEntity<>(u, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
     
     @DeleteMapping("/user/delete")

@@ -8,9 +8,7 @@ import com.seran.dto.Parameter;
 import com.seran.entity.History;
 
 public interface BookSearchService {
-
     Optional<Book> searchBooks(Parameter parameter);
     List<History> searchHistorys(Integer userId);
     void saveSearchHistory(Integer userId, String query);
-    
 }

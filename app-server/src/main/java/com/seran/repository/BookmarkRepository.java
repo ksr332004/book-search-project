@@ -7,7 +7,6 @@ import com.seran.entity.Bookmark;
 
 @Repository
 public interface BookmarkRepository extends JpaRepository<Bookmark, Integer> {
-    
+    Bookmark findByUserIdAndId(Integer userId, Integer id);
     Bookmark findByUserIdAndKeyBarcode(Integer userId, String keyBarcode);
-    
 }

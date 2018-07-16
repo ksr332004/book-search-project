@@ -4,14 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
@@ -24,12 +17,12 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@SequenceGenerator(name = "user", sequenceName = "user_id", initialValue = 1, allocationSize = 1)
+@Table(name="users")
 public class User {
-    
+
      @Id
-     @Column(name = "user_id", nullable = false)
-     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user")
+     @Column(name = "id")
+     @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Integer id;
      
      @Column(name = "email", length = 200, nullable = false, unique = true)
@@ -37,7 +30,7 @@ public class User {
      @NotEmpty(message = "*Please provide an email.")
      private String email;
 
-     @Column(name = "password", length = 50, nullable = false)
+     @Column(name = "password", length = 512, nullable = false)
      @Transient
      @Length(min = 7, message = "*Your password must have at least 7 characters.")
      @NotEmpty(message = "*Please provide your password.")
@@ -54,15 +47,14 @@ public class User {
      private String available = "Y";
      
      @Column(name = "role", length = 20, nullable = false)
-     @NotEmpty(message = "*Please provide user role.")
      private String role;
      
      @OneToMany
-     @JoinColumn(name = "bookmark_id", referencedColumnName = "user_id")
+     @JoinColumn(name = "bookmark_id", referencedColumnName = "id")
      private List<Bookmark> bookmarks = new ArrayList<>();
      
      @OneToMany
-     @JoinColumn(name = "history_id", referencedColumnName = "user_id")
-     private List<History> histories = new ArrayList<History>();
+     @JoinColumn(name = "history_id", referencedColumnName = "id")
+     private List<History> histories = new ArrayList<>();
      
 }
