@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    angular.module('pages.common.login', []).config(routeConfig);
+    angular.module('pages.common.login', ['ui.select', 'ngSanitize']).config(routeConfig);
 
     /** @ngInject */
     function routeConfig($stateProvider) {

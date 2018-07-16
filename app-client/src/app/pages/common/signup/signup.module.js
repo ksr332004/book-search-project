@@ -10,7 +10,6 @@
             title : 'Sign up',
             templateUrl : 'app/pages/common/signup/signup.html',
             controller : 'signupPageCtrl',
-            controllerAs: 'vm',
             sidebarMeta : {
                 icon : 'ion-compose',
                 order : 1
