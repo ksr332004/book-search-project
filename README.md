@@ -27,6 +27,8 @@ Schema : web
 Server 실행
 book-search-project\app-server 경로에서 다음 명령어를 실행
 ```bash
+#Eclipse IDE Import 할 경우 [참조](http://projooni.tistory.com/entry/SpringBoot-eclipse%EC%97%90%EC%84%9C-springboot-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-clone%ED%95%98%EA%B8%B0)
+
 #Local Terminal에서 명령어를 수행하는 것을 권장함
 
 #build
@@ -68,7 +70,7 @@ gulp release      #배포용 소스 생성
 
 - ERD
 
-![erd_v1](https://user-images.githubusercontent.com/41044894/42737917-01076848-88b6-11e8-9645-96bf6005af3e.png)
+![erd](https://user-images.githubusercontent.com/41044894/42779936-cb54d952-897c-11e8-9381-beb0e52d36e0.png)
 
 
 ### 구현 중 기능
