@@ -29,6 +29,10 @@ bootJar {
 	mainClassName = 'com.seran.AppServerApplication'
 }
 
+/* Test Configuration */
+test {
+	ignoreFailures = true
+}
 
 dependencies {
 	
@@ -38,7 +42,7 @@ dependencies {
     /* Security Tool */
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.security:spring-security-jwt:1.0.9.RELEASE')
-    compile('com.auth0:java-jwt:3.4.0')
+    compile('com.auth0:java-jwt:3.3.0')
     
     /* Data-processing Tool */
     compile('com.fasterxml.jackson.core:jackson-databind')
@@ -61,17 +65,15 @@ dependencies {
 	
 }
 
-/*
- *  QueryDSL Configuration
- */
+/* QueryDSL Configuration */
  
 // The path of created QueryDSL file
 sourceSets {
 	generated {
 		java {
 			srcDirs = [
-				'src/main/java'
-				, 'src/main/querydsl_generated'
+				'src/main/java',
+				'src/main/querydsl_generated'
 			]
 		}
 	}
@@ -81,41 +83,29 @@ configurations {
 	querydslapt
 }
 
-task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Query dsl Generator') {
+task generateQueryDSL(type: JavaCompile, group: 'build') {
 	// The path of JPA entity file
-	source = sourceSets.main.java
-	
-	classpath = configurations.compile + configurations.querydslapt
-	options.compilerArgs = [
-			"-proc:only"
-			, "-processor"
-			, "com.querydsl.apt.jpa.JPAAnnotationProcessor"
-	]
-	options.encoding = 'UTF-8'
-	destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+    source = sourceSets.main.java
+    classpath = configurations.compile + configurations.querydslapt
+    options.compilerArgs = [
+            "-proc:only",
+            "-processor",
+            "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+    ]
+    options.encoding = 'UTF-8'
+    destinationDir = file('./src/main/querydsl_generated')
 }
 
-compileJava {
-	dependsOn generateQueryDSL
-	source generateQueryDSL.destinationDir
-}
-
-compileGeneratedJava {
-	dependsOn generateQueryDSL
-	options.warnings = false
-	classpath += sourceSets.main.runtimeClasspath
-}
-
-// IDEA config
+/* IDEA config */
 idea {
     module {
         inheritOutputDirs = false
-        outputDir = file("$buildDir/classes/main/")
+        outputDir = file('$buildDir/classes/main/')
         sourceDirs += file('src/main/querydsl_generated')
     }
 }
 
-// gradle clean config
+/* clean config */
 clean {
-	delete sourceSets.generated.java.srcDirs.iterator().next()
+	delete file('./src/main/querydsl_generated')
 }
