@@ -1,6 +1,7 @@
 buildscript {
 	ext {
 		springBootVersion = '2.0.2.RELEASE'
+		queryDslVersion = '4.2.0' /* QueryDSL */
 	}
 	repositories {
 		mavenCentral()
@@ -12,6 +13,7 @@ buildscript {
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
@@ -29,54 +31,91 @@ bootJar {
 
 
 dependencies {
+	
 	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-
-	compile('com.fasterxml.jackson.core:jackson-databind')
-	compile('com.auth0:java-jwt:3.3.0')
-	compileOnly('org.projectlombok:lombok:1.16.18')
-
-	compile('org.springframework.boot:spring-boot-starter-security')
-
-	compile('com.querydsl:querydsl-apt:4.1.4')
-	compile('com.querydsl:querydsl-jpa:4.1.4')
-	runtime('mysql:mysql-connector-java')
-
-	compile('org.springframework.boot:spring-boot-starter-logging:2.0.3.RELEASE')
-	compile('org.assertj:assertj-core:3.9.1')
-
-
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile ('org.springframework.security:spring-security-test:4.2.3.RELEASE')
-	testCompile ('com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:2.8.9')
-
-
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    
+    /* Security Tool */
+    compile('org.springframework.boot:spring-boot-starter-security')
+    compile('org.springframework.security:spring-security-jwt:1.0.9.RELEASE')
+    compile('com.auth0:java-jwt:3.4.0')
+    
+    /* Data-processing Tool */
+    compile('com.fasterxml.jackson.core:jackson-databind')
+	compile('org.assertj:assertj-core:3.10.0')
+	compile('org.json:json:20180130')
+	
+	/* QueryDSL : unified queries tool */
+	compile group: 'com.querydsl', name: 'querydsl-core', version: queryDslVersion
+    compile group: 'com.querydsl', name: 'querydsl-jpa', version: queryDslVersion
+    compile group: 'com.querydsl', name: 'querydsl-apt', version: queryDslVersion
+    
+    /* Lombok */
+    compileOnly('org.projectlombok:lombok:1.16.18')
+    
+    /* MySQL connection Tool */
+    runtime('mysql:mysql-connector-java')
+    
+    /* Test Tool */
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+	
 }
 
+/*
+ *  QueryDSL Configuration
+ */
+ 
+// The path of created QueryDSL file
 sourceSets {
-	main {
+	generated {
 		java {
-			srcDirs 'src/main/java', 'src/main/generated'
+			srcDirs = [
+				'src/main/java'
+				, 'src/main/querydsl_generated'
+			]
 		}
 	}
 }
 
-task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Generates the QueryDSL query types') {
-	file(new File(projectDir, "/src/main/generated")).deleteDir()
-	file(new File(projectDir, "/src/main/generated")).mkdirs()
+configurations {
+	querydslapt
+}
+
+task generateQueryDSL(type: JavaCompile, group: 'build', description: 'Query dsl Generator') {
+	// The path of JPA entity file
 	source = sourceSets.main.java
-	classpath = configurations.compile + configurations.compileOnly
+	
+	classpath = configurations.compile + configurations.querydslapt
 	options.compilerArgs = [
-			"-proc:only",
-			"-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+			"-proc:only"
+			, "-processor"
+			, "com.querydsl.apt.jpa.JPAAnnotationProcessor"
 	]
-	destinationDir = file('src/main/generated')
+	options.encoding = 'UTF-8'
+	destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
 }
 
 compileJava {
 	dependsOn generateQueryDSL
+	source generateQueryDSL.destinationDir
 }
 
-clean.doLast {
-	file(new File(projectDir, "/src/main/generated")).deleteDir()
+compileGeneratedJava {
+	dependsOn generateQueryDSL
+	options.warnings = false
+	classpath += sourceSets.main.runtimeClasspath
+}
+
+// IDEA config
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+        sourceDirs += file('src/main/querydsl_generated')
+    }
+}
+
+// gradle clean config
+clean {
+	delete sourceSets.generated.java.srcDirs.iterator().next()
 }
