@@ -5,16 +5,17 @@ book-search-project
 ### Dependencies
 * JDK 1.8
 * Spring-Boot 2.0.2
-   * Gradle 2.x
+   * Gradle
    * JPA
    * MySQL
    * Web
-   * JWT 인증
+   * JWT
 * Angularjs 2.x
-   * Blur Admin
+   * [Blur Admin](https://github.com/akveo/blur-admin)
 
 ### Getting Started
 MySQL 설정
+Schema에 web 생성
 ```
 Host : 127.0.0.1
 Post : 3306
@@ -26,12 +27,12 @@ Schema : web
 Server 실행
 book-search-project\app-server 경로에서 다음 명령어를 실행
 ```bash
+#Local Terminal에서 명령어를 수행하는 것을 권장함
+
 #build
 gradle build
 #윈도우OS의 경우
 gradlew build
-
-#Local Terminal에서 명령어를 수행하는 것을 권장함
 
 #start
 gradle bootRun
@@ -44,6 +45,7 @@ book-search-project\app-client 경로에서 다음 명령어를 실행
 npm install --g bower
 npm install --global gulp
 npm install
+
 #start
 gulp serve        #로컬 실행
 gulp serve:dist   #로컬 실행 및 배포용 소스 생성
@@ -72,9 +74,10 @@ gulp release      #배포용 소스 생성
 ### 구현 중 기능
 - JWT 기반 AngulerJS Client 화면 연동
 
-### Pain Point
-- spring-security의 cors 필터에 따른 AngularJS와의 연동에 있어 시간 소요
-
 
 ### Visit
+Client (Main)
 - http://localhost:3000/
+
+Server
+- http://localhost:8080/
