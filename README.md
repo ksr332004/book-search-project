@@ -31,6 +31,8 @@ gradle build
 #윈도우OS의 경우
 gradlew build
 
+#Local Terminal에서 명령어를 수행하는 것을 권장함
+
 #start
 gradle bootRun
 ```
