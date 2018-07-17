@@ -14,8 +14,14 @@ book-search-project
    * [Blur Admin](https://github.com/akveo/blur-admin)
 
 ### Getting Started
-MySQL 설정
-Schema에 web 생성
+1. Git Clone
+```
+cd directory #원하는 경로로 이동
+git clone https://github.com/kimsr2004/book-search-project
+```
+
+2. MySQL 설정
+MySQL 설치 후 Schema에 web 생성
 ```
 Host : 127.0.0.1
 Post : 3306
@@ -24,12 +30,15 @@ Password : seran
 Schema : web
 ```
 
-Server 실행
+3. Server 실행
 book-search-project\app-server 경로에서 다음 명령어를 실행
 ```bash
 #Eclipse IDE Import 할 경우 [참조](http://projooni.tistory.com/entry/SpringBoot-eclipse%EC%97%90%EC%84%9C-springboot-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-clone%ED%95%98%EA%B8%B0)
-
 #Local Terminal에서 명령어를 수행하는 것을 권장함
+
+#go to directory
+cd directory   #git clone된 폴더로 이동
+cd app-server
 
 #build
 gradle build
@@ -40,9 +49,13 @@ gradlew build
 gradle bootRun
 ```
 
-Client 실행
+4. Client 실행
 book-search-project\app-client 경로에서 다음 명령어를 실행
 ```bash
+#go to directory
+cd directory   #git clone된 폴더로 이동
+cd app-client
+
 #install
 npm install --g bower
 npm install --global gulp
