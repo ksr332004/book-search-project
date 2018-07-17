@@ -73,10 +73,6 @@ gulp release      #배포용 소스 생성
 ![erd](https://user-images.githubusercontent.com/41044894/42779936-cb54d952-897c-11e8-9381-beb0e52d36e0.png)
 
 
-### 구현 중 기능
-- JWT 기반 AngulerJS Client 화면 연동
-
-
 ### Visit
 Client (Main)
 - http://localhost:3000/
