@@ -57,39 +57,95 @@ var appClient = angular.module('BlurAdmin', [
 
         if (userInfo.id == undefined) {
             var menu = [
-            	{
-	                title : 'Log in',
-	                templateUrl : 'app/pages/common/login/login.html',
-	                controller : 'loginPageCtrl',
-	                url : '/login',
-	                stateRef : 'login',
-	                icon : 'ion-log-in',
-	                order : 1,
-	                sidebarMeta : {
+                {
+                    title : 'Log in',
+                    templateUrl : 'app/pages/common/login/login.html',
+                    controller : 'loginPageCtrl',
+                    url : '/login',
+                    stateRef : 'login',
+                    icon : 'ion-log-in',
+                    order : 1,
+                    sidebarMeta : {
                         icon : 'ion-log-in',
                         order : 1
                     }
+                },
+                {
+                    title : 'Book Search',
+                    templateUrl : 'app/pages/search/search.html',
+                    controller : 'searchPageCtrl',
+                    url : '/search',
+                    stateRef : 'search',
+                    icon : 'ion-log-in',
+                    order : 2,
+                    sidebarMeta : {
+                        icon : 'ion-log-in',
+                        order : 1,
+                    }
+                    
+                },
+                {
+                    title : 'Bookmark',
+                    templateUrl : 'app/pages/bookmark/bookmark.html',
+                    controller : 'bookmarkPageCtrl',
+                    url : '/bookmark',
+                    stateRef : 'bookmark',
+                    icon : 'ion-log-in',
+                    order : 3,
+                    sidebarMeta : {
+                        icon : 'ion-log-in',
+                        order : 2,
+                    }
+                    
                 }
             ];
             menuList.push(menu);
         } else {
-        	var menu = [
-	            {
-	                title : 'Log out',
-	                templateUrl : 'app/pages/common/logout/logout.html',
-	                controller : 'logoutPageCtrl',
-	                url : '/logout',
-	                stateRef : 'logout',
-	                icon : 'ion-log-out',
-	                order : 3,
-	                sidebarMeta : {
+            var menu = [
+                {
+                    title : 'Book Search',
+                    templateUrl : 'app/pages/search/search.html',
+                    controller : 'searchPageCtrl',
+                    url : '/search',
+                    stateRef : 'search',
+                    icon : 'ion-log-in',
+                    order : 1,
+                    sidebarMeta : {
+                        icon : 'ion-log-in',
+                        order : 1,
+                    }
+                    
+                },
+                {
+                    title : 'Bookmark',
+                    templateUrl : 'app/pages/bookmark/bookmark.html',
+                    controller : 'bookmarkPageCtrl',
+                    url : '/bookmark',
+                    stateRef : 'bookmark',
+                    icon : 'ion-log-in',
+                    order : 2,
+                    sidebarMeta : {
+                        icon : 'ion-log-in',
+                        order : 2,
+                    }
+                    
+                },
+                {
+                    title : 'Log out',
+                    templateUrl : 'app/pages/common/logout/logout.html',
+                    controller : 'logoutPageCtrl',
+                    url : '/logout',
+                    stateRef : 'logout',
+                    icon : 'ion-log-out',
+                    order : 3,
+                    sidebarMeta : {
                         icon : 'ion-log-out',
                         order : 1,
                     }
-	                
-	            }
+                    
+                }
             ];
-        	menuList.push(menu);
+            menuList.push(menu);
         }
         return menuList;
     };
@@ -160,8 +216,6 @@ var appClient = angular.module('BlurAdmin', [
 .run(function($rootScope, $state, $log, SessionService, SessionInfo, MenuParsingService) {
     $log.debug('run is started.....');
     $log.debug('================================================================');
-    $log.debug(SessionService.isLogon());
-    $log.debug('================================================================');
 
     $rootScope.$on('menuInitializer', function() {
         $log.debug('menuInitializer is occurred.');
@@ -175,9 +229,4 @@ var appClient = angular.module('BlurAdmin', [
         }
         $rootScope.$broadcast('menuChangeForUser');
     });
-    
-    /*
-     * $log.debug(SessionInfo.getMenuInfo());
-     * $log.debug(SessionService.isLogon()); $log.debug($state.get());
-     */
 });
