@@ -16,7 +16,7 @@ book-search-project
 ### Getting Started
 1. Git Clone
 ```
-cd directory #원하는 경로로 이동
+cd {directory} #원하는 경로로 이동
 git clone https://github.com/kimsr2004/book-search-project
 ```
 
@@ -41,8 +41,7 @@ book-search-project\app-server 경로에서 다음 명령어를 실행
 #Local Terminal에서 명령어를 수행하는 것을 권장함
 
 #go to directory
-cd directory   #git clone된 폴더로 이동
-cd app-server
+cd {directory}/app-server
 
 #build
 gradle build
@@ -57,13 +56,15 @@ gradle bootRun
 book-search-project\app-client 경로에서 다음 명령어를 실행
 ```bash
 #go to directory
-cd directory   #git clone된 폴더로 이동
-cd app-client
+cd {directory}/app-client
 
 #install
 npm install --g bower
 npm install --global gulp
 npm install
+
+#go to directory
+cd {directory}/app-client/src/app
 
 #start
 gulp serve        #로컬 실행
