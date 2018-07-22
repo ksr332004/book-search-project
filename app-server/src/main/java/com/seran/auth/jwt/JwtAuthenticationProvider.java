@@ -19,7 +19,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("Bad token");
         }
 
-        String token = authentication.getCredentials().toString();
+        String token = authentication.getCredentials().toString().substring(7);
 
         if (JwtUtil.verify(token)) {
             UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(token);

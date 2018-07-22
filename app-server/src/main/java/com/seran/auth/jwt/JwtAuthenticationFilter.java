@@ -1,12 +1,5 @@
 package com.seran.auth.jwt;
 
-import java.io.IOException;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,6 +8,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.util.StringUtils;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Enumeration;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
@@ -26,7 +26,6 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
         String token = request.getHeader(JwtInfo.HEADER_NAME);
-
         if (StringUtils.isEmpty(token)) {
             throw new AccessDeniedException("Not empty Token");
         } else {
