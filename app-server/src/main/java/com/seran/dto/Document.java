@@ -1,18 +1,15 @@
 package com.seran.dto;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.assertj.core.util.Strings;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.assertj.core.util.Strings;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -23,7 +20,7 @@ public class Document {
     private String contents;
     private String url;
     private String isbn;
-    private OffsetDateTime datetime;
+    private String datetime;
     @JsonProperty("authors")
     private List<String> authors = new ArrayList<>();
     private String publisher;
@@ -37,7 +34,7 @@ public class Document {
     private String barcode;
     private String ebook_barcode;
     private String status;
-    
+
     public String getAuthorString() {
         String author = "";
         if (!authors.isEmpty()) {
@@ -62,13 +59,14 @@ public class Document {
         return translator;
     }
     
-    public String getPublishDate() {
-        if ("".equals(Strings.isNullOrEmpty(datetime.toString()))) {
+    public String getDatetimeString() {
+        if ("".equals(Strings.isNullOrEmpty(datetime))) {
             return "";  
         } else {
-            DateTimeFormatter dTF = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-            OffsetDateTime offsetDateTime = OffsetDateTime.parse(datetime.toString(), DateTimeFormatter.BASIC_ISO_DATE);
-            return offsetDateTime.format(dTF);        
+            DateTimeFormatter dTF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter format = DateTimeFormatter.ISO_DATE_TIME;
+            LocalDateTime date = LocalDateTime.parse(datetime, format);
+            return date.format(dTF);
         }
     }
     

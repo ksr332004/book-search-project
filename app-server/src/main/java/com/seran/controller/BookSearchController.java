@@ -41,8 +41,7 @@ public class BookSearchController {
         
         Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
         if (user.isPresent()) {
-            searchService.saveSearchHistory(user.get().getId(), parameter.getQuery());
-            return new ResponseEntity<>(HttpStatus.OK);
+            searchService.saveSearchHistory(user.get().getId(), parameter);
         }
         
         if (parameter.getSize() != null && 

@@ -1,9 +1,12 @@
 package com.seran.controller;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import com.seran.dto.Document;
+import com.seran.entity.Bookmark;
+import com.seran.entity.User;
+import com.seran.service.BookmarkSearchService;
+import com.seran.service.BookmarkService;
+import com.seran.service.UserService;
+import com.seran.service.factory.BookmarkSearchServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,22 +15,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.seran.dto.Document;
-import com.seran.entity.Bookmark;
-import com.seran.entity.User;
-import com.seran.service.BookmarkSearchService;
-import com.seran.service.BookmarkService;
-import com.seran.service.UserService;
-import com.seran.service.factory.BookmarkSearchServiceFactory;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/bookmark")
