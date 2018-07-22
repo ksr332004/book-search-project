@@ -39,11 +39,12 @@ public class BookSearchServiceImpl implements BookSearchService {
     
     @Override
     @Transactional
-    public void saveSearchHistory(Integer userId, String query) {
+    public void saveSearchHistory(Integer userId, Parameter parameter) {
         try {
             History history = new History();
             history.setUserId(userId);
-            history.setSearch(query);
+            history.setSearch(parameter.getQuery());
+            history.setTarget(parameter.getTarget());
             historyRepository.save(history);
         } catch (Exception e) {
             throw new BadCredentialsException("insert error.");

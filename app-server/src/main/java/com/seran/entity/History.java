@@ -25,7 +25,10 @@ public class History {
     @Column(name = "search")
     @NotEmpty(message = "*Please provide your search word.")
     private String search;
-    
+
+    @Column(name = "target")
+    private String target;
+
     @Column(name = "new_date")
     private LocalDateTime newDate = LocalDateTime.now();
     

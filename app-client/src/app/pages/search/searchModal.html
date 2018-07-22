@@ -13,18 +13,18 @@
         </a>
       </div>
       <div class="col-md-9 links ng-scope">
-        {{$resolve.items.category}} </br></br>
-        {{$resolve.items.contents}} <a href="{{$resolve.items.url}}">이어보기</a> </br></br>
+        {{customizedIsNullOrEmpty($resolve.items.category)}} </br></br>
+        {{customizedIsNullOrEmpty($resolve.items.contents)}} <a href="{{$resolve.items.url}}">이어보기</a> </br></br>
 
         <ul class="blur">
-          <li>저 : {{$resolve.items.authors}}</li>
-          <li>출판사 : {{$resolve.items.getPublisher}}</li>
-          <li>번역가 : {{$resolve.items.getTranslators}}</li>
-          <li>발행 : {{$resolve.items.getPublishDate}}</li>
-          <li>정가 : {{$resolve.items.price}}</li>
-          <li>할인금액 : {{$resolve.items.sale_price}} ( {{($resolve.items.sale_yn == 'Y') ? '할인중' : '정상가'}} )</li>
+          <li>저자 : {{customizedIsNullOrEmpty($resolve.items.authorString)}}</li>
+          <li>출판사 : {{customizedIsNullOrEmpty($resolve.items.publisher)}}</li>
+          <li>번역가 : {{customizedIsNullOrEmpty($resolve.items.translatorString)}}</li>
+          <li>발행일 : {{customizedIsNullOrEmpty($resolve.items.datetimeString)}}</li>
+          <li>정가 : {{$resolve.items.price | currency:"":0}}원</li>
+          <li>할인금액 : {{$resolve.items.sale_price | currency:"":0}}원 ( {{($resolve.items.sale_yn == 'Y') ? '할인중' : '정상가'}} )</li>
           <li><a href="{{$resolve.items.url}}">{{$resolve.items.status}}</a></li>
-          <li>ISBN : {{$resolve.items.isbn}}</li>
+          <li>ISBN : {{customizedIsNullOrEmpty($resolve.items.isbn)}}</li>
           <li>바코드 : {{(angular.isUndefined($resolve.items.barcode)) ? $resolve.items.ebook_barcode : $resolve.items.barcode}}</li>
         </ul>
 

@@ -1,27 +1,16 @@
 <div class="widgets">
   <div class="col-md-12">
     <div class="ng-cloak" form="vm.standardItem" ng-controller="searchPageCtrl as selectpickerVm">
-
       <div class="form-group col-md-3">
         <ui-select ng-model="vm.standardItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="false">
-        <ui-select-match placeholder="검색필드">
-        <span> {{$select.selected.label}}</span>
-        </ui-select-match>
-        <ui-select-choices repeat="standardItem in selectpickerVm.standardSelectItems | filter: $select.search">
-        <span ng-bind-html="standardItem.label" ng-model="vm.standardItem.value"></span>
-        </ui-select-choices>
+          <ui-select-match placeholder="검색필드">
+            <span> {{$select.selected.label}}</span>
+          </ui-select-match>
+          <ui-select-choices repeat="standardItem in selectpickerVm.standardSelectItems | filter: $select.search">
+            <span ng-bind-html="standardItem.label" ng-model="vm.standardItem.value"></span>
+          </ui-select-choices>
         </ui-select>
       </div>
-
-      <!-- <div class="form-group ">
-        <ui-select ng-model="vm.withSearchItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
-        <ui-select-match placeholder="최근검색어">
-        {{$select.selected.query}} </ui-select-match>
-        <ui-select-choices repeat="withSearchItem in selectpickerVm.selectWithSearchItems | filter: $select.search">
-        <span ng-bind-html="withSearchItem.query"></span>
-        </ui-select-choices>
-        </ui-select>
-      </div> -->
     </div>
 
     <div class="form-group col-md-7">
@@ -29,10 +18,34 @@
     </div>
 
     <div class="button-wrapper col-md-2">
-      <button type="button" class="btn btn-info" ng-click="searchBookList(1)">검색</button>
+      <button type="button" class="btn btn-info" ng-click="searchBookList('searchBtn', 1)">검색</button>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="ng-cloak" form="vm.withSearchItem" ng-controller="searchPageCtrl as selectpickerVm">
+      <div class="form-group col-md-10">
+        <ui-select ng-model="vm.withSearchItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
+          <ui-select-match placeholder="최근검색어">
+            {{$select.selected.search}}
+          </ui-select-match>
+          <ui-select-choices repeat="withSearchItem in selectpickerVm.selectWithSearchItems | filter: {search: $select.search, target: $select.target, newDate: $select.newDate}">
+            <div ng-bind-html="withSearchItem.search | highlight: $select.search"></div>
+              <small>
+                검색필드: {{withSearchItem.target}}
+                &nbsp;&nbsp;|&nbsp;&nbsp;
+                검색일: {{withSearchItem.newDate}}
+              </small>
+          </ui-select-choices>
+        </ui-select>
+      </div>
     </div>
 
+    <div class="button-wrapper col-md-2">
+      <button type="button" class="btn btn-info" ng-click="searchBookList('historyBtn', 1)">검색</button>
+    </div>
   </div>
+
 
   <div class="row">
     <div class="col-xs-12">
@@ -41,7 +54,7 @@
           <table class="table table-condensed">
           <thead>
           <tr>
-            <th class="table-id">
+            <th>
               카테고리
             </th>
             <th>
@@ -63,20 +76,20 @@
           </thead>
           <tbody>
           <tr ng-repeat="book in bookListTableData">
-            <td class="table-id">
-              {{book.category}}
+            <td>
+              {{customizedIsNullOrEmpty(book.category)}}
             </td>
             <td>
-              {{book.title}}
+              {{customizedIsNullOrEmpty(book.title)}}
             </td>
             <td>
-              {{book.authorString}}
+              {{customizedIsNullOrEmpty(book.authorString)}}
             </td>
             <td>
-              {{book.price}}
+              {{book.price | currency:"":0}}원
             </td>
             <td>
-              {{book.sale_price}}
+              {{book.sale_price | currency:"":0}}원
             </td>
             <td>
               <button class="status-button btn btn-xs btn-success" data-toggle="modal" ng-click="open('app/pages/search/searchModal.html', 'md', book)">더보기</button>
