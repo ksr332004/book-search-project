@@ -12,7 +12,7 @@
   function themeRun($timeout, $rootScope, layoutPaths, preloader, $q, baSidebarService, themeLayoutSettings) {
     var whatToWait = [
       preloader.loadAmCharts(),
-      $timeout(1000)
+      $timeout(150)
     ];
 
     var theme = themeLayoutSettings;
@@ -33,7 +33,7 @@
       if (!$rootScope.$pageFinishedLoading) {
         $rootScope.$pageFinishedLoading = true;
       }
-    }, 3000);
+    }, 500);
 
     $rootScope.$baSidebarService = baSidebarService;
   }

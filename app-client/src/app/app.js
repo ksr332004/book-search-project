@@ -17,10 +17,18 @@ var appClient = angular.module('BlurAdmin', [
   'BlurAdmin.pages',
   'ngRoute',
   
+  'satellizer',
   'ui.select',
   'ngSanitize'
-  
 ])
+.config(function($authProvider) {
+    $authProvider.storageType = 'localStorage';
+    $authProvider.tokenHeader = 'Authorization';
+    $authProvider.tokenType = 'Bearer';
+    $authProvider.baseUrl = 'http://localhost:8080';
+    $authProvider.loginUrl = '/api/auth/login';
+    $authProvider.signupUrl = '/api/auth/signup';
+})
 .directive('ngHtml', [ '$compile', function($compile) {
     return function(scope, elem, attrs) {
         if (attrs.ngHtml) {
@@ -35,27 +43,47 @@ var appClient = angular.module('BlurAdmin', [
         });
     };
 }])
-.factory('MessageService', function($http) {
+.factory('ApiService', function($http, $auth) {
+
     var factory = {};
-    factory.interactWithServer = function(serviceName, conditionData) {
-        return $http({
+    factory.post = function(serviceName, getData) {
+        var http = $http({
             method : 'POST',
             url : 'http://localhost:8080/api' + serviceName,
-            data : conditionData,
+            data : getData,
             dataType : "json",
             headers : {
                 'Content-Type' : 'application/json; charset=utf-8;'
             }
         });
+        return http;
     };
+    factory.get = function(serviceName) {
+        var http = $http({
+            method : 'GET',
+            url : 'http://localhost:8080/api' + serviceName,
+            dataType : "json",
+            headers : {
+                'Content-Type' : 'application/json; charset=utf-8;'
+            }
+        });
+        return http;
+    };
+
     return factory;
 })
-.factory('MenuParsingService', function($http, $log) {
+.factory('MenuParsingService', function($http, $auth, $log) {
+
     var factory = {};
-    factory.parse = function(userInfo) {
+    factory.parse = function() {
         var menuList = [];
 
-        if (userInfo.id == undefined) {
+        $log.debug('MenuParsingService is occurred.');
+        $log.debug('token : ', $auth.getToken());
+
+        if (angular.isUndefined($auth.getToken())
+            || $auth.getToken() == null
+            || $auth.getToken() == "") {
             var menu = [
                 {
                     title : 'Log in',
@@ -69,34 +97,6 @@ var appClient = angular.module('BlurAdmin', [
                         icon : 'ion-log-in',
                         order : 1
                     }
-                },
-                {
-                    title : 'Book Search',
-                    templateUrl : 'app/pages/search/search.html',
-                    controller : 'searchPageCtrl',
-                    url : '/search',
-                    stateRef : 'search',
-                    icon : 'ion-log-in',
-                    order : 2,
-                    sidebarMeta : {
-                        icon : 'ion-log-in',
-                        order : 1,
-                    }
-                    
-                },
-                {
-                    title : 'Bookmark',
-                    templateUrl : 'app/pages/bookmark/bookmark.html',
-                    controller : 'bookmarkPageCtrl',
-                    url : '/bookmark',
-                    stateRef : 'bookmark',
-                    icon : 'ion-log-in',
-                    order : 3,
-                    sidebarMeta : {
-                        icon : 'ion-log-in',
-                        order : 2,
-                    }
-                    
                 }
             ];
             menuList.push(menu);
@@ -147,83 +147,19 @@ var appClient = angular.module('BlurAdmin', [
             ];
             menuList.push(menu);
         }
+        $log.debug('parse : ', menuList);
         return menuList;
     };
     return factory;
 })
-.service('SessionInfo', function($rootScope) {
-    this.localStorageKey = "__SESSION_INFO";
-    try {
-        $rootScope.currentUserInfo = JSON.parse(localStorage.getItem(this.localStorageKey) || "{}");
-    } catch (e) {
-        $rootScope.currentUserInfo = {};
-    }
-    this.getUserInfo = function() {
-        return $rootScope.currentUserInfo;
-    };
-    this.setUserInfo = function(info) {
-        angular.extend($rootScope.currentUserInfo, info);
-        localStorage.setItem(this.localStorageKey, JSON.stringify($rootScope.currentUserInfo));
-    };
-    this.reset = function() {
-        $rootScope.currentUserInfo = {};
-        localStorage.setItem(this.localStorageKey, {});
-    };
-}) 
-.service('SessionService', function($http, $log, $q, $rootScope, SessionInfo, baSidebarService, $state) {
-    var userIsAuthenticated = false;
-    $log.debug('SessionService is started.....');
-    this.isLogon = function() {
-        var deferred = $q.defer();
-        var dataObject = {};
-        if (SessionInfo.getUserInfo().email != undefined) {
-            dataObject.uid = SessionInfo.getUserInfo().email;
-        } else {
-            dataObject.uid = 'guest';
-            $rootScope.$emit('menuInitializer');
-            return deferred.promise;
-        }
-        $log.debug(dataObject);
-        $http({
-            method : 'POST',
-            url : 'http://localhost:8080/api/user/' + dataObject.uid,
-            data : dataObject,
-            dataType : "json",
-            headers : {
-                'Content-Type' : 'application/json; charset=utf-8'
-            }
-        })
-        .success(function(data, status, headers, config) {
-            $log.debug(data);
-            if (data != undefined) {
-                SessionInfo.reset();
-                SessionInfo.setUserInfo(data);
-                userIsAuthenticated = true;
-                $log.debug('menuInitializer is called.....');
-                $rootScope.$emit('menuInitializer');
-            } else {
-                userIsAuthenticated = false;
-            }
-            deferred.resolve(userIsAuthenticated);
-        })
-        .error(function(data, status, headers, config) {
-            userIsAuthenticated = false;
-            deferred.reject(userIsAuthenticated);
-        });
-        return deferred.promise;
-    };
-})
-.run(function($rootScope, $state, $log, SessionService, SessionInfo, MenuParsingService) {
+.run(function($rootScope, $state, $log, MenuParsingService) {
     $log.debug('run is started.....');
     $log.debug('================================================================');
 
+
     $rootScope.$on('menuInitializer', function() {
         $log.debug('menuInitializer is occurred.');
-        var menu_list = MenuParsingService.parse(SessionInfo.getUserInfo());
-        if (menu_list.length == 1) {
-            menu_list = menu_list[0];
-        }
-        $log.debug('menuInitializer : ', menu_list);
+        var menu_list = MenuParsingService.parse();
         if (menu_list[0].stateRef == 'login') {
             $state.go('login');
         }

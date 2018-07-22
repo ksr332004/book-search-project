@@ -5,7 +5,7 @@
     .controller('loginPageCtrl', loginPageCtrl);
 
     /** @ngInject */
-    function loginPageCtrl($scope, $log, $state, toastr, MessageService, MenuParsingService, SessionInfo) {
+    function loginPageCtrl($scope, $auth, $log, $state, toastr, MenuParsingService) {
 
         $scope.login = function() {
             if ($scope.email == undefined) {
@@ -21,28 +21,25 @@
                 return;
             }
 
-            var dataObject = {
+            var user = {
                   email    : $scope.email
                 , password : $scope.password
             };
 
-            MessageService.interactWithServer('/auth/login', dataObject).success(function(data, status) {
-                $log.debug(data);
-                if (data) {
-                    // if (data.status == 'S') {
-                    //     var menuList = MenuParsingService.parse(data.resultdata);
-                    //     SessionInfo.setUserInfo(data.resultdata);
-                    //     $scope.$emit('menuChangeForUser');
-                    //     $state.go('intro');
-                    // } else {
-                    //     toastr.error(data.message);
-                    // }
-                } else {
-                    $log.warn(data);
+            $auth.login(user)
+            .then(function(response) {
+                if (response.status == 200) {
+                    $auth.setToken(response.data.Authorization);
+                    $scope.$emit('menuChangeForUser');
+                    $state.go('search');
+                    toastr.success("Welcome!");
                 }
-            }).error(function(data, status, headers, config) {
-                toastr.error(status, "Permission denied!");
+            })
+            .catch(function(response) {
+                console.log("catch", response);
+                toastr.error(response.status, "Permission denied!");
             });
+
         };
 
     }

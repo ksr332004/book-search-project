@@ -9,11 +9,11 @@
     .controller('BaSidebarCtrl', BaSidebarCtrl);
 
   /** @ngInject */
-  function BaSidebarCtrl($scope, $log, $rootScope, baSidebarService, SessionInfo, MenuParsingService) {
+  function BaSidebarCtrl($scope, $log, $rootScope, baSidebarService, MenuParsingService) {
 
       $scope.initialize = function() {
-    	  $log.debug('BaSidebarCtrl initialize.');
-          var names = MenuParsingService.parse(SessionInfo.getUserInfo());
+    	  $log.debug('>>> BaSidebarCtrl > initialize');
+          var names = MenuParsingService.parse();
           var uniqueNames = {};
           var uniqueMenus = [];
           var len = names.length;
@@ -25,6 +25,7 @@
               }
           }
           $scope.menuItems = uniqueMenus[0];
+          $log.debug('BaSidebarCtrl > $scope', $scope);
           if($scope.menuItems != undefined) {
               $scope.defaultSidebarState = $scope.menuItems[0].stateRef;
           }
@@ -38,6 +39,7 @@
       };
 
       $scope.$on('$stateChangeSuccess', function() {
+        $log.debug('stateChangeSuccess is occurred.');
           if (baSidebarService.canSidebarBeHidden()) {
               baSidebarService.setMenuCollapsed(true);
           }
@@ -45,34 +47,8 @@
 
       $scope.$on('menuChangeForUser', function() {
           $log.debug('menuChangeForUser is occurred.');
-          var names = MenuParsingService.parse(SessionInfo.getUserInfo());
-          var uniqueNames = {};
-          var uniqueMenus = [];
-          var len = names.length;
-          for(var i=0;i<len;i++) {
-              var order = names[i]['order'];
-              if(uniqueNames['' + order] == undefined) {
-                  uniqueMenus.push(names[i]);
-                  uniqueNames['' + order] = 'Y';
-              }
-          }
-          $scope.menuItems = uniqueMenus;
-      });
-
-      $scope.$on('menuInitForUser', function() {
-          $log.debug('menuInitForUser is occurred.');
-          var names = MenuParsingService.parse(SessionInfo.getUserInfo());
-          var uniqueNames = {};
-          var uniqueMenus = [];
-          var len = names.length;
-          for(var i=0;i<len;i++) {
-              var order = names[i]['order'];
-              if(uniqueNames['' + order] == undefined) {
-                  uniqueMenus.push(names[i]);
-                  uniqueNames['' + order] = 'Y';
-              }
-          }
-          $scope.menuItems = uniqueMenus;
+          $scope.initialize();
+          $log.debug('menuChangeForUser > $scope', $scope);
       });
 
       $scope.initialize();
