@@ -8,6 +8,7 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//        classpath("io.franzbecker:gradle-lombok:1.8")
 	}
 }
 
@@ -16,6 +17,7 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'io.franzbecker.gradle-lombok'
 
 group = 'com.seran'
 version = '0.0.1-SNAPSHOT'
@@ -25,8 +27,8 @@ repositories {
 	mavenCentral()
 }
 
-bootJar {
-	mainClassName = 'com.seran.AppServerApplication'
+configurations {
+    querydslapt
 }
 
 /* Test Configuration */
@@ -50,12 +52,12 @@ dependencies {
 	compile('org.json:json:20180130')
 	
 	/* QueryDSL : unified queries tool */
-	compile group: 'com.querydsl', name: 'querydsl-core', version: queryDslVersion
-    compile group: 'com.querydsl', name: 'querydsl-jpa', version: queryDslVersion
-    compile group: 'com.querydsl', name: 'querydsl-apt', version: queryDslVersion
+	compile("com.querydsl:querydsl-core:$queryDslVersion")
+    compile("com.querydsl:querydsl-jpa:$queryDslVersion")
+    compile("com.querydsl:querydsl-apt:$queryDslVersion")
     
     /* Lombok */
-    compileOnly('org.projectlombok:lombok:1.16.18')
+    compileOnly('org.projectlombok:lombok')
     
     /* MySQL connection Tool */
     runtime('mysql:mysql-connector-java')
@@ -68,46 +70,36 @@ dependencies {
 }
 
 /* QueryDSL Configuration */
- 
 // The path of created QueryDSL file
 sourceSets {
-	generated {
-		java {
-			srcDirs = [
-				'src/main/java',
-				'src/main/querydsl_generated'
-			]
-		}
-	}
-}
-
-configurations {
-	querydslapt
+    main {
+        java {
+            srcDirs 'src/main/java', 'src/main/querydsl_generated'
+        }
+    }
 }
 
 task generateQueryDSL(type: JavaCompile, group: 'build') {
-	// The path of JPA entity file
+    // The path of JPA entity file
     source = sourceSets.main.java
     classpath = configurations.compile + configurations.querydslapt
     options.compilerArgs = [
             "-proc:only",
-            "-processor",
-            "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider"
     ]
-    options.encoding = 'UTF-8'
     destinationDir = file('./src/main/querydsl_generated')
 }
+compileJava.dependsOn(generateQueryDSL)
 
 /* IDEA config */
 idea {
     module {
         inheritOutputDirs = false
-        outputDir = file('$buildDir/classes/main/')
+        outputDir = file("$buildDir/classes/main/")
         sourceDirs += file('src/main/querydsl_generated')
     }
 }
-
 /* clean config */
 clean {
-	delete file('./src/main/querydsl_generated')
+    delete file('./src/main/querydsl_generated')
 }
