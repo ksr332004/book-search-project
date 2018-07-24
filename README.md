@@ -2,6 +2,11 @@ book-search-project
 =============================
 > Spring-Boot와 AngularJS을 이용한 Web 프로젝트
 
+### Branchs
+* Default branch : master
+* Active branches : develop
+* Stale branches : hotfix (issue 수정 후 )
+
 ### Dependencies
 * JDK 1.8
 * Spring-Boot 2.0.2
@@ -80,9 +85,9 @@ gulp release      #배포용 소스 생성
 | POST     | /api/auth/login                  | email, password                      | 로그인                        |
 | POST     | /api/auth/signup                 | email, password, name                | 회원가입                      |
 | GET      | /refresh                         |                                      | 토큰 재연장                   |
-| POST     | /api/search/book                 | query, sort, page, size ...          | 책 검색 / 검색 키워드 저장     |
+| POST     | /api/search/book                 | query, target, page, size ...        | 책 검색 / 검색 키워드 저장     |
 | GET      | /api/search/history              |                                      | 최근 검색 히스토리 (최근10건)  |
-| GET      | /api/bookmark/view               | title, sort, page                    | 북마크 검색                   |
+| GET      | /api/bookmark/view               | query, target, sort, page            | 북마크 검색                   |
 | POST     | /api/bookmark/add                | Document                             | 북마크 등록                   |
 | DELETE   | /api/bookmark/{id}               | 북마크 ID                             | 북마크 삭제                   |
 
