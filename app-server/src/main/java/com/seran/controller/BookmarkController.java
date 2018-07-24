@@ -6,7 +6,6 @@ import com.seran.entity.User;
 import com.seran.service.BookmarkSearchService;
 import com.seran.service.BookmarkService;
 import com.seran.service.UserService;
-import com.seran.service.factory.BookmarkSearchServiceFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,23 +28,20 @@ public class BookmarkController {
 	@Autowired
 	private BookmarkService bookmarkService;
 	@Autowired
-	private BookmarkSearchServiceFactory bookmarkSearchServiceFactory;
-	
 	private BookmarkSearchService bookmarkSearchService;
-	
+
 	@GetMapping("/view")
 	public ResponseEntity<Page<Bookmark>> getUserBookmark(Authentication authentication,
-			@Valid @RequestParam(defaultValue = "title") String type,
-			@Valid @RequestParam(required = false) String query,
-			@Valid @PageableDefault(page = 0, size = 10, sort = {"id"}, direction = Direction.DESC) Pageable pageable) {
-	    Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-        if (user.isPresent()) {
-            Integer userId = user.get().getId();
-            bookmarkSearchService = bookmarkSearchServiceFactory.getBookmarkSearchService(type);
-            Page<Bookmark> bookmarks = bookmarkSearchService.searchBookmarks(userId, query, pageable);
-            return new ResponseEntity<>(bookmarks, HttpStatus.OK);  
-        }
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+														  @RequestParam(defaultValue = "title", required = false) String target,
+														  @RequestParam(defaultValue = "none", required = false) String query,
+														  @PageableDefault(page = 0, size = 10, sort = {"id"}, direction = Direction.DESC) Pageable pageable) {
+		Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
+		if (user.isPresent()) {
+			Integer userId = user.get().getId();
+			Page<Bookmark> bookmarks = bookmarkSearchService.searchBookmarks(userId, target, query, pageable);
+			return new ResponseEntity<>(bookmarks, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 	
 	@PostMapping("/add")
