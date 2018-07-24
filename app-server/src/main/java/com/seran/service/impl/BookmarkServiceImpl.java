@@ -51,7 +51,7 @@ public class BookmarkServiceImpl implements BookmarkService {
                 bookmark.setContents(document.getContents());
                 bookmark.setUrl(document.getUrl());
                 bookmark.setIsbn(document.getIsbn());
-                bookmark.setCreateDate(document.getDatetime());
+                bookmark.setCreateDate(document.getDatetimeString());
                 bookmark.setAuthors(document.getAuthorString());
                 bookmark.setPublisher(document.getPublisher());
                 bookmark.setTranslators(document.getTranslatorString());

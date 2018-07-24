@@ -43,7 +43,7 @@ public class Bookmark {
     private String isbn;
     
     @Column(name = "create_date")
-    private OffsetDateTime createDate;
+    private String createDate;
     
     @Column(name = "authors", length = 256)
     private String authors;

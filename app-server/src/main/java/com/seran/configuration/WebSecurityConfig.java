@@ -1,10 +1,6 @@
 package com.seran.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.seran.auth.BaseSecurityHandler;
-import com.seran.auth.ajax.AjaxAuthenticationFilter;
-import com.seran.auth.ajax.AjaxAuthenticationProvider;
-import com.seran.auth.ajax.AjaxUserDetailsServiceImpl;
 import com.seran.auth.jwt.JwtAuthenticationFilter;
 import com.seran.auth.jwt.JwtAuthenticationProvider;
 import com.seran.auth.jwt.JwtUserDetailsServiceImpl;
@@ -20,7 +16,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -33,32 +28,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
     @Autowired
     private JwtAuthenticationProvider jwtProvider;
     @Autowired
-    private JwtUserDetailsServiceImpl jwtUserDetailsServiceImple;
-    @Autowired
-    private AjaxAuthenticationProvider ajaxProvider;
-    @Autowired
-    private AjaxUserDetailsServiceImpl ajaxUserDetailsServiceImple;
-    @Autowired
     private BaseSecurityHandler securityHandler;
-    @Autowired
-    private ObjectMapper objectMapper;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private static final String LOGIN_ENTRY_POINT = "/api/auth/login";
-    private static final String REGISTRATION_ENTRY_POINT = "/api/auth/**";
+    private static final String AUTH_ENTRY_POINT = "/api/auth/**";
     private static final String TOKEN_ENTRY_POINT = "/token";
     private static final String ERROR_ENTRY_POINT = "/error";
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/resources/**");
+        web.ignoring()
+                .antMatchers("/resources/**")
+                .antMatchers(HttpMethod.OPTIONS, "/**");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(ajaxProvider)
-                .authenticationProvider(jwtProvider);
+        auth.authenticationProvider(jwtProvider);
     }
 
     @Override
@@ -72,25 +57,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
         http
                 .csrf()
                 .disable()
-//                .addFilterBefore(ajaxAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtAuthenticationFilter(), FilterSecurityInterceptor.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
                 .antMatchers(patterns).permitAll()
-                .antMatchers("/api/auth/**").permitAll()
-                .anyRequest().authenticated()
                 .antMatchers(TOKEN_ENTRY_POINT).permitAll()
-                .antMatchers(REGISTRATION_ENTRY_POINT).permitAll()
-                .antMatchers(LOGIN_ENTRY_POINT).permitAll()
+                .antMatchers(AUTH_ENTRY_POINT).permitAll()
                 .antMatchers(ERROR_ENTRY_POINT).permitAll()
                 .anyRequest().authenticated();
-    }
+        http
+                .addFilterBefore(jwtAuthenticationFilter(), FilterSecurityInterceptor.class);
 
-    @Bean
-    public AntPathRequestMatcher antPathRequestMatcher() {
-        return new AntPathRequestMatcher(TOKEN_ENTRY_POINT, HttpMethod.POST.name());
     }
 
     @Bean
@@ -100,17 +78,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
     }
 
     @Bean
-    public AjaxAuthenticationFilter ajaxAuthenticationFilter() throws Exception {
-        AjaxAuthenticationFilter filter = new AjaxAuthenticationFilter(antPathRequestMatcher(), objectMapper);
-        filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationSuccessHandler(securityHandler);
-        filter.setAuthenticationFailureHandler(securityHandler);
-        return filter;
-    }
-
-    @Bean
     public SkipPathRequestMatcher skipPathRequestMatcher() {
-        return new SkipPathRequestMatcher(Arrays.asList(REGISTRATION_ENTRY_POINT, LOGIN_ENTRY_POINT, TOKEN_ENTRY_POINT, ERROR_ENTRY_POINT));
+        return new SkipPathRequestMatcher(Arrays.asList(AUTH_ENTRY_POINT, TOKEN_ENTRY_POINT, ERROR_ENTRY_POINT));
     }
 
     @Bean

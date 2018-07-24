@@ -5,23 +5,7 @@
     .controller('signupPageCtrl', signupPageCtrl);
 
     /** @ngInject */
-    function signupPageCtrl($scope, $filter, $log, $state, $uibModal, toastr, baSidebarService, MessageService, SessionInfo) {
-
-      var toastrObject = {
-        "autoDismiss": false,
-        "positionClass": "toast-top-center",
-        "type": "success",
-        "timeOut": "5000",
-        "extendedTimeOut": "2000",
-        "allowHtml": false,
-        "closeButton": false,
-        "tapToDismiss": true,
-        "progressBar": false,
-        "newestOnTop": true,
-        "maxOpened": 0,
-        "preventDuplicates": false,
-        "preventOpenDuplicates": false
-      };
+    function signupPageCtrl($scope, $auth, $filter, $log, $state, $uibModal, toastr, baSidebarService) {
 
     	$scope.submitSignupForm = function() {
         if ($scope.email == undefined) {
@@ -45,30 +29,31 @@
             return;
         }
 
-        var dataObject = {
+        var user = {
               email       : $scope.email  
             , password    : $scope.password
             , name        : $scope.username
         };
 
-        MessageService.interactWithServer('/auth/signup', dataObject).success(function(data, status) {
-            if (status == 201) {
-                toastr.success('Welcome!', toastrObject);
+        $auth.removeToken();
+        $auth.signup(user)
+        .then(function(response) {
+          console.log('then', response);
+            if (response.status == 201) {
+                toastr.success("Welcome to Book Search service.");
                 $state.go('login');
             } else {
-                $log.warn("(" + status + ") " + data);
-                toastr.error("(" + status + ") " + data);
+                $log.warn(response);
+                toastr.error("(" + response.status + ") " + response.data);
             }
-        }).error(function(data, status, headers, config) {
-        	  $log.debug("data : ", data);
-            
+        })
+        .catch(function(response) {
+            console.log('catch', response);
             toastr.error(
-              (angular.isUndefined(data.errors[0])) ? "" : data.errors[0]
-              , "Error!"
-              , toastrObject
-            );
-
+              (angular.isUndefined(response.data.errors[0]) || response.data.errors[0] == null) ? "" : response.data.errors[0]
+              , "Error!");
         });
+
       };
         
     }

@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 public class JwtInfo {
 
-    public static final String HEADER_NAME = "header";
+    public static final String HEADER_NAME = "Authorization";
 
     public static final String ISSUER = "issuer";
 

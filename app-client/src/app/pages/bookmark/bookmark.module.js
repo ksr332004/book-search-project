@@ -11,6 +11,7 @@
             title : 'Bookmark',
             templateUrl : 'app/pages/bookmark/bookmark.html',
             controller : 'bookmarkPageCtrl',
+            controllerAs: 'vm',
             sidebarMeta : {
                 icon : 'ion-compose',
                 order : 1
