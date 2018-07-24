@@ -58,10 +58,23 @@ var appClient = angular.module('BlurAdmin', [
         });
         return http;
     };
-    factory.get = function(serviceName) {
+    factory.get = function(serviceName, getParams) {
         var http = $http({
             method : 'GET',
             url : 'http://localhost:8080/api' + serviceName,
+            params: getParams,
+            dataType : "json",
+            headers : {
+                'Content-Type' : 'application/json; charset=utf-8;'
+            }
+        });
+        return http;
+    };
+    factory.delete = function(serviceName, getData) {
+        var http = $http({
+            method : 'DELETE',
+            url : 'http://localhost:8080/api' + serviceName,
+            data : getData,
             dataType : "json",
             headers : {
                 'Content-Type' : 'application/json; charset=utf-8;'
@@ -108,13 +121,12 @@ var appClient = angular.module('BlurAdmin', [
                     controller : 'searchPageCtrl',
                     url : '/search',
                     stateRef : 'search',
-                    icon : 'ion-log-in',
+                    icon : 'ion-search',
                     order : 1,
                     sidebarMeta : {
-                        icon : 'ion-log-in',
+                        icon : 'ion-search',
                         order : 1,
                     }
-                    
                 },
                 {
                     title : 'Bookmark',
@@ -122,13 +134,12 @@ var appClient = angular.module('BlurAdmin', [
                     controller : 'bookmarkPageCtrl',
                     url : '/bookmark',
                     stateRef : 'bookmark',
-                    icon : 'ion-log-in',
+                    icon : 'ion-heart',
                     order : 2,
                     sidebarMeta : {
-                        icon : 'ion-log-in',
+                        icon : 'ion-heart',
                         order : 2,
                     }
-                    
                 },
                 {
                     title : 'Log out',
@@ -142,7 +153,6 @@ var appClient = angular.module('BlurAdmin', [
                         icon : 'ion-log-out',
                         order : 1,
                     }
-                    
                 }
             ];
             menuList.push(menu);
@@ -152,17 +162,18 @@ var appClient = angular.module('BlurAdmin', [
     };
     return factory;
 })
-.run(function($rootScope, $state, $log, MenuParsingService) {
+.run(function($rootScope, $window, $state, $auth, $log, MenuParsingService) {
+    $log.debug('================================================================');
     $log.debug('run is started.....');
     $log.debug('================================================================');
 
-
-    $rootScope.$on('menuInitializer', function() {
-        $log.debug('menuInitializer is occurred.');
-        var menu_list = MenuParsingService.parse();
-        if (menu_list[0].stateRef == 'login') {
-            $state.go('login');
+    $rootScope.$on('validatingAccessTokens', function() {
+        $log.debug('validatingAccessTokens is occurred.');
+        if (angular.isUndefined($auth.getToken())
+            || $auth.getToken() == null
+            || $auth.getToken() == "") {
+            $window.location.href = 'login';
+            $rootScope.$broadcast('menuChangeForUser');
         }
-        $rootScope.$broadcast('menuChangeForUser');
     });
 });

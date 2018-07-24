@@ -6,6 +6,8 @@
 
     /** @ngInject */
     function loginPageCtrl($scope, $auth, $log, $state, toastr, MenuParsingService) {
+        
+        $auth.removeToken();
 
         $scope.login = function() {
             if ($scope.email == undefined) {
@@ -36,7 +38,6 @@
                 }
             })
             .catch(function(response) {
-                console.log("catch", response);
                 toastr.error(response.status, "Permission denied!");
             });
 

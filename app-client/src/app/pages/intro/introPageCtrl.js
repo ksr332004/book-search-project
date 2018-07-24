@@ -5,7 +5,7 @@
     .controller('introPageCtrl', introPageCtrl);
 
   /** @ngInject */
-  function introPageCtrl($scope, $filter, MessageService) {
+  function introPageCtrl($scope, $filter) {
 
   	
   }

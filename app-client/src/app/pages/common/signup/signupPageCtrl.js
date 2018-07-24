@@ -7,22 +7,6 @@
     /** @ngInject */
     function signupPageCtrl($scope, $auth, $filter, $log, $state, $uibModal, toastr, baSidebarService) {
 
-      var toastrObject = {
-        "autoDismiss": false,
-        "positionClass": "toast-top-center",
-        "type": "success",
-        "timeOut": "5000",
-        "extendedTimeOut": "2000",
-        "allowHtml": false,
-        "closeButton": false,
-        "tapToDismiss": true,
-        "progressBar": false,
-        "newestOnTop": true,
-        "maxOpened": 0,
-        "preventDuplicates": false,
-        "preventOpenDuplicates": false
-      };
-
     	$scope.submitSignupForm = function() {
         if ($scope.email == undefined) {
               toastr.error("Please fill out the form.", 'Error!');
@@ -56,7 +40,7 @@
         .then(function(response) {
           console.log('then', response);
             if (response.status == 201) {
-                toastr.success('Welcome!', toastrObject);
+                toastr.success("Welcome to Book Search service.");
                 $state.go('login');
             } else {
                 $log.warn(response);
@@ -67,9 +51,7 @@
             console.log('catch', response);
             toastr.error(
               (angular.isUndefined(response.data.errors[0]) || response.data.errors[0] == null) ? "" : response.data.errors[0]
-              , "Error!"
-              , toastrObject
-            );
+              , "Error!");
         });
 
       };
