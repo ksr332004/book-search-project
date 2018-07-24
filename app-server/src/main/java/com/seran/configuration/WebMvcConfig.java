@@ -1,8 +1,5 @@
 package com.seran.configuration;
 
-import com.seran.service.factory.BookmarkSearchServiceFactory;
-import org.springframework.beans.factory.FactoryBean;
-import org.springframework.beans.factory.config.ServiceLocatorFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,11 +30,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
 		return bCryptPasswordEncoder;
 	}
 
-	@Bean
-	public FactoryBean serviceLocatorFactoryBean() {
-		ServiceLocatorFactoryBean factoryBean = new ServiceLocatorFactoryBean();
-		factoryBean.setServiceLocatorInterface(BookmarkSearchServiceFactory.class);
-		return factoryBean;
-	}
-	
 }
