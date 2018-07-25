@@ -9,25 +9,12 @@
     .run(themeRun);
 
   /** @ngInject */
-  function themeRun($timeout, $rootScope, layoutPaths, preloader, $q, baSidebarService, themeLayoutSettings) {
+  function themeRun($rootScope, baSidebarService, themeLayoutSettings) {
+// function themeRun($timeout, $rootScope, layoutPaths, preloader, $q, baSidebarService, themeLayoutSettings) {
 
-    var theme = themeLayoutSettings;
-    if (theme.blur) {
-      if (theme.mobile) {
-        whatToWait.unshift(preloader.loadImg(layoutPaths.images.root + 'blur-bg-mobile.jpg'));
-      } else {
-        whatToWait.unshift(preloader.loadImg(layoutPaths.images.root + 'blur-bg.jpg'));
-        whatToWait.unshift(preloader.loadImg(layoutPaths.images.root + 'blur-bg-blurred.jpg'));
-      }
-    }
-
-    $timeout(function () {
-      if (!$rootScope.$pageFinishedLoading) {
-        $rootScope.$pageFinishedLoading = true;
-      }
-    }, 1);
-
+    $rootScope.$pageFinishedLoading = true;
     $rootScope.$baSidebarService = baSidebarService;
+
   }
 
 })();
