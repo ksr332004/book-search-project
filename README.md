@@ -4,8 +4,10 @@ book-search-project
 
 ### Branchs
 * Default branch : master
-* Active branches : develop
-* Stale branches : hotfix (modify and update)
+* Active branch : develop
+* Active branch : hotfix (modify and update)
+* Active branch : release (client: bower_components & node_modules zip file upload)
+
 
 ### IDE TOOL
 * [IntelliJ Community](https://www.jetbrains.com/idea/download)
@@ -105,6 +107,11 @@ gulp serve        #로컬 실행
 gulp serve:dist   #로컬 실행 및 배포용 소스 생성
 gulp release      #배포용 소스 생성
 ```
+
+* bower_components & node_modules zip 파일을 이용해 실행 할 경우,
+   1. 각각 app-client/bower_components와 app-client/node_modules에 압축 해제
+   2. app-client/node_modules/.bin 경로에서 gulp serve 명령어 실행
+
 
 ### 구현 된 기능
 - 서버 API
