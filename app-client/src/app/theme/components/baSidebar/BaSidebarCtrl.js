@@ -12,7 +12,6 @@
   function BaSidebarCtrl($scope, $log, $rootScope, baSidebarService, MenuParsingService) {
 
       $scope.initialize = function() {
-    	  $log.debug('>>> BaSidebarCtrl > initialize');
           var names = MenuParsingService.parse();
           var uniqueNames = {};
           var uniqueMenus = [];
@@ -25,7 +24,6 @@
               }
           }
           $scope.menuItems = uniqueMenus[0];
-          $log.debug('BaSidebarCtrl > $scope', $scope);
           if($scope.menuItems != undefined) {
               $scope.defaultSidebarState = $scope.menuItems[0].stateRef;
           }
@@ -46,9 +44,7 @@
       });
 
       $scope.$on('menuChangeForUser', function() {
-          $log.debug('menuChangeForUser is occurred.');
           $scope.initialize();
-          $log.debug('menuChangeForUser > $scope', $scope);
       });
 
       $scope.initialize();

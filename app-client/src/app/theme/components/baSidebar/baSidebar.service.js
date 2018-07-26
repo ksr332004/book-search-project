@@ -8,7 +8,6 @@
   function baSidebarServiceProvider() {
     var staticMenuItems = [];
 
-    console.log('>>> baSidebarService, staticMenuItems', staticMenuItems);
     this.addStaticItem = function() {
       staticMenuItems.push.apply(staticMenuItems, arguments);
     };
