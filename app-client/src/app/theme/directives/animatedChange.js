@@ -18,7 +18,7 @@
           function changeValue(val) {
             $timeout(function () {
               element.html(val);
-            }, 30);
+            }, 10);
           }
 
           if (newValue > oldvalue) {
@@ -32,8 +32,8 @@
           }
           $timeout(function () {
             element.next().find('i').addClass('show-arr');
-          }, 500);
-        }, 3500);
+          }, 100);
+        }, 700);
       }
     };
   }
