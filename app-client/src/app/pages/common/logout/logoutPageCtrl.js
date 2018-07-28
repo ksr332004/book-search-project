@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('pages.common.logout')
-    .controller('logoutPageCtrl', logoutPageCtrl);
+        .controller('logoutPageCtrl', logoutPageCtrl);
 
     /** @ngInject */
     function logoutPageCtrl($scope, $rootScope, $auth, $state, $uibModal, toastr, baSidebarService, MenuParsingService) {

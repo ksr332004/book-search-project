@@ -1,12 +1,12 @@
 (function () {
-  'use strict';
+    'use strict';
 
-  angular.module('pages.intro')
-    .controller('introPageCtrl', introPageCtrl);
+    angular.module('pages.intro')
+        .controller('introPageCtrl', introPageCtrl);
 
-  /** @ngInject */
-  function introPageCtrl($scope, $filter) {
+    /** @ngInject */
+    function introPageCtrl($scope, $filter) {
 
-  	
-  }
+
+    }
 })();

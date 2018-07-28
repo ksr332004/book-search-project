@@ -5,7 +5,7 @@
     .controller('loginPageCtrl', loginPageCtrl);
 
     /** @ngInject */
-    function loginPageCtrl($scope, $auth, $log, $state, toastr, MenuParsingService) {
+    function loginPageCtrl($scope, $auth, $log, $state, toastr) {
         
         $auth.removeToken();
 

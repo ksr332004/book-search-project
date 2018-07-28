@@ -1,23 +1,23 @@
 (function () {
-  'use strict';
+    'use strict';
 
-  angular.module('BlurAdmin.pages', [
-    'ui.router',
+    angular.module('BlurAdmin.pages', [
+        'ui.router',
 
-    'pages.intro',
+        'pages.intro',
 
-    'pages.bookmark',
-    'pages.search',
+        'pages.bookmark',
+        'pages.search',
 
-    'pages.common.login',
-    'pages.common.logout',
-    'pages.common.signup'
-  ])
-      .config(routeConfig);
+        'pages.common.login',
+        'pages.common.logout',
+        'pages.common.signup'
+    ])
+        .config(routeConfig);
 
-  /** @ngInject */
-  function routeConfig($urlRouterProvider, baSidebarServiceProvider) {
-    $urlRouterProvider.otherwise('/login');
-  }
+    /** @ngInject */
+    function routeConfig($urlRouterProvider) {
+        $urlRouterProvider.otherwise('/login');
+    }
 
 })();
