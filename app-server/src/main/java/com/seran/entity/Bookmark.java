@@ -33,10 +33,10 @@ public class Bookmark {
     @Column(name = "title", length = 256)
     private String title;
     
-    @Column(name = "contents", length = 256)
+    @Column(name = "contents")
     private String contents;
     
-    @Column(name = "url", length = 256)
+    @Column(name = "url")
     private String url;
     
     @Column(name = "isbn", length = 100)
@@ -63,16 +63,16 @@ public class Bookmark {
     @Column(name = "sale_yn", length = 3)
     private String saleYN;
     
-    @Column(name = "category", length = 50)
+    @Column(name = "category", length = 100)
     private String category;
     
-    @Column(name = "thumbnail", length = 256)
+    @Column(name = "thumbnail")
     private String thumbnail;
     
-    @Column(name = "barcode", length = 20)
+    @Column(name = "barcode", length = 50)
     private String barcode;
     
-    @Column(name = "ebook_barcode", length = 20)
+    @Column(name = "ebook_barcode", length = 50)
     private String ebookBarcode;
 
     @Column(name = "status", length = 20)
