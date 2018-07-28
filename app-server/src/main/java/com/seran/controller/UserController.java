@@ -1,7 +1,8 @@
 package com.seran.controller;
 
-import java.util.Optional;
-
+import com.seran.auth.AuthUtil;
+import com.seran.entity.User;
+import com.seran.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.seran.entity.User;
-import com.seran.service.UserService;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -22,17 +22,12 @@ public class UserController {
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    private UserService userService;
-    
-    @GetMapping("/user")
-    public ResponseEntity<User> getUser(Authentication authentication) {
-        Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-        return user.map(u -> new ResponseEntity<>(u, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
-    }
-    
+    UserService userService;
+
     @DeleteMapping("/user/delete")
     public ResponseEntity<Void> deleteUser(Authentication authentication) {
-        userService.deleteUserByEmail(authentication.getPrincipal().toString());
+        Integer userId = AuthUtil.getUserId(authentication);
+        userService.deleteUserById(userId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
     

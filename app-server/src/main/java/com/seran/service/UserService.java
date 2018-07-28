@@ -1,13 +1,11 @@
 package com.seran.service;
 
-import java.util.Optional;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-
 import com.seran.entity.User;
 
-public interface UserService extends UserDetailsService {
+import java.util.Optional;
+
+public interface UserService {
 	Optional<User> searchUserByEmail(String email);
 	void saveUser(User user);
-	void deleteUserByEmail(String email);
+	void deleteUserById(Integer id);
 }

@@ -1,20 +1,16 @@
 package com.seran.service.impl;
 
-import java.time.LocalDateTime;
-import java.util.Optional;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.seran.entity.User;
 import com.seran.repository.UserRepository;
 import com.seran.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -35,12 +31,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public void saveUser(User registUser) {
+	public void saveUser(User registrationUser) {
 	    try {
             User user = new User();
-            user.setEmail(registUser.getEmail());
-            user.setPassword(bCryptPasswordEncoder.encode(registUser.getPassword()));
-            user.setName(registUser.getName());
+            user.setEmail(registrationUser.getEmail());
+            user.setPassword(bCryptPasswordEncoder.encode(registrationUser.getPassword()));
+            user.setName(registrationUser.getName());
             user.setRole("ROLE_USER");
             user.setRegistrationDate(LocalDateTime.now());
             userRepository.save(user);
@@ -51,14 +47,8 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional
-	public void deleteUserByEmail(String email) {
-	    userRepository.deleteByEmail(email);
+	public void deleteUserById(Integer id) {
+	    userRepository.deleteById(id);
 	}
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-	
 }

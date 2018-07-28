@@ -1,8 +1,9 @@
 package com.seran.controller;
 
+import com.seran.auth.AuthUtil;
 import com.seran.auth.BeforeSecurityUser;
-import com.seran.auth.UserDetailsImpl;
 import com.seran.auth.jwt.JwtInfo;
+import com.seran.auth.jwt.JwtUser;
 import com.seran.auth.jwt.JwtUtil;
 import com.seran.entity.User;
 import com.seran.service.UserService;
@@ -34,12 +35,12 @@ public class AuthenticationController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @PostMapping("/signup")
-    public ResponseEntity<Void> postUser(@Valid @RequestBody User registUser) {
-        Optional<User> user = userService.searchUserByEmail(registUser.getEmail());
+    public ResponseEntity<Void> postUser(@Valid @RequestBody User registrationUser) {
+        Optional<User> user = userService.searchUserByEmail(registrationUser.getEmail());
         if (user.isPresent()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-        userService.saveUser(registUser);
+        userService.saveUser(registrationUser);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     
@@ -49,7 +50,7 @@ public class AuthenticationController {
         if (user.isPresent()) {
             if (bCryptPasswordEncoder.matches(beforeSecurityUser.getPassword(), user.get().getPassword())) {
                 List<GrantedAuthority> grantedAuths = AuthorityUtils.commaSeparatedStringToAuthorityList(user.get().getRole());
-                UserDetails userDetails = new UserDetailsImpl(beforeSecurityUser, grantedAuths);
+                UserDetails userDetails = new JwtUser(user.get(), grantedAuths);
                 String token = JwtUtil.createToken(userDetails);
                 return new ResponseEntity<>(new ModelMap(JwtInfo.HEADER_NAME, token), HttpStatus.OK);
             }
@@ -59,12 +60,14 @@ public class AuthenticationController {
     
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/refresh")
-    public ResponseEntity<String> refreshToken(Authentication authentication) {
-        UserDetails userDetails = new UserDetailsImpl(authentication.getPrincipal().toString(), new ArrayList<>(authentication.getAuthorities()));
-        String token = JwtUtil.refreshToken(userDetails);
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(JwtInfo.HEADER_NAME, token);
-        return ResponseEntity.status(HttpStatus.OK).headers(headers).build();
+    public ResponseEntity<ModelMap> refreshToken(Authentication authentication) {
+        Optional<User> user = userService.searchUserByEmail(AuthUtil.getUserEmail(authentication));
+        if (user.isPresent()) {
+            UserDetails userDetails = new JwtUser(user.get(), new ArrayList<>(authentication.getAuthorities()));
+            String token = JwtUtil.refreshToken(userDetails);
+            return new ResponseEntity<>(new ModelMap(JwtInfo.HEADER_NAME, token), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
     
     

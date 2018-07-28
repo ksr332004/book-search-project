@@ -1,9 +1,8 @@
 package com.seran.controller;
 
+import com.seran.auth.AuthUtil;
 import com.seran.dto.Document;
 import com.seran.entity.Bookmark;
-import com.seran.entity.User;
-import com.seran.service.BookmarkSearchService;
 import com.seran.service.BookmarkService;
 import com.seran.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,42 +23,39 @@ import java.util.Optional;
 public class BookmarkController {
 
     @Autowired
-    private UserService userService;
-	@Autowired
-	private BookmarkService bookmarkService;
-	@Autowired
-	private BookmarkSearchService bookmarkSearchService;
+    private BookmarkService bookmarkService;
 
-	@GetMapping("/view")
-	public ResponseEntity<Page<Bookmark>> getUserBookmark(Authentication authentication,
-														  @RequestParam(defaultValue = "title", required = false) String target,
-														  @RequestParam(defaultValue = "none", required = false) String query,
-														  @PageableDefault(page = 0, size = 10, sort = {"id"}, direction = Direction.DESC) Pageable pageable) {
-		Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-		if (user.isPresent()) {
-			Integer userId = user.get().getId();
-			Page<Bookmark> bookmarks = bookmarkSearchService.searchBookmarks(userId, target, query, pageable);
-			return new ResponseEntity<>(bookmarks, HttpStatus.OK);
-		}
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-	
-	@PostMapping("/add")
-	public ResponseEntity<Void> postUserBookmark(Authentication authentication, @Valid @RequestBody Document document) {
-	    Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-		user.ifPresent(u -> bookmarkService.saveBookmark(u.getId(), document));
-	    return new ResponseEntity<>(HttpStatus.CREATED);
-	}
-	
-	@DeleteMapping("/{id}")
+    @GetMapping("/view")
+    public ResponseEntity<Page<Bookmark>> getUserBookmark(Authentication authentication,
+                                                          @RequestParam(defaultValue = "title", required = false) String target,
+                                                          @RequestParam(defaultValue = "none", required = false) String query,
+                                                          @PageableDefault(page = 0, size = 10, sort = {"id"}, direction = Direction.DESC) Pageable pageable) {
+        Integer userId = AuthUtil.getUserId(authentication);
+        Page<Bookmark> bookmarks = bookmarkService.searchBookmarks(userId, target, query, pageable);
+        return new ResponseEntity<>(bookmarks, HttpStatus.OK);
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<Void> postUserBookmark(Authentication authentication, @Valid @RequestBody Document document) {
+        Integer userId = AuthUtil.getUserId(authentication);
+        String keyBarcode = (document.getBarcode().isEmpty()) ? document.getEbook_barcode() : document.getBarcode();
+        Optional<Bookmark> bookmark = bookmarkService.searchBookmarkByUserIdAndKeyBarcode(userId, keyBarcode);
+        if (bookmark.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+        bookmarkService.saveBookmark(userId, document);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUserBookmark(Authentication authentication, @Valid @PathVariable Integer id) {
-		Optional<User> user = userService.searchUserByEmail(authentication.getPrincipal().toString());
-        Optional<Bookmark> bookMark = bookmarkService.searchBookmarkByUserIdAndId(user.get().getId(), id);
-        if (bookMark.isPresent()) {
-			bookmarkService.deleteBookmarkById(id);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Integer userId = AuthUtil.getUserId(authentication);
+        Optional<Bookmark> bookmark = bookmarkService.searchBookmarkByUserIdAndId(userId, id);
+        if (bookmark.isPresent()) {
+            bookmarkService.deleteBookmarkById(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 }
