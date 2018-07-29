@@ -84,7 +84,8 @@ task generateQueryDSL(type: JavaCompile, group: 'build') {
     classpath = configurations.compile + configurations.querydslapt
     options.compilerArgs = [
             "-proc:only",
-            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider"
+            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor"
+//            "-processor", "com.querydsl.apt.jpa.JPAAnnotationProcessor,lombok.launch.AnnotationProcessorHider"
     ]
     destinationDir = file('./src/main/querydsl_generated')
 }
