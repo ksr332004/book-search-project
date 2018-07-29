@@ -3,12 +3,7 @@ package com.seran.entity;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "bookmark")
+@Table(name = "bookmark", uniqueConstraints={ @UniqueConstraint(columnNames = {"user_id", "key_barcode"})})
 public class Bookmark {
 
     @Id

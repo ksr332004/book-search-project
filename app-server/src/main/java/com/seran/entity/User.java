@@ -17,7 +17,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="users")
+@Table(name="users", uniqueConstraints={ @UniqueConstraint(columnNames = {"email", "available"})})
 public class User {
 
      @Id
@@ -25,7 +25,7 @@ public class User {
      @GeneratedValue(strategy = GenerationType.IDENTITY)
      private Integer id;
      
-     @Column(name = "email", length = 200, nullable = false, unique = true)
+     @Column(name = "email", length = 200, nullable = false)
      @Email(message = "*Please provide a valid email.")
      @NotEmpty(message = "*Please provide an email.")
      private String email;
