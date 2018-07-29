@@ -32,6 +32,8 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService {
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {
             throw new BadCredentialsException("Not exist email");
+        } else if (user.get().getAvailable().equals("N")) {
+            throw new BadCredentialsException("Not exist user");
         }
 
         return new JwtUser(user.get(), AuthorityUtils.createAuthorityList(role));

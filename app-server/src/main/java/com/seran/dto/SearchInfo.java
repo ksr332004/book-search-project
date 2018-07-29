@@ -6,7 +6,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import lombok.Data;
 
 @Data
-public class Parameter {
+public class SearchInfo {
     
     private String query;
     private String sort;

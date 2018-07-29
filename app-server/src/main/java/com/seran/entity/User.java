@@ -1,18 +1,18 @@
 package com.seran.entity;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.Transient;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -31,16 +31,18 @@ public class User {
      private String email;
 
      @Column(name = "password", length = 512, nullable = false)
-     @Transient
+     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
      @Length(min = 7, message = "*Your password must have at least 7 characters.")
      @NotEmpty(message = "*Please provide your password.")
      private String password;
 
      @Column(name = "name", length = 100)
+     @JsonProperty(access = JsonProperty.Access.READ_WRITE)
      @NotEmpty(message = "*Please provide your name.")
      private String name;
 
      @Column(name = "registration_date")
+     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
      private LocalDateTime registrationDate = LocalDateTime.now();
      
      @Column(name = "available", length = 3)

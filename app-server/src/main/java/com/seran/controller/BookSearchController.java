@@ -2,7 +2,7 @@ package com.seran.controller;
 
 import com.seran.auth.AuthUtil;
 import com.seran.dto.Book;
-import com.seran.dto.Parameter;
+import com.seran.dto.SearchInfo;
 import com.seran.entity.History;
 import com.seran.service.BookSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,22 +23,22 @@ public class BookSearchController {
     private BookSearchService searchService;
     
     @PostMapping("/book")
-    public ResponseEntity<Book> getSearchList(Authentication authentication, @Valid @RequestBody Parameter parameter) {
-        Optional<Book> book = searchService.searchBooks(parameter);
+    public ResponseEntity<Book> getSearchList(Authentication authentication, @Valid @RequestBody SearchInfo searchInfo) {
+        Optional<Book> book = searchService.searchBooks(searchInfo);
         
-        if (!Optional.ofNullable(parameter.getQuery()).isPresent()) {
+        if (!Optional.ofNullable(searchInfo.getQuery()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
         Integer userId = AuthUtil.getUserId(authentication);
-        searchService.saveSearchHistory(userId, parameter);
+        searchService.saveSearchHistory(userId, searchInfo);
 
-        if (parameter.getSize() != null && 
-        		(parameter.getSize() <= 0 || parameter.getSize() > 50)) {
+        if (searchInfo.getSize() != null &&
+        		(searchInfo.getSize() <= 0 || searchInfo.getSize() > 50)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        if (parameter.getPage() != null &&
-        		(parameter.getPage() <= 0 || parameter.getPage() > 50)) {
+        if (searchInfo.getPage() != null &&
+        		(searchInfo.getPage() <= 0 || searchInfo.getPage() > 50)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

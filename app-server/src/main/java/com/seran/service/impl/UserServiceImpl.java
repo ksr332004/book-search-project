@@ -28,6 +28,9 @@ public class UserServiceImpl implements UserService {
 	public Optional<User> searchUserByEmail(String email) {
 		return userRepository.findByEmail(email);
 	}
+
+	@Override
+    public Optional<User> searchUserById(Integer id) { return userRepository.findById(id); }
 	
 	@Override
 	@Transactional
@@ -44,11 +47,30 @@ public class UserServiceImpl implements UserService {
             throw new BadCredentialsException("insert error.");
         }
 	}
+
+	@Override
+    @Transactional
+    public void updateUser(Integer id, User updateUser) {
+        try {
+            Optional<User> user = userRepository.findById(id);
+            user.get().setName(updateUser.getName());
+            user.get().setPassword(updateUser.getPassword());
+            userRepository.save(user.get());
+        } catch (Exception e) {
+            throw new BadCredentialsException("update error.");
+        }
+    }
 	
 	@Override
 	@Transactional
 	public void deleteUserById(Integer id) {
-	    userRepository.deleteById(id);
+	    try {
+            Optional<User> user = userRepository.findById(id);
+            user.get().setAvailable("N");
+            userRepository.save(user.get());
+        } catch (Exception e) {
+            throw new BadCredentialsException("update error.");
+        }
 	}
 
 }
