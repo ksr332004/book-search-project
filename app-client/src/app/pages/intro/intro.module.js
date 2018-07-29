@@ -7,7 +7,7 @@
     function routeConfig($stateProvider) {
         $stateProvider.state('intro', {
             url: '/intro',
-            title: 'Book Search',
+            title: '책 검색 서비스',
             templateUrl: 'app/pages/intro/intro.html',
             controller: 'introPageCtrl',
             sidebarMeta: {

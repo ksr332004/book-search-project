@@ -1,23 +1,16 @@
 <div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">
-  <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
-  <a href="#/intro" class="al-logo clearfix"><span>Book</span>Search</a>
+    <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
+    <a href="#/intro" class="al-logo clearfix"><span>책</span>검색</a>
+    <div class="user-profile clearfix">
 
-<!--   <div class="search">
-    <i class="ion-ios-search-strong" ng-click="startSearch()"></i>
-    <input id="searchInput" type="text" placeholder="Search for...">
-  </div> -->
+        <div class="al-user-profile" ng-hide="pageTopMenu(true)">
+            <a href="#/login" class="al-logo clearfix" style="font-size: 14px;">로그인 &nbsp&nbsp</a>
+            <a href="#/signup" class="al-logo clearfix" style="font-size: 14px;">회원가입</a>
+        </div>
 
-  <div class="user-profile clearfix">
-    <div class="al-user-profile" uib-dropdown>
-      <a uib-dropdown-toggle class="al-logo clearfix" style="font-size: 18px;">
-        {{email}}
-      </a>
-      <!-- <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
-        <li><i class="dropdown-arr"></i></li>
-        <li><a href="#/profile"><i class="fa fa-user"></i>Profile</a></li>
-        <li><a href><i class="fa fa-cog"></i>Settings</a></li>
-        <li><a href class="signout"><i class="fa fa-power-off"></i>Sign out</a></li>
-      </ul> -->
+        <div class="al-user-profile" ng-hide="!pageTopMenu(true)">
+            <a href="#/logout" class="al-logo clearfix" style="font-size: 14px;">로그아웃</a>
+        </div>
+
     </div>
-  </div>
 </div>

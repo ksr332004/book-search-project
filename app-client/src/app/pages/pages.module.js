@@ -11,7 +11,8 @@
 
         'pages.common.login',
         'pages.common.logout',
-        'pages.common.signup'
+        'pages.common.signup',
+        'pages.common.mypage'
     ])
         .config(routeConfig);
 

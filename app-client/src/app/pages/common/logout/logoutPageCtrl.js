@@ -5,13 +5,13 @@
         .controller('logoutPageCtrl', logoutPageCtrl);
 
     /** @ngInject */
-    function logoutPageCtrl($scope, $rootScope, $auth, $state, $uibModal, toastr, baSidebarService, MenuParsingService) {
+    function logoutPageCtrl($scope, $rootScope, $auth, $state, $uibModal) {
 
         $rootScope.$broadcast('validatingAccessTokens');
 
         $scope.logout = function() {
             var page = 'app/pages/widgets/warningModal.html';
-            var message = 'Are you sure you want to log out?';
+            var message = '로그아웃하시겠습니까?';
             $scope.open(page, message);
         };
 

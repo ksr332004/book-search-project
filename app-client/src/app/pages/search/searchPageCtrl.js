@@ -24,11 +24,11 @@
         vm.standardSelectItems = [
             {label:'전체', value: 'all'},
             {label:'제목', value: 'title'},
-            {label:'ISBN', value: 'isbn'},
-            {label:'주제어', value: 'keyword'},
-            {label:'목차', value: 'contents'},
             {label:'책소개', value: 'overview'},
-            {label:'출판사', value: 'publisher'}
+            {label:'주제어', value: 'keyword'},
+            {label:'출판사', value: 'publisher'},
+            {label:'목차', value: 'contents'},
+            {label:'ISBN', value: 'isbn'}
         ];
 
         vm.withSearchItem = {};
@@ -47,8 +47,11 @@
                 $log.error(config);
             });
         };
-
         $scope.searchHistoryList();
+
+        $scope.deleteHistory = function() {
+            console.log("HHHHHHHHHHHHHH");
+        };
 
 
         $scope.hasPrev = false;
@@ -150,22 +153,11 @@
                     }
                 }
             }).result.then(function(items) {
-                // $uibModal.open({
-                //   animation: true,
-                //   templateUrl: 'app/pages/widgets/infoModal.html',
-                //   controller : 'searchPageCtrl',
-                //   resolve: {
-                //     items: function () {
-                //         return 'Do you want to add this book?';
-                //     }
-                //   }
-                // }).result.then(function() {
-                // });
                 console.log("get", items);
                 ApiService.post('/bookmark/add', items).success(function(data, status) {
                     if (data) {
                         console.log(data);
-                        toastr.success("SAVED!");
+                        toastr.success("저장되었습니다.");
                     }
                 }).error(function(data, status, headers, config) {
                     $log.error(status);

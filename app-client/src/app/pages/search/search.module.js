@@ -8,7 +8,7 @@
     function routeConfig($stateProvider) {
         $stateProvider.state('search', {
             url : '/search',
-            title : 'Book Search',
+            title : '책 검색',
             templateUrl : 'app/pages/search/search.html',
             controller : 'searchPageCtrl',
             controllerAs: 'vm',

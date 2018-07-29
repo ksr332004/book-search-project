@@ -13,7 +13,7 @@
         $stateProvider
             .state('logout', {
                 url: '/logout',
-                title: 'Log out',
+                title: '로그아웃',
                 templateUrl: 'app/pages/common/logout/logout.html',
                 controller: 'logoutPageCtrl',
             });

@@ -3,7 +3,7 @@
     <form class="form-group col-md-6">
         <div class="form-group">
             <label for="email">아이디(이메일)</label>
-            <input type="email" class="form-control" id="email" ng-model="email" placeholder="아이디(이메일)">
+            <input type="email" class="form-control" id="email" ng-model="email" disabled>
         </div>
         <div class="form-group">
             <label for="password">비밀번호</label>
@@ -15,9 +15,14 @@
         </div>
         <div class="form-group">
             <label for="username">이름</label>
-            <input type="username" class="form-control" id="username" ng-model="username" placeholder="이름">
+            <input type="username" class="form-control" id="username" ng-model="username">
         </div>
-        <button type="submit" class="btn btn-danger" ng-click="submitSignupForm()">가입하기</button>
+        <div class="form-group">
+            <label for="registrationDate">가입일</label>
+            <input type="registrationDate" class="form-control" id="registrationDate" ng-model="registrationDate" disabled>
+        </div>
+        <button type="submit" class="btn btn-warning" ng-click="submitForm()">수정하기</button>
+        <button type="submit" class="btn btn-danger" ng-click="delete()">탈퇴하기</button>
     </form>
     <div class="col-md-3"></div>
 </div>

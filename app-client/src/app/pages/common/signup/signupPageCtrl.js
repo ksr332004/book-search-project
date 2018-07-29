@@ -9,23 +9,23 @@
 
         $scope.submitSignupForm = function() {
             if ($scope.email == undefined) {
-                toastr.error("Please fill out the form.", 'Error!');
+                toastr.error("아이디(이메일)을 입력해주세요.");
                 return;
             }
             if ($scope.username == undefined) {
-                toastr.error("Please fill out the form.", 'Error!');
+                toastr.error("이름을 입력해주세요.");
                 return;
             }
             if ($scope.password == undefined) {
-                toastr.error("Please fill out the form.", 'Error!');
+                toastr.error("비밀번호를 입력해주세요.");
                 return;
             }
             if ($scope.confirmPassword == undefined) {
-                toastr.error("Please fill out the form.", 'Error!');
+                toastr.error("비밀번호 확인을 입력해주세요.");
                 return;
             }
             if ($scope.password != $scope.confirmPassword) {
-                toastr.error("Please check your password.", 'Error!');
+                toastr.error("비밀번호를 다시 확인해주세요.");
                 return;
             }
 
@@ -39,19 +39,23 @@
             $auth.signup(user)
                 .then(function(response) {
                     console.log('then', response);
-                    if (response.status == 201) {
-                        toastr.success("Welcome to Book Search service.");
+                    if (response.status === 201) {
+                        toastr.success("가입해주셔서 감사합니다.");
                         $state.go('login');
                     } else {
                         $log.warn(response);
-                        toastr.error("(" + response.status + ") " + response.data);
+                        toastr.error("가입정보를 다시 확인해주시기 바랍니다.");
                     }
                 })
                 .catch(function(response) {
                     console.log('catch', response);
-                    toastr.error(
-                        (angular.isUndefined(response.data.errors[0]) || response.data.errors[0] == null) ? "" : response.data.errors[0]
-                        , "Error!");
+                    if (response.status === 409) {
+                        toastr.error("이미 가입된 사용자 입니다.");
+                    } else {
+                        toastr.error(
+                            (angular.isUndefined(response.data.errors[0]) || response.data.errors[0] == null) ? "" : response.data.errors[0]
+                            , "Error!");
+                    }
                 });
 
         };

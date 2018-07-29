@@ -8,7 +8,7 @@
     function routeConfig($stateProvider) {
         $stateProvider.state('bookmark', {
             url : '/bookmark',
-            title : 'Bookmark',
+            title : '북마크',
             templateUrl : 'app/pages/bookmark/bookmark.html',
             controller : 'bookmarkPageCtrl',
             controllerAs: 'vm',

@@ -1,105 +1,71 @@
 <div class="widgets">
-    <div ba-panel
-         ba-panel-class="horizontal-tabs tabs-panel small-panel">
-        <uib-tabset active="$tabSetStatus.activeTab">
-            <uib-tab heading="검색">
-                <div class="col-md-12">
-                    <div class="ng-cloak" form="vm.standardItem">
-                        <div class="form-group col-md-3">
-                            <ui-select ng-model="vm.standardItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="false">
-                                <ui-select-match placeholder="검색필드">
-                                    <span> {{$select.selected.label}}</span>
-                                </ui-select-match>
-                                <ui-select-choices repeat="standardItem in vm.standardSelectItems | filter: $select.search">
-                                    <span ng-bind-html="standardItem.label" ng-model="vm.standardItem.value"></span>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
 
-                    <div class="form-group col-md-7">
-                        <input ng-model="vm.searchQuery" type="text" class="form-control" id="searchQuery" placeholder="검색">
-                    </div>
+    <div class="col-md-12">
+        <div class="ng-cloak" form="vm.standardItem">
+            <div class="form-group col-md-3">
+                <ui-select ng-model="vm.standardItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="false">
+                    <ui-select-match placeholder="검색필드">
+                        <span> {{$select.selected.label}}</span>
+                    </ui-select-match>
+                    <ui-select-choices repeat="standardItem in vm.standardSelectItems | filter: $select.search">
+                        <span ng-bind-html="standardItem.label" ng-model="vm.standardItem.value"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
 
-                    <div class="form-group col-md-2">
-                        <button type="button" class="btn btn-info" ng-click="searchBookList('searchBtn', 1)">검색</button>
-                    </div>
-                </div>
-            </uib-tab>
-            <uib-tab heading="최근검색어">
-                <div class="col-md-12">
-                    <div class="ng-cloak" form="vm.withSearchItem">
-                        <div class="form-group col-md-10">
-                            <ui-select ng-model="vm.withSearchItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="true">
-                                <ui-select-match placeholder="최근검색어">
-                                    {{$select.selected.search}}
-                                </ui-select-match>
-                                <ui-select-choices repeat="withSearchItem in vm.selectWithSearchItems | filter: {search: $select.search, target: $select.target, newDate: $select.newDate}">
-                                    <div ng-bind-html="withSearchItem.search | highlight: $select.search"></div>
-                                    <small>
-                                        검색필드: {{withSearchItem.target}}
-                                        &nbsp;&nbsp;|&nbsp;&nbsp;
-                                        검색일: {{withSearchItem.newDate}}
-                                    </small>
-                                </ui-select-choices>
-                            </ui-select>
-                        </div>
-                    </div>
+        <div class="form-group col-md-7">
+            <input class="form-control" type="text" ng-model="vm.searchQuery" list="searchList">
+            <datalist class="selectpicker with-search" id="searchList" ng-model="vm.searchQuery">
+                <option ng-repeat="withSearchItem in vm.selectWithSearchItems | filter:search" value="{{withSearchItem.search}}">
+                    <span>{{withSearchItem.newDate | date:'MM/dd HH:mm'}}</span>
+                </option>
+            </datalist>
+        </div>
 
-                    <div class="form-group col-md-2">
-                        <button type="button" class="btn btn-info" ng-click="searchBookList('historyBtn', 1)">검색</button>
-                    </div>
-                </div>
-            </uib-tab>
-        </uib-tabset>
+        <div class="form-group col-md-2">
+            <button type="button" class="btn btn-info" ng-click="searchBookList('searchBtn', 1)">검색</button>
+        </div>
     </div>
+
+    <!--<div ba-panel-->
+         <!--ba-panel-class="horizontal-tabs tabs-panel small-panel">-->
+        <!--<uib-tabset active="$tabSetStatus.activeTab">-->
+            <!--<uib-tab heading="검색">-->
+               <!---->
+            <!--</uib-tab>-->
+            <!--<uib-tab heading="카테고리 검색">-->
+
+            <!--</uib-tab>-->
+        <!--</uib-tabset>-->
+    <!--</div>-->
 
     <div class="row">
         <div class="col-xs-12">
             <div ba-panel ba-panel-class="with-scroll">
                 <div class="horizontal-scroll">
                     <table class="table table-condensed">
-                        <thead>
-                        <tr>
-                            <th>
-                                카테고리
-                            </th>
-                            <th>
-                                책제목
-                            </th>
-                            <th>
-                                지음
-                            </th>
-                            <th>
-                                정상가격
-                            </th>
-                            <th>
-                                할인가격
-                            </th>
-                            <th>
-                                더보기
-                            </th>
-                        </tr>
-                        </thead>
                         <tbody>
                         <tr ng-repeat="book in bookListTableData">
                             <td>
-                                {{customizedIsNullOrEmpty(book.category)}}
+                                <img ng-src="{{book.thumbnail}}" width="100" height="170">
                             </td>
                             <td>
-                                {{customizedIsNullOrEmpty(book.title)}}
-                            </td>
-                            <td>
-                                {{customizedIsNullOrEmpty(book.authorString)}}
-                            </td>
-                            <td>
-                                {{book.price | currency:"":0}}원
-                            </td>
-                            <td>
-                                {{book.sale_price | currency:"":0}}원
-                            </td>
-                            <td>
-                                <button class="status-button btn btn-xs btn-success" data-toggle="modal" ng-click="open('app/pages/search/searchModal.html', 'md', book)">더보기</button>
+                                <div>
+                                    <span style="font-size: 20px;">{{customizedIsNullOrEmpty(book.title)}}</span>
+                                    &nbsp( {{customizedIsNullOrEmpty(book.category)}} )
+                                </div>
+                                <div>
+                                    <span style="text-decoration: line-through;">{{book.price | currency:"":0}}원</span>
+                                    <span style="font-size: 18px;">{{book.sale_price | currency:"":0}}원</span>
+                                </div>
+                                <div style="font-size: 12px;">
+                                    {{customizedIsNullOrEmpty(book.authorString)}} &nbsp | &nbsp {{customizedIsNullOrEmpty(book.publisher)}} &nbsp | &nbsp {{customizedIsNullOrEmpty(book.datetimeString)}}
+                                </div>
+                                <div style="font-size: 12px;">
+                                    {{customizedIsNullOrEmpty(book.contents)}}
+                                    <button class="status-button btn btn-xs btn-success" data-toggle="modal" ng-click="open('app/pages/search/searchModal.html', 'md', book)">더보기</button>
+                                </div>
                             </td>
                         </tr>
                         </tbody>

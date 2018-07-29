@@ -7,7 +7,7 @@
     function routeConfig($stateProvider) {
         $stateProvider.state('signup', {
             url : '/signup',
-            title : 'Sign up',
+            title : '회원가입',
             templateUrl : 'app/pages/common/signup/signup.html',
             controller : 'signupPageCtrl',
             sidebarMeta : {

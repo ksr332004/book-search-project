@@ -8,13 +8,13 @@
     <div class="modal-body">
         <div class="col-md-12">
             <div class="col-md-3">
-                <a href="{{$resolve.items.url}}">
+                <a href="{{$resolve.items.url}}" target="_blank">
                     <img ng-src="{{$resolve.items.thumbnail}}" width="100" height="150">
                 </a>
             </div>
             <div class="col-md-9 links ng-scope">
                 {{customizedIsNullOrEmpty($resolve.items.category)}} </br></br>
-                {{customizedIsNullOrEmpty($resolve.items.contents)}} <a href="{{$resolve.items.url}}">이어보기</a> </br></br>
+                {{customizedIsNullOrEmpty($resolve.items.contents)}} <a href="{{$resolve.items.url}}" target="_blank">이어보기</a> </br></br>
 
                 <ul class="blur">
                     <li>저자 : {{customizedIsNullOrEmpty($resolve.items.authorString)}}</li>
@@ -23,7 +23,7 @@
                     <li>발행일 : {{customizedIsNullOrEmpty($resolve.items.datetimeString)}}</li>
                     <li>정가 : {{$resolve.items.price | currency:"":0}}원</li>
                     <li>할인금액 : {{$resolve.items.sale_price | currency:"":0}}원 ( {{($resolve.items.sale_yn == 'Y') ? '할인중' : '정상가'}} )</li>
-                    <li><a href="{{$resolve.items.url}}">{{$resolve.items.status}}</a></li>
+                    <li><a href="{{$resolve.items.url}}" target="_blank">{{$resolve.items.status}}</a></li>
                     <li>ISBN : {{customizedIsNullOrEmpty($resolve.items.isbn)}}</li>
                     <li>바코드 : {{(angular.isUndefined($resolve.items.barcode)) ? $resolve.items.ebook_barcode : $resolve.items.barcode}}</li>
                 </ul>
@@ -33,6 +33,6 @@
 
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-primary" ng-click="$close($resolve.items)">Bookmark</button>
+        <button type="button" class="btn btn-primary" ng-click="$close($resolve.items)">북마크</button>
     </div>
 </div>

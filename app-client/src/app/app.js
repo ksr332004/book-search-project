@@ -98,7 +98,7 @@ var appClient = angular.module('BlurAdmin', [
                 || $auth.getToken() === "") {
                 var menu = [
                     {
-                        title : 'Log in',
+                        title : '로그인',
                         templateUrl : 'app/pages/common/login/login.html',
                         controller : 'loginPageCtrl',
                         url : '/login',
@@ -115,7 +115,7 @@ var appClient = angular.module('BlurAdmin', [
             } else {
                 var menu = [
                     {
-                        title : 'Book Search',
+                        title : '책 검색',
                         templateUrl : 'app/pages/search/search.html',
                         controller : 'searchPageCtrl',
                         url : '/search',
@@ -128,7 +128,7 @@ var appClient = angular.module('BlurAdmin', [
                         }
                     },
                     {
-                        title : 'Bookmark',
+                        title : '북마크',
                         templateUrl : 'app/pages/bookmark/bookmark.html',
                         controller : 'bookmarkPageCtrl',
                         url : '/bookmark',
@@ -141,13 +141,26 @@ var appClient = angular.module('BlurAdmin', [
                         }
                     },
                     {
-                        title : 'Log out',
+                        title : '내정보',
+                        templateUrl : 'app/pages/common/mypage/mypage.html',
+                        controller : 'mypagePageCtrl',
+                        url : '/mypage',
+                        stateRef : 'mypage',
+                        icon : 'ion-person',
+                        order : 3,
+                        sidebarMeta : {
+                            icon : 'ion-person',
+                            order : 1,
+                        }
+                    },
+                    {
+                        title : '로그아웃',
                         templateUrl : 'app/pages/common/logout/logout.html',
                         controller : 'logoutPageCtrl',
                         url : '/logout',
                         stateRef : 'logout',
                         icon : 'ion-log-out',
-                        order : 3,
+                        order : 4,
                         sidebarMeta : {
                             icon : 'ion-log-out',
                             order : 1,
@@ -161,7 +174,7 @@ var appClient = angular.module('BlurAdmin', [
         };
         return factory;
     })
-    .run(function($rootScope, $window, $state, $auth, $log) {
+    .run(function($rootScope, $state, $auth, $log) {
         $log.debug('================================================================');
         $log.debug('run is started.....');
         $log.debug('================================================================');
@@ -171,7 +184,7 @@ var appClient = angular.module('BlurAdmin', [
             if (angular.isUndefined($auth.getToken())
                 || $auth.getToken() == null
                 || $auth.getToken() === "") {
-                $urlRouterProvider.otherwise('/login');
+                $state.go('login');
                 $rootScope.$broadcast('menuChangeForUser');
             }
         });
