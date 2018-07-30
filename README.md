@@ -13,6 +13,7 @@ book-search-project
 * [IntelliJ Community](https://www.jetbrains.com/idea/download)
 * [Eclipse](https://www.eclipse.org/downloads/eclipse-packages/)
 
+
 ### Dependencies
 * [JDK 1.8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
 * Spring-Boot 2.0.2
@@ -28,12 +29,14 @@ book-search-project
    * [Node.js](https://nodejs.org/ko/)
    * [Blur Admin](https://github.com/akveo/blur-admin)
 
+
 ### Getting Started
 **1. Git Clone**
 ```
 cd {directory} #원하는 경로로 이동
 git clone https://github.com/kimsr2004/book-search-project
 ```
+
 
 **2. H2 Database 설치/확인**
 
@@ -49,9 +52,9 @@ jdbc:h2:mem:testdb
 
 ~~**2. MySQL 설치/설정/실행**~~
 
-*MySQL 설치 후 Schema에 web 생성*
-* MySQL 설치 [다운로드](https://dev.mysql.com/downloads/)
-* 설정
+~~*MySQL 설치 후 Schema에 web 생성*~~
+~~* MySQL 설치 [다운로드](https://dev.mysql.com/downloads/)~~
+~~* 설정~~
 ```
 #설정
 Host : 127.0.0.1
@@ -60,7 +63,8 @@ Username : root
 Password : seran
 Schema : web
 ```
-* MySQL 실행
+~~* MySQL 실행~~
+
 
 **3. Server 실행**
 
@@ -91,6 +95,7 @@ gradlew build
 gradle bootRun
 ```
 
+
 **4. Client 실행**
 
 *book-search-project\app-client 경로에서 다음 명령어를 실행*
@@ -117,23 +122,38 @@ gulp release      #배포용 소스 생성
    2. app-client/node_modules/.bin 경로에서 gulp serve 명령어 실행
 
 
+
 ### 구현 된 기능
-- 서버 API
+* 서버 API
 
 | Mtehod   |Path                              | RequestParam                         | ResponseBody                 |
 |----------|:---------------------------------|:------------------------------------:|------------------------------|
 | POST     | /api/auth/login                  | email, password                      | 로그인                        |
 | POST     | /api/auth/signup                 | email, password, name                | 회원가입                      |
 | GET      | /refresh                         |                                      | 토큰 재연장                   |
-| POST     | /api/search/book                 | query, target, page, size ...        | 책 검색 / 검색 키워드 저장     |
-| GET      | /api/search/history              |                                      | 최근 검색 히스토리 (최근10건)  |
+| GET      | /api/user/info                   |                                      | 사용자 정보 가져오기           |
+| POST     | /api/user/update                 | password, name                       | 사용자 정보 업데이트           |
+| GET      | /api/user/delete                 |                                      | 사용자 disable 처리           |
+| POST     | /api/search/book                 | query, target, sort, page, size ...  | 책 검색 / 검색 키워드 저장     |
+| GET      | /api/search/history              |                                      | 최근 검색 히스토리 (최근20건)  |
 | GET      | /api/bookmark/view               | query, target, sort, page            | 북마크 검색                   |
 | POST     | /api/bookmark/add                | Document                             | 북마크 등록                   |
 | DELETE   | /api/bookmark/{id}               | 북마크 ID                             | 북마크 삭제                   |
 
-- ERD
+
+* ERD
 
 ![erd](https://user-images.githubusercontent.com/41044894/42779936-cb54d952-897c-11e8-9381-beb0e52d36e0.png)
+
+
+* 화면 메뉴
+   * 회원가입
+   * 로그인
+   * 책 검색
+   * 북마크
+   * 내 정보
+   * 로그아웃
+
 
 
 ### Visit
