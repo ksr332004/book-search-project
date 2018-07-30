@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface HistoryRepository extends JpaRepository<History, Integer> {
-	List<History> findTop10ByUserIdOrderByNewDateDesc(Integer userId);
+	List<History> findTop20ByUserIdOrderByNewDateDesc(Integer userId);
 	Optional<History> findByUserIdAndSearch(Integer userId, String search);
 }

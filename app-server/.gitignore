@@ -2,8 +2,9 @@
 /build/
 /bin/
 !gradle/wrapper/gradle-wrapper.jar
-
 *.class
+/logs/
+querydsl_generated/
 
 ### STS ###
 .apt_generated

@@ -69,7 +69,7 @@ public class BookSearchServiceImpl implements BookSearchService {
     
     @Override
     public List<History> searchHistorys(Integer userId) {
-        return historyRepository.findTop10ByUserIdOrderByNewDateDesc(userId);
+        return historyRepository.findTop20ByUserIdOrderByNewDateDesc(userId);
     }
     
 }

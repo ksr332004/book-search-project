@@ -18,8 +18,6 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
-    @Autowired
     UserService userService;
 
     @GetMapping("/user/info")
