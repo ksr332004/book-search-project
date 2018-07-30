@@ -5,23 +5,25 @@
         .controller('searchPageCtrl', searchPageCtrl);
 
     /** @ngInject */
-    function searchPageCtrl($scope, $rootScope, $auth, $log, $state, toastr, $uibModal, baProgressModal, editableOptions, editableThemes, ApiService, MenuParsingService) {
+    function searchPageCtrl($scope, $rootScope, $auth, $log, $state, toastr, $uibModal, baProgressModal, editableOptions, editableThemes, ApiService) {
 
         $rootScope.$broadcast('validatingAccessTokens');
 
         String.isNullOrEmpty = function (value) {
             return (!value || value == undefined || value == "" || value.length == 0);
         }
-
         $scope.customizedIsNullOrEmpty = function (value) {
             return (String.isNullOrEmpty(value)) ? "-" : value;
         }
+        $scope.thumbnailIsNullOrEmpty = function (value) {
+            return (String.isNullOrEmpty(value)) ? "assets/img/no_thumbnail_img.gif" : value;
+        };
 
         var vm = this;
         vm.disabled = undefined;
-
-        vm.standardItem = {};
-        vm.standardSelectItems = [
+        
+        vm.targetItem = {};
+        vm.targetList = [
             {label:'전체', value: 'all'},
             {label:'제목', value: 'title'},
             {label:'책소개', value: 'overview'},
@@ -30,113 +32,84 @@
             {label:'목차', value: 'contents'},
             {label:'ISBN', value: 'isbn'}
         ];
+        vm.targetItem.selected = vm.targetList[0];
 
-        vm.withSearchItem = {};
-        vm.selectWithSearchItems = [];
+        vm.sortItem = {};
+        vm.sortList = [
+            {label:'정확도순', value:'accuracy'},
+            {label:'최신순', value:'recency'},
+            {label:'판매량순', value:'sales'}
+        ];
+        vm.sortItem.selected = vm.sortList[0];
+
+        vm.historyItem = {};
+        vm.historyList = [];
         $scope.searchHistoryList = function() {
             ApiService.get('/search/history').success(function(data, status) {
-                if (data) {
-                    vm.selectWithSearchItems = data;
+                if (status == 200) {
+                    vm.historyList = data;
                 } else {
-                    $log.warn(data);
+                    toastr.error("검색 중 에러가 발생했습니다.");
                 }
-            }).error(function(data, status, headers, config) {
-                $log.error(data);
-                $log.error(status);
-                $log.error(headers);
-                $log.error(config);
+            }).error(function(data, status, headers) {
+                $log.error("[/search/history] " + status, data);
+                if (status == 400) {
+                    toastr.error("잘못된 요청을 했습니다.");
+                } else if (status == 401 || status == 403) {
+                    toastr.error("접근 권한이 없습니다.");
+                    $rootScope.$broadcast('initializeAccessTokens');
+                } else {
+                    toastr.error(status);
+                }
             });
         };
         $scope.searchHistoryList();
 
-        $scope.deleteHistory = function() {
-            console.log("HHHHHHHHHHHHHH");
-        };
-
-
+        vm.searchQuery = "";
+        vm.bookListTableData = [];
         $scope.hasPrev = false;
         $scope.hasNext = false;
 
-        vm.searchQuery = "";
+        $scope.clickSearchButton = function() {
+            if (String.isNullOrEmpty(vm.searchQuery)) {
+                toastr.warning("검색어를 입력해주세요.");
+                return;
+            }
+            $scope.searchBookList(1);
+        }
 
-        $scope.bookListTableData = [];
-
-        $scope.searchBookList = function(checkButton, currentPage) {
-            var dataObject = {};
-            if (checkButton == 'searchBtn') {
-                if (String.isNullOrEmpty(vm.searchQuery)) {
-                    toastr.error('Please fill out the form.', 'Error!');
-                    return;
-                }
-                dataObject = {
-                    query: vm.searchQuery,
-                    target: (angular.isUndefined(vm.standardItem.selected)) ? 'all' : vm.standardItem.selected.value,
-                    page: currentPage
-                };
-            } else {
-                if (angular.isUndefined(vm.withSearchItem.selected)) {
-                    toastr.error('Please fill out the form.', 'Error!');
-                    return;
-                }
-                dataObject = {
-                    query: vm.withSearchItem.selected.search,
-                    target: vm.withSearchItem.selected.target,
-                    page: currentPage
-                };
+        $scope.searchBookList = function(currentPage) {
+            if (String.isNullOrEmpty(vm.searchQuery)) {
+                return;
             }
 
-            console.log("searchBookList", dataObject);
+            var dataObject = {};
+            dataObject = {
+                query: vm.searchQuery,
+                target: vm.targetItem.selected.value,
+                page: currentPage,
+                sort: vm.sortItem.selected.value
+            };
             ApiService.post('/search/book', dataObject).success(function(data, status) {
-                if (data) {
-                    console.log("searchBookList > data", data);
-                    $scope.bookListTableData = data.documents;
+                if (status == 200) {
+                    vm.bookListTableData = data.documents;
                     $scope.hasPrev = (currentPage == 1) ? false : true;
                     $scope.hasNext = !data.meta._end;
-                    $scope.checkButton = checkButton;
                     $scope.currentPage = currentPage;
                     $scope.searchHistoryList();
                 } else {
-                    $log.warn(data);
+                    toastr.error("검색 중 에러가 발생했습니다.");
                 }
             }).error(function(data, status, headers, config) {
-                $log.error(data);
-                $log.error(status);
-                $log.error(headers);
-                $log.error(config);
-            });
-        };
-
-
-        $scope.searchBookListNext = function(checkButton, nextPageNum) {
-            var dataObject = {};
-            if (checkButton == 'searchBtn') {
-                dataObject = {
-                    query: vm.searchQuery,
-                    target: (angular.isUndefined(vm.standardItem.selected)) ? "all" : vm.standardItem.selected.value,
-                    page: nextPageNum
-                };
-            } else {
-                dataObject = {
-                    query: vm.withSearchItem.selected.search,
-                    target: vm.withSearchItem.selected.target,
-                    page: nextPageNum
-                };
-            }
-            console.log("searchBookListNext", dataObject);
-            ApiService.post('/search/book', dataObject).success(function(data, status) {
-                if (data) {
-                    console.log("searchBookListNext > ", data);
-                    $scope.bookListTableData = data.documents;
-                    $scope.hasPrev = (nextPageNum == 1) ? false : true;
-                    $scope.hasNext = !data.meta._end;
-                    $scope.checkButton = checkButton;
-                    $scope.currentPage = nextPageNum;
-                    console.log($scope.currentPage);
+                $log.error("[/search/book] " + status, data);
+                if (status == 400) {
+                    toastr.error("잘못된 요청을 했습니다.");
+                } else if (status == 401 || status == 403) {
+                    toastr.error("접근 권한이 없습니다.");
+                    $rootScope.$broadcast('initializeAccessTokens');
                 } else {
-                    $log.warn(data);
+                    toastr.error(status);
                 }
-            }).error(function(data, status, headers, config) {
-                $log.error(status);
             });
         };
 
@@ -148,20 +121,28 @@
                 size: size,
                 resolve: {
                     items: function () {
-                        console.log(book);
                         return book;
                     }
                 }
             }).result.then(function(items) {
-                console.log("get", items);
                 ApiService.post('/bookmark/add', items).success(function(data, status) {
-                    if (data) {
-                        console.log(data);
+                    if (status == 201) {
                         toastr.success("저장되었습니다.");
+                    } else {
+                        toastr.error("저장 중 에러가 발생했습니다.");
                     }
                 }).error(function(data, status, headers, config) {
-                    $log.error(status);
-                    toastr.error("ERROR!");
+                    $log.error("[/bookmark/add] " + status, data);
+                    if (status == 400) {
+                        toastr.error("잘못된 요청을 했습니다.");
+                    } else if (status == 401 || status == 403) {
+                        toastr.error("접근 권한이 없습니다.");
+                        $rootScope.$broadcast('initializeAccessTokens');
+                    } else if (status == 409) {
+                        toastr.warning("이미 북마크에 저장된 책 입니다.");
+                    } else {
+                        toastr.error(status);
+                    }
                 });
             });
         };

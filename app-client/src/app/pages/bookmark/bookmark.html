@@ -1,13 +1,13 @@
 <div class="widgets">
     <div class="col-md-12">
-        <div class="ng-cloak" form="vm.standardTarge">
+        <div class="ng-cloak" form="vm.targetItem">
             <div class="form-group col-md-3">
-                <ui-select ng-model="vm.standardTarge.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="false">
+                <ui-select ng-model="vm.targetItem.selected" class="btn-group bootstrap-select form-control" ng-disabled="false" append-to-body="true" search-enabled="false">
                     <ui-select-match placeholder="검색필드">
                         <span> {{$select.selected.label}}</span>
                     </ui-select-match>
-                    <ui-select-choices repeat="standardTarge in vm.standardSelectTarge | filter: $select.search">
-                        <span ng-bind-html="standardTarge.label" ng-model="vm.standardTarge.value"></span>
+                    <ui-select-choices repeat="targetItem in vm.targetList | filter: $select.search">
+                        <span ng-bind-html="targetItem.label" ng-model="vm.targetItem.value"></span>
                     </ui-select-choices>
                 </ui-select>
             </div>
@@ -18,91 +18,74 @@
         </div>
 
         <div class="form-group col-md-2">
-            <button type="button" class="btn btn-info" ng-click="searchBookmarkList(0)">검색</button>
+            <button type="button" class="btn btn-info" ng-click="clickSearchButton()">검색</button>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-10"></div>
-        <div class="ng-cloak" form="vm.standardSort">
-            <div class="form-group col-md-2">
-                <ui-select type="button" class="btn-group bootstrap-select form-control" ng-model="vm.standardSort.selected" ng-click="searchBookmarkList(0)" ng-disabled="false" append-to-body="true" search-enabled="false">
+        <div class="ng-cloak" form="vm.sortItem">
+            <div class="col-md-3 form-group pull-right">
+                <ui-select type="button" class="btn-group bootstrap-select form-control" ng-model="vm.sortItem.selected" ng-click="searchBookmarkList(0)" ng-disabled="false" append-to-body="true" search-enabled="false">
                     <ui-select-match placeholder="정렬">
                         <span> {{$select.selected.label}}</span>
                     </ui-select-match>
-                    <ui-select-choices repeat="standardSort in vm.standardSelectSort | filter: $select.search" ng-change="searchBookmarkList(0)" >
-                        <span ng-bind-html="standardSort.label" ng-model="vm.standardSort.value"></span>
+                    <ui-select-choices repeat="sortItem in vm.sortList | filter: $select.search">
+                        <span ng-bind-html="sortItem.label" ng-model="vm.sortItem.value"></span>
                     </ui-select-choices>
                 </ui-select>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-xs-12">
-        <div ba-panel ba-panel-class="with-scroll">
-            <div class="horizontal-scroll">
-                <table class="table table-condensed">
-                    <thead>
-                    <tr>
-                        <th>
-                            등록일
-                        </th>
-                        <th>
-                            카테고리
-                        </th>
-                        <th>
-                            책제목
-                        </th>
-                        <th>
-                            지음
-                        </th>
-                        <th>
-                            정상가격
-                        </th>
-                        <th>
-                            할인가격
-                        </th>
-                        <th>
-                            더보기
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="book in bookListTableData">
-                        <td>
-                            {{book.newDate | date:'yy/MM/dd'}}
-                        </td>
-                        <td>
-                            {{customizedIsNullOrEmpty(book.category)}}
-                        </td>
-                        <td>
-                            {{customizedIsNullOrEmpty(book.title)}}
-                        </td>
-                        <td>
-                            {{customizedIsNullOrEmpty(book.authors)}}
-                        </td>
-                        <td>
-                            {{book.price | currency:"":0}}원
-                        </td>
-                        <td>
-                            {{book.salePrice | currency:"":0}}원
-                        </td>
-                        <td>
-                            <button class="status-button btn btn-xs btn-success" data-toggle="modal" ng-click="open('app/pages/bookmark/bookmarkModal.html', 'md', book)">더보기</button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+    <div class="row">
+        <div class="col-xs-12">
+            <div ba-panel ba-panel-class="with-scroll">
+                <div class="horizontal-scroll">
+
+                    <div>
+                        <p ng-hide="vm.bookListTableData.length!=0" style="font-size: 16px;">북마크 정보가 없습니다.</p>
+                    </div>
+
+                    <table class="table table-condensed">
+                        <tbody>
+                        <tr ng-repeat="book in vm.bookListTableData">
+                            <td>
+                                <img ng-src="{{thumbnailIsNullOrEmpty(book.thumbnail)}}" width="100" height="170">
+                            </td>
+                            <td>
+                                <div>
+                                    <p>
+                                        <span style="font-size: 20px;">{{customizedIsNullOrEmpty(book.title)}}</span>
+                                        &nbsp( {{customizedIsNullOrEmpty(book.category)}} )
+                                        <span class="pull-right" style="font-size: 14px;">{{book.newDate | date: 'yyyy년 MM월 dd일 HH시 북마크 등록'}}</span>
+                                    </p>
+                                </div>
+                                <div>
+                                    <span style="text-decoration: line-through;">{{book.price | currency:"":0}}원</span>
+                                    <span style="font-size: 18px;">{{book.salePrice | currency:"":0}}원</span>
+                                </div>
+                                <div style="font-size: 12px;">
+                                    {{customizedIsNullOrEmpty(book.authors)}} &nbsp | &nbsp {{customizedIsNullOrEmpty(book.publisher)}} &nbsp | &nbsp {{customizedIsNullOrEmpty(book.createDate)}}
+                                </div>
+                                <div style="font-size: 12px;">
+                                    {{customizedIsNullOrEmpty(book.contents)}}
+                                    <button class="status-button btn btn-xs btn-success" data-toggle="modal" ng-click="open('app/pages/bookmark/bookmarkModal.html', 'md', book)">더보기</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="pull-left" ng-hide="hasPrev==false">
-    <button type="submit" class="btn btn-primary" ng-click="searchBookmarkListNext(currentPage-1)">Prev</button>
-</div>
-<div class="pull-right" ng-hide="hasNext==false">
-    <button type="submit" class="btn btn-primary" ng-click="searchBookmarkListNext(currentPage+1)">Next</button>
+    <div class="pull-left" ng-hide="hasPrev==false">
+        <button type="submit" class="btn btn-primary" ng-click="searchBookmarkList(currentPage-1)">Prev</button>
+    </div>
+    <div class="pull-right" ng-hide="hasNext==false">
+        <button type="submit" class="btn btn-primary" ng-click="searchBookmarkList(currentPage+1)">Next</button>
+    </div>
+
 </div>

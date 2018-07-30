@@ -9,7 +9,7 @@
         <div class="col-md-12">
             <div class="col-md-3">
                 <a href="{{$resolve.items.url}}" target="_blank">
-                    <img ng-src="{{$resolve.items.thumbnail}}" width="100" height="150">
+                    <img ng-src="{{thumbnailIsNullOrEmpty($resolve.items.thumbnail)}}" width="100" height="150">
                 </a>
             </div>
             <div class="col-md-9 links ng-scope">

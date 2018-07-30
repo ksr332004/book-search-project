@@ -5,7 +5,7 @@
     .controller('loginPageCtrl', loginPageCtrl);
 
     /** @ngInject */
-    function loginPageCtrl($scope, $auth, $log, $state, toastr) {
+    function loginPageCtrl($scope, $rootScope, $auth, $log, $state, toastr) {
         
         $auth.removeToken();
 
@@ -34,7 +34,7 @@
                     $auth.setToken(response.data.Authorization);
                     $scope.$emit('menuChangeForUser');
                     $state.go('search');
-                    toastr.success("로그인 되셨습니다.");
+                    toastr.success("로그인 되었습니다.");
                 }
             })
             .catch(function(response) {

@@ -5,21 +5,28 @@
         .controller('mypagePageCtrl', mypagePageCtrl);
 
     /** @ngInject */
-    function mypagePageCtrl($scope, $rootScope, $filter, $log, $state, $uibModal, toastr, ApiService) {
+    function mypagePageCtrl($scope, $rootScope, $filter, $log, $state, $auth, $uibModal, toastr, ApiService) {
         $rootScope.$broadcast('validatingAccessTokens');
 
         $scope.getUserInfo = function() {
             ApiService.get('/user/info', null).success(function(data, status) {
-                if (data) {
-                    console.log(data);
+                if (status == 200) {
                     $scope.email = data.email;
                     $scope.username = data.name;
                     $scope.registrationDate = data.registrationDate;
                 } else {
-                    $log.warn(data);
+                    toastr.error("정보를 불러오는 중 에러가 발생했습니다.");
                 }
             }).error(function(data, status, headers, config) {
-                $log.error(status);
+                $log.error("[/user/info] " + status, data);
+                if (status == 400) {
+                    toastr.error("잘못된 요청을 했습니다.");
+                } else if (status == 401 || status == 403) {
+                    toastr.error("접근 권한이 없습니다.");
+                    $rootScope.$broadcast('initializeAccessTokens');
+                } else {
+                    toastr.error(status);
+                }
             });
         };
         $scope.getUserInfo();
@@ -48,12 +55,21 @@
             };
 
             ApiService.post('/user/update', userInfo).success(function(data, status) {
-                toastr.success("수정되었습니다.");
+                if (status == 200) {
+                    toastr.success("수정되었습니다.");
+                } else {
+                    toastr.error("수정 중 에러가 발생했습니다.");
+                }
             }).error(function(data, status, headers, config) {
-                $log.error(data);
-                $log.error(status);
-                $log.error(headers);
-                $log.error(config);
+                $log.error("[/user/update] " + status, data);
+                if (status == 400) {
+                    toastr.error("잘못된 요청을 했습니다.");
+                } else if (status == 401 || status == 403) {
+                    toastr.error("접근 권한이 없습니다.");
+                    $rootScope.$broadcast('initializeAccessTokens');
+                } else {
+                    toastr.error(status);
+                }
             });
         };
 
@@ -74,15 +90,24 @@
                     }
                 }
             }).result.then(function() {
-                ApiService.get('/user/update', null).success(function(data, status) {
-                    $auth.logout();
-                    $scope.$emit('menuChangeForUser');
-                    $state.go('login');
+                ApiService.get('/user/delete', null).success(function(data, status) {
+                    if (status == 200) {
+                        $auth.logout();
+                        $scope.$emit('menuChangeForUser');
+                        $state.go('login');
+                    } else {
+                        toastr.error("탈퇴 중 에러가 발생했습니다.");
+                    }
                 }).error(function(data, status, headers, config) {
-                    $log.error(data);
-                    $log.error(status);
-                    $log.error(headers);
-                    $log.error(config);
+                    $log.error("[/user/delete] " + status, data);
+                    if (status == 400) {
+                        toastr.error("잘못된 요청을 했습니다.");
+                    } else if (status == 401 || status == 403) {
+                        toastr.error("접근 권한이 없습니다.");
+                        $rootScope.$broadcast('initializeAccessTokens');
+                    } else {
+                        toastr.error(status);
+                    }
                 });
             });
         };

@@ -1,15 +1,20 @@
 <div class="modal-content">
+
     <div class="modal-header">
         <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
             <em class="ion-ios-close-empty sn-link-close"></em>
         </button>
         <h4 class="modal-title bold-text">{{$resolve.items.title}}</h4>
     </div>
+
     <div class="modal-body">
+        <div class="col-md-12">
+            <p class="pull-right">{{$resolve.items.newDate | date: 'yyyy년 MM월 dd일 HH시 북마크 등록'}}</p>
+        </div>
         <div class="col-md-12">
             <div class="col-md-3">
                 <a href="{{$resolve.items.url}}" target="_blank">
-                    <img ng-src="{{$resolve.items.thumbnail}}" width="100" height="150">
+                    <img ng-src="{{thumbnailIsNullOrEmpty($resolve.items.thumbnail)}}" width="100" height="150">
                 </a>
             </div>
             <div class="col-md-9 links ng-scope">
@@ -30,9 +35,10 @@
 
             </div>
         </div>
-
     </div>
+
     <div class="modal-footer">
         <button type="button" class="btn btn-danger" ng-click="$close($resolve.items.id)">삭제</button>
     </div>
+
 </div>

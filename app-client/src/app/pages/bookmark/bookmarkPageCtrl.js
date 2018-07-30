@@ -12,83 +12,76 @@
         String.isNullOrEmpty = function (value) {
             return (!value || value == undefined || value === "" || value.length == 0);
         };
-
         $scope.customizedIsNullOrEmpty = function (value) {
             return (String.isNullOrEmpty(value)) ? "-" : value;
+        };
+        $scope.thumbnailIsNullOrEmpty = function (value) {
+            return (String.isNullOrEmpty(value)) ? "assets/img/no_thumbnail_img.gif" : value;
         };
 
 
         var vm = this;
         vm.disabled = undefined;
 
-        vm.standardTarge = {};
-        vm.standardSelectTarge = [
+        vm.targetItem = {};
+        vm.targetList = [
             {label:'제목', value:'title'},
             {label:'내용', value:'contents'}
         ];
+        vm.targetItem.selected = vm.targetList[0];
 
-        vm.searchQuery = "";
-
-        vm.standardSort = {};
-        vm.standardSelectSort = [
+        vm.sortItem = {};
+        vm.sortList = [
             {label:'최신순', value:'id,DESC'},
             {label:'과거순', value:'id,ASC'},
             {label:'카테고리순', value:'category,ASC'},
             {label:'제목순', value:'title,ASC'}
         ];
-        vm.standardSort.selected = vm.standardSelectSort[0];
+        vm.sortItem.selected = vm.sortList[0];
 
+        vm.searchQuery = "";
+        vm.bookListTableData = [];
+        $scope.currentPage = 0;
         $scope.hasNext = false;
         $scope.hasPrev = false;
+
+        $scope.clickSearchButton = function() {
+            if (String.isNullOrEmpty(vm.searchQuery)) {
+                toastr.warning("검색어를 입력해주세요.");
+                return;
+            }
+            $scope.searchBookmarkList(0);
+        }
 
         $scope.searchBookmarkList = function(currentPage) {
             var dataObject = {
                 query: (vm.searchQuery == "") ? "none" : vm.searchQuery,
-                target: (angular.isUndefined(vm.standardTarge.selected)) ? "title" : vm.standardTarge.selected.value,
+                target: vm.targetItem.selected.value,
                 page: currentPage,
-                sort: vm.standardSort.selected.value
+                sort: vm.sortItem.selected.value
             };
-            console.log(dataObject);
             ApiService.get('/bookmark/view', dataObject).success(function(data, status) {
-                if (data) {
-                    console.log(data);
-                    $scope.bookListTableData = data.content;
+                if (status == 200) {
+                    vm.bookListTableData = data.content;
                     $scope.hasPrev = !data.first;
                     $scope.hasNext = !data.last;
                     $scope.currentPage = currentPage;
                 } else {
-                    $log.warn(data);
+                    toastr.error("검색 중 에러가 발생했습니다.");
                 }
             }).error(function(data, status, headers, config) {
-                $log.error(status);
-            });
-        };
-
-        $scope.searchBookmarkList(0);
-
-        $scope.searchBookmarkListNext = function(nextPageNum) {
-            var dataObject = {
-                query: (vm.searchQuery == "") ? "none" : vm.searchQuery,
-                target: (angular.isUndefined(vm.standardTarge.selected)) ? "title" : vm.standardTarge.selected.value,
-                page: nextPageNum,
-                sort: vm.standardSort.selected.value
-            };
-            console.log(dataObject);
-            ApiService.get('/bookmark/view', dataObject).success(function(data, status) {
-                if (data) {
-                    console.log(data);
-                    $scope.bookListTableData = data.content;
-                    $scope.hasPrev = !data.first;
-                    $scope.hasNext = !data.last;
-                    $scope.currentPage = nextPageNum;
-                    console.log($scope.currentPage);
+                $log.error("[/bookmark/view] " + status, data);
+                if (status == 400) {
+                    toastr.error("잘못된 요청을 했습니다.");
+                } else if (status == 401 || status == 403) {
+                    toastr.error("접근 권한이 없습니다.");
+                    $rootScope.$broadcast('initializeAccessTokens');
                 } else {
-                    $log.warn(data);
+                    toastr.error(status);
                 }
-            }).error(function(data, status, headers, config) {
-                $log.error(status);
             });
         };
+        $scope.searchBookmarkList(0);
 
         $scope.open = function (page, size, book) {
             var modal = $uibModal.open({
@@ -98,18 +91,27 @@
                 size: size,
                 resolve: {
                     items: function () {
-                        console.log(book);
                         return book;
                     }
                 }
             }).result.then(function(data) {
-                console.log("get", data);
                 ApiService.delete('/bookmark', data).success(function(data, status) {
-                    console.log(data);
-                    toastr.success("Deleted!");
+                    if (status == 200) {
+                        toastr.success("삭제되었습니다.");
+                        $scope.searchBookmarkList($scope.currentPage);
+                    } else {
+                        toastr.error("삭제 중 에러가 발생했습니다.");
+                    }
                 }).error(function(data, status, headers, config) {
-                    $log.error(status);
-                    toastr.error("ERROR!");
+                    $log.error("[/bookmark/delete] " + status, data);
+                    if (status == 400) {
+                        toastr.error("잘못된 요청을 했습니다.");
+                    } else if (status == 401 || status == 403) {
+                        toastr.error("접근 권한이 없습니다.");
+                        $rootScope.$broadcast('initializeAccessTokens');
+                    } else {
+                        toastr.error(status);
+                    }
                 });
             });
         };

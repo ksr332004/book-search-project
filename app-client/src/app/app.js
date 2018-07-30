@@ -89,14 +89,14 @@ var appClient = angular.module('BlurAdmin', [
         var factory = {};
         factory.parse = function() {
             var menuList = [];
+            var menu = [];
 
             $log.debug('MenuParsingService is occurred.');
-            $log.debug('token : ', $auth.getToken());
 
             if (angular.isUndefined($auth.getToken())
                 || $auth.getToken() == null
                 || $auth.getToken() === "") {
-                var menu = [
+                menu = [
                     {
                         title : '로그인',
                         templateUrl : 'app/pages/common/login/login.html',
@@ -113,7 +113,7 @@ var appClient = angular.module('BlurAdmin', [
                 ];
                 menuList.push(menu);
             } else {
-                var menu = [
+                menu = [
                     {
                         title : '책 검색',
                         templateUrl : 'app/pages/search/search.html',
@@ -169,7 +169,6 @@ var appClient = angular.module('BlurAdmin', [
                 ];
                 menuList.push(menu);
             }
-            $log.debug('parse : ', menuList);
             return menuList;
         };
         return factory;
@@ -187,5 +186,12 @@ var appClient = angular.module('BlurAdmin', [
                 $state.go('login');
                 $rootScope.$broadcast('menuChangeForUser');
             }
+        });
+
+        $rootScope.$on('initializeAccessTokens', function() {
+            $log.debug('initializeAccessTokens is occurred.');
+            $auth.logout();
+            $rootScope.$broadcast('menuChangeForUser');
+            $state.go('login');
         });
     });

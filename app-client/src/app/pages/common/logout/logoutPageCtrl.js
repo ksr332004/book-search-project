@@ -26,9 +26,7 @@
                     }
                 }
             }).result.then(function() {
-                $auth.logout();
-                $scope.$emit('menuChangeForUser');
-                $state.go('login');
+                $rootScope.$broadcast('initializeAccessTokens');
             });
         };
 
