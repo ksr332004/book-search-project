@@ -11,12 +11,6 @@ book-search-project
 
 ### IDE TOOL
 * [IntelliJ Community](https://www.jetbrains.com/idea/download)
-   * Open > {directory}\book-search-project\app-server
-   * Use auto-import : check
-   * Gradle JVM : select use JDK
-   * Lombok Install
-      * File > Settings > Plugins > [Click] Browse Repositories > [Install] Lombok Plugin > IntelliJ Restart
-      * File > Settings > Build, Execution, Deployment > Compiler > Annotation Processors > [Check] Enable annotation processing
 * [Eclipse](https://www.eclipse.org/downloads/eclipse-packages/)
 
 ### Dependencies
@@ -70,8 +64,18 @@ Schema : web
 
 **3. Server 실행**
 
-*book-search-project\app-server 경로에서 다음 명령어를 실행*
-- Eclipse IDE Import 할 경우 [참조](http://projooni.tistory.com/entry/SpringBoot-eclipse%EC%97%90%EC%84%9C-springboot-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-clone%ED%95%98%EA%B8%B0)
+* IntelliJ로 실행할 경우
+   * Open > {directory}\book-search-project\app-server
+   * Use auto-import : check
+   * Gradle JVM : select use JDK
+   * Lombok Install
+      * File > Settings > Plugins > [Click] Browse Repositories > [Install] Lombok Plugin > IntelliJ Restart
+      * File > Settings > Build, Execution, Deployment > Compiler > Annotation Processors > [Check] Enable annotation processing
+
+
+* Terminal로 실행할 경우
+
+   * book-search-project\app-server 경로에서 다음 명령어를 실행
 ```bash
 #Local Terminal에서 명령어를 수행하는 것을 권장함
 
