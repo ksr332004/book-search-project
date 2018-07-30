@@ -1,20 +1,20 @@
-<div class="widgets">
-
+<div class="widgets col-md-12">
+    <div class="col-md-3"></div>
     <form class="form-group col-md-6">
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" ng-model="email" placeholder="Email">
+        <div class="form-group col-md-12">
+            <label for="email">아이디(이메일)</label>
+            <input type="email" class="form-control" id="email" ng-model="email" placeholder="아이디(이메일)">
         </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" ng-model="password" placeholder="Password">
+        <div class="form-group col-md-12">
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" id="password" ng-model="password" placeholder="비밀번호">
         </div>
-        <div class="col-md-6">
-            <button type="submit" class="btn btn-warning" ng-click="login()">Log in</button>
+        <div class="form-group col-md-3">
+            <button type="submit" class="btn btn-warning" ng-click="login()">로그인</button>
         </div>
-        <div class="col-md-6">
-            <p>New to Book Search Service?<a href="/#/signup">Create an account.</a></p>
+        <div class="col-md-9">
+            <p>아직 회원이 아니신가요? &nbsp&nbsp<a href="#/signup">회원가입하기</a></p>
         </div>
     </form>
-
+    <div class="col-md-3"></div>
 </div>

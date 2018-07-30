@@ -5,21 +5,21 @@
     .controller('loginPageCtrl', loginPageCtrl);
 
     /** @ngInject */
-    function loginPageCtrl($scope, $auth, $log, $state, toastr, MenuParsingService) {
+    function loginPageCtrl($scope, $rootScope, $auth, $log, $state, toastr) {
         
         $auth.removeToken();
 
         $scope.login = function() {
             if ($scope.email == undefined) {
-                toastr.error("Please fill out the form.", 'Error!');
+                toastr.error("아이디(이메일)을 입력해주세요.");
                 return;
             }
             if ($scope.password == undefined) {
-                toastr.error("Please fill out the form.", 'Error!');
+                toastr.error("비밀번호를 입력해주세요.");
                 return;
             }
             if ($scope.password.replace(/^\s+|\s+$/g, '') == '') {
-                toastr.error("Please check your password.", 'Error!');
+                toastr.error("잘못된 비밀번호 형식입니다.");
                 return;
             }
 
@@ -34,11 +34,11 @@
                     $auth.setToken(response.data.Authorization);
                     $scope.$emit('menuChangeForUser');
                     $state.go('search');
-                    toastr.success("Welcome!");
+                    toastr.success("로그인 되었습니다.");
                 }
             })
             .catch(function(response) {
-                toastr.error(response.status, "Permission denied!");
+                toastr.error("아이디와 비밀번호를 다시 확인해주세요.", "접근 할 수 없는 사용자 입니다.");
             });
 
         };

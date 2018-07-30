@@ -7,7 +7,7 @@
     function routeConfig($stateProvider) {
         $stateProvider.state('login', {
             url : '/login',
-            title : 'Log in',
+            title : '로그인',
             templateUrl : 'app/pages/common/login/login.html',
             controller : 'loginPageCtrl',
             sidebarMeta : {

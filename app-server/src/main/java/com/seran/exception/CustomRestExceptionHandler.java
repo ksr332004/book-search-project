@@ -56,20 +56,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 	}
 	
 	/**
-	 * method argument is not the expected type.
-	 */
-	@ExceptionHandler({ MethodArgumentTypeMismatchException.class })
-	public ResponseEntity<Object> handleMethodArgumentTypeMismatch(
-	  MethodArgumentTypeMismatchException ex, WebRequest request) {
-	    String error = 
-	      ex.getName() + " should be of type " + ex.getRequiredType().getName();
-	 
-	    ApiError apiError = 
-	      new ApiError(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), error);
-	    return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
-	}
-	
-	/**
 	 * the client send a request with unsupported media type – as follows.
 	 */
 	@Override
@@ -99,11 +85,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 	    ApiError apiError = new ApiError(
 	      HttpStatus.INTERNAL_SERVER_ERROR, ex.getLocalizedMessage(), "error occurred");
 	    return new ResponseEntity<>(apiError, new HttpHeaders(), apiError.getStatus());
-	}
-
-	@ExceptionHandler({ ResourceException.class })
-	public ResponseEntity handleException(ResourceException e) {
-		return ResponseEntity.status(e.getHttpStatus()).body(e.getMessage());
 	}
 
 }

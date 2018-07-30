@@ -1,9 +1,7 @@
 package com.seran.configuration;
 
-import com.seran.auth.BaseSecurityHandler;
 import com.seran.auth.jwt.JwtAuthenticationFilter;
 import com.seran.auth.jwt.JwtAuthenticationProvider;
-import com.seran.auth.jwt.JwtUserDetailsServiceImpl;
 import com.seran.auth.jwt.SkipPathRequestMatcher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.Arrays;
 
@@ -27,8 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
 
     @Autowired
     private JwtAuthenticationProvider jwtProvider;
-    @Autowired
-    private BaseSecurityHandler securityHandler;
 
     private static final String AUTH_ENTRY_POINT = "/api/auth/**";
     private static final String H2_ENTRY_POINT = "/h2-console/**";
@@ -91,7 +86,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
         JwtAuthenticationFilter filter = new JwtAuthenticationFilter(skipPathRequestMatcher());
         filter.setAuthenticationManager(authenticationManager());
-        filter.setAuthenticationFailureHandler(securityHandler);
         return filter;
     }
 

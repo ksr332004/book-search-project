@@ -17,7 +17,7 @@ public class JwtUtil {
 
     public static String createToken(UserDetails userDetails) {
         return createToken(userDetails
-                , Date.from(LocalDateTime.now().plusDays(JwtInfo.EXPIRES_LIMIT).toInstant(ZoneOffset.ofHours(9))));
+                , Date.from(LocalDateTime.now().plusDays(JwtInfo.EXPIRES_LIMIT).toInstant(ZoneOffset.ofHoursMinutes(0, 3))));
     }
     
     private static String createToken(UserDetails userDetails, Date date) {
@@ -37,7 +37,6 @@ public class JwtUtil {
         try {
             JWTVerifier verifier = JWT.require(JwtInfo.getAlgorithm()).build();
             verifier.verify(token);
-            
             return Boolean.TRUE;
         } catch (JWTVerificationException verifyEx) {
             return Boolean.FALSE;

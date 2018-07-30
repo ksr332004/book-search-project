@@ -9,7 +9,7 @@
     .run(themeRun);
 
   /** @ngInject */
-  function themeRun($rootScope, layoutPaths, baSidebarService, themeLayoutSettings) {
+  function themeRun($rootScope, layoutPaths, baSidebarService) {
     $rootScope.$pageFinishedLoading = true;
     $rootScope.$baSidebarService = baSidebarService;
   }

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
     @Autowired
-    private JwtUserDetailsServiceImpl userDetailsServiceImpl;
+    private JwtUserDetailsServiceImpl jwtUserDetailsServiceImpl;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -22,8 +22,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         String token = authentication.getCredentials().toString().substring(7);
 
         if (JwtUtil.verify(token)) {
-            UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(token);
-            return new JwtAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+            UserDetails userDetails = jwtUserDetailsServiceImpl.loadUserByUsername(token);
+            return new JwtAuthenticationToken(userDetails, userDetails.getPassword(), userDetails.getAuthorities());
         } else {
             throw new BadCredentialsException("Bad token");
         }

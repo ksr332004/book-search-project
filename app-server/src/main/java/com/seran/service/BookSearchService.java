@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.seran.dto.Book;
-import com.seran.dto.Parameter;
+import com.seran.dto.SearchInfo;
 import com.seran.entity.History;
 
 public interface BookSearchService {
-    Optional<Book> searchBooks(Parameter parameter);
+    Optional<Book> searchBooks(SearchInfo searchInfo);
     List<History> searchHistorys(Integer userId);
-    void saveSearchHistory(Integer userId, Parameter parameter);
+    void saveSearchHistory(Integer userId, SearchInfo searchInfo);
 }

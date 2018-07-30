@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name="history")
+@Table(name="history", uniqueConstraints={ @UniqueConstraint(columnNames = {"user_id", "search"})})
 public class History {
 
     @Id
