@@ -26,11 +26,15 @@ public class BookSearchServiceImpl implements BookSearchService {
     @Value("${book.api.key}")
     private String apiKey;
     
+    private final RestTemplate restTemplate;
+    private final HistoryRepository historyRepository;
+
     @Autowired
-    private RestTemplate restTemplate;
-    @Autowired
-    private HistoryRepository historyRepository;
-    
+    public BookSearchServiceImpl(RestTemplate restTemplate, HistoryRepository historyRepository) {
+        this.restTemplate = restTemplate;
+        this.historyRepository = historyRepository;
+    }
+
     @Override
     public Optional<Book> searchBooks(SearchInfo searchInfo) {
         ResponseEntity<Book> responseEntity = null;

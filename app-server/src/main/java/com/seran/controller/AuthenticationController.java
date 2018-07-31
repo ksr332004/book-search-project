@@ -8,7 +8,6 @@ import com.seran.auth.jwt.JwtUtil;
 import com.seran.entity.User;
 import com.seran.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,10 +28,14 @@ import java.util.Optional;
 @RequestMapping("/api/auth")
 public class AuthenticationController {
     
+    private final UserService userService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @Autowired
-    private UserService userService;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+    public AuthenticationController(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.userService = userService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<Void> postUser(@Valid @RequestBody User registrationUser) {
@@ -48,8 +51,7 @@ public class AuthenticationController {
     public ResponseEntity<ModelMap> login(@Valid @RequestBody BeforeSecurityUser beforeSecurityUser) {
         Optional<User> user = userService.searchUserByEmail(beforeSecurityUser.getEmail());
         if (user.isPresent() && user.get().getAvailable().equals("Y")) {
-            if (
-                    bCryptPasswordEncoder.matches(beforeSecurityUser.getPassword(), user.get().getPassword())) {
+            if (bCryptPasswordEncoder.matches(beforeSecurityUser.getPassword(), user.get().getPassword())) {
                 List<GrantedAuthority> grantedAuths = AuthorityUtils.commaSeparatedStringToAuthorityList(user.get().getRole());
                 UserDetails userDetails = new JwtUser(user.get(), grantedAuths);
                 String token = JwtUtil.createToken(userDetails);

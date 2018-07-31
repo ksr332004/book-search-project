@@ -6,6 +6,7 @@ import com.seran.service.impl.BookmarkServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +36,7 @@ public class BookmarkServiceTest {
 		bookmark1.setContents("book contents");
 		bookmark1.setUrl("book url");
 		bookmark1.setIsbn("123456789");
-		bookmark1.setCreateDate(OffsetDateTime.now());
+		bookmark1.setCreateDate(LocalDateTime.now().toString());
 		bookmark1.setAuthors("authors");
 		bookmark1.setPublisher("publisher");
 		bookmark1.setTranslators("translators");
@@ -56,7 +57,7 @@ public class BookmarkServiceTest {
 		bookmark2.setContents("book contents");
 		bookmark2.setUrl("book url");
 		bookmark2.setIsbn("123456789");
-		bookmark2.setCreateDate(OffsetDateTime.now());
+		bookmark2.setCreateDate(LocalDateTime.now().toString());
 		bookmark2.setAuthors("authors");
 		bookmark2.setPublisher("publisher");
 		bookmark2.setTranslators("translators");

@@ -1,5 +1,6 @@
 package com.seran.auth.jwt;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.seran.entity.User;
 import com.seran.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,6 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-
-import com.auth0.jwt.interfaces.DecodedJWT;
 
 import java.util.Optional;
 

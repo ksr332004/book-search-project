@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.assertj.core.util.Strings;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -14,8 +15,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Document {
-    
+public class Document implements Serializable {
+
+    private static final long serialVersionUID = 6859975563592650682L;
+
     private String title;
     private String contents;
     private String url;

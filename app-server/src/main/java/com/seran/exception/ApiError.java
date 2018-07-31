@@ -1,14 +1,11 @@
 package com.seran.exception;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.json.JSONObject;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-import com.querydsl.core.types.dsl.StringPath;
-
-import lombok.Data;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Data
 public class ApiError {
@@ -27,7 +24,7 @@ public class ApiError {
         super();
         this.status = status;
         this.message = message;
-        errors = Arrays.asList(error);
+        errors = Collections.singletonList(error);
     }
     
 }

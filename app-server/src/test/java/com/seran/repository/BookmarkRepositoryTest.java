@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +30,7 @@ public class BookmarkRepositoryTest {
 		bookmark.setContents("book contents");
 		bookmark.setUrl("book url");
 		bookmark.setIsbn("123456789");
-		bookmark.setCreateDate(OffsetDateTime.now());
+		bookmark.setCreateDate(LocalDateTime.now().toString());
 		bookmark.setAuthors("authors");
 		bookmark.setPublisher("publisher");
 		bookmark.setTranslators("translators");

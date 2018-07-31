@@ -1,8 +1,8 @@
 package com.seran.auth.jwt;
 
-import java.io.UnsupportedEncodingException;
-
 import com.auth0.jwt.algorithms.Algorithm;
+
+import java.io.UnsupportedEncodingException;
 
 public class JwtInfo {
 

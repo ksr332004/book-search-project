@@ -1,18 +1,19 @@
 package com.seran.entity;
 
-import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
-
-import javax.persistence.*;
-
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name = "bookmark", uniqueConstraints={ @UniqueConstraint(columnNames = {"user_id", "key_barcode"})})
-public class Bookmark {
+public class Bookmark implements Serializable {
+
+    private static final long serialVersionUID = 5929744394552834313L;
 
     @Id
     @Column(name = "id")

@@ -4,7 +4,6 @@ import com.seran.auth.AuthUtil;
 import com.seran.dto.Document;
 import com.seran.entity.Bookmark;
 import com.seran.service.BookmarkService;
-import com.seran.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,8 +21,12 @@ import java.util.Optional;
 @RequestMapping("/api/bookmark")
 public class BookmarkController {
 
+    private final BookmarkService bookmarkService;
+
     @Autowired
-    private BookmarkService bookmarkService;
+    public BookmarkController(BookmarkService bookmarkService) {
+        this.bookmarkService = bookmarkService;
+    }
 
     @GetMapping("/view")
     public ResponseEntity<Page<Bookmark>> getUserBookmark(Authentication authentication,

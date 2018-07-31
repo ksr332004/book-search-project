@@ -6,13 +6,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
 @Entity
 @Table(name="history", uniqueConstraints={ @UniqueConstraint(columnNames = {"user_id", "search"})})
-public class History {
+public class History implements Serializable {
+
+    private static final long serialVersionUID = -7916976906969394345L;
 
     @Id
     @Column(name = "id")

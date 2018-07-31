@@ -4,12 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.data.annotation.Transient;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name="users", uniqueConstraints={ @UniqueConstraint(columnNames = {"email", "available"})})
-public class User {
+public class User implements Serializable {
+     private static final long serialVersionUID = 5290508790637205716L;
 
      @Id
      @Column(name = "id")

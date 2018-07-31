@@ -5,9 +5,13 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public class SearchInfo {
-    
+public class SearchInfo implements Serializable {
+
+    private static final long serialVersionUID = 7989252112886646362L;
+
     private String query;
     private String sort;
     private Integer page;

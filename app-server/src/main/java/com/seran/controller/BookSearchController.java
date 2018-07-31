@@ -19,9 +19,13 @@ import java.util.Optional;
 @RequestMapping("/api/search")
 public class BookSearchController {
 
+    private final BookSearchService searchService;
+
     @Autowired
-    private BookSearchService searchService;
-    
+    public BookSearchController(BookSearchService searchService) {
+        this.searchService = searchService;
+    }
+
     @PostMapping("/book")
     public ResponseEntity<Book> getSearchList(Authentication authentication, @Valid @RequestBody SearchInfo searchInfo) {
         Optional<Book> book = searchService.searchBooks(searchInfo);
