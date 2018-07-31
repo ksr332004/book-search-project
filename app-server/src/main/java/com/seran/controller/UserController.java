@@ -30,7 +30,7 @@ public class UserController {
         return new ResponseEntity<>(user.get(), HttpStatus.OK);
     }
 
-    @PostMapping("/user/update")
+    @PutMapping("/user/update")
     public ResponseEntity<Void> updateUser(Authentication authentication, @RequestBody User updateUser) {
         Integer userId = AuthUtil.getUserId(authentication);
         userService.updateUser(userId, updateUser);

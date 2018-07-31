@@ -70,6 +70,18 @@ var appClient = angular.module('BlurAdmin', [
             });
             return http;
         };
+        factory.put = function(serviceName, getData) {
+            var http = $http({
+                method : 'PUT',
+                url : 'http://localhost:8080/api' + serviceName,
+                data : getData,
+                dataType : "json",
+                headers : {
+                    'Content-Type' : 'application/json; charset=utf-8;'
+                }
+            });
+            return http;
+        };
         factory.delete = function(serviceName, getPath) {
             var http = $http({
                 method : 'DELETE',

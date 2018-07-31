@@ -54,7 +54,7 @@
                 , name        : $scope.username
             };
 
-            ApiService.post('/user/update', userInfo).success(function(data, status) {
+            ApiService.put('/user/update', userInfo).success(function(data, status) {
                 if (status == 200) {
                     toastr.success("수정되었습니다.");
                 } else {
