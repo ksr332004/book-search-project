@@ -135,7 +135,7 @@ gulp release      #배포용 소스 생성
 | GET      | /api/user/info                   |                                            | 사용자 정보 가져오기           |
 | PUT      | /api/user/update                 | password, name                             | 사용자 정보 업데이트           |
 | PUT      | /api/user/delete                 |                                            | 사용자 disable 처리           |
-| POST     | /api/search/book                 | query, target, sort, page, size, category  | 책 검색 / 검색 키워드 저장     |
+| GET      | /api/search/book                 | query, target, sort, page, size, category  | 책 검색 / 검색 키워드 저장     |
 | GET      | /api/search/history              |                                            | 최근 검색 히스토리 (최근20건)  |
 | GET      | /api/bookmark/view               | query, target, sort, page                  | 북마크 검색                   |
 | POST     | /api/bookmark/add                | Document                                   | 북마크 등록                   |
