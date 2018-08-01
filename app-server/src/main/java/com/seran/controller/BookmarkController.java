@@ -39,7 +39,7 @@ public class BookmarkController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> postUserBookmark(Authentication authentication, @Valid @RequestBody Document document) {
+    public ResponseEntity<Void> postUserBookmark(Authentication authentication, @RequestBody Document document) {
         Integer userId = AuthUtil.getUserId(authentication);
         String keyBarcode = (document.getBarcode().isEmpty()) ? document.getEbook_barcode() : document.getBarcode();
         Optional<Bookmark> bookmark = bookmarkService.searchBookmarkByUserIdAndKeyBarcode(userId, keyBarcode);

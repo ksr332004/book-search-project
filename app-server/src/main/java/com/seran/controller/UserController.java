@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -31,7 +32,7 @@ public class UserController {
     }
 
     @PutMapping("/user/update")
-    public ResponseEntity<Void> updateUser(Authentication authentication, @RequestBody User updateUser) {
+    public ResponseEntity<Void> updateUser(Authentication authentication, @Valid  @RequestBody User updateUser) {
         Integer userId = AuthUtil.getUserId(authentication);
         userService.updateUser(userId, updateUser);
         return new ResponseEntity<>(HttpStatus.OK);

@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,10 +27,10 @@ public class BookSearchController {
         this.searchService = searchService;
     }
 
-    @PostMapping("/book")
-    public ResponseEntity<Book> getSearchList(Authentication authentication, @Valid @RequestBody SearchInfo searchInfo) {
+    @GetMapping("/book")
+    public ResponseEntity<Book> getSearchList(Authentication authentication, SearchInfo searchInfo) {
         Optional<Book> book = searchService.searchBooks(searchInfo);
-        
+
         if (!Optional.ofNullable(searchInfo.getQuery()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

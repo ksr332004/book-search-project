@@ -50,7 +50,7 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<ModelMap> login(@Valid @RequestBody BeforeSecurityUser beforeSecurityUser) {
         Optional<User> user = userService.searchUserByEmail(beforeSecurityUser.getEmail());
-        if (user.isPresent() && user.get().getAvailable().equals("Y")) {
+        if (user.isPresent() && ("Y").equals(user.get().getAvailable())) {
             if (bCryptPasswordEncoder.matches(beforeSecurityUser.getPassword(), user.get().getPassword())) {
                 List<GrantedAuthority> grantedAuths = AuthorityUtils.commaSeparatedStringToAuthorityList(user.get().getRole());
                 UserDetails userDetails = new JwtUser(user.get(), grantedAuths);

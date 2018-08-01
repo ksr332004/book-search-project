@@ -83,14 +83,15 @@
                 return;
             }
 
-            var dataObject = {};
-            dataObject = {
+            var dataObject = {
                 query: vm.searchQuery,
-                target: vm.targetItem.selected.value,
+                sort: vm.sortItem.selected.value,
                 page: currentPage,
-                sort: vm.sortItem.selected.value
+                size: 10,
+                target: vm.targetItem.selected.value,
+                category: 0
             };
-            ApiService.post('/search/book', dataObject).success(function(data, status) {
+            ApiService.get('/search/book', dataObject).success(function(data, status) {
                 if (status == 200) {
                     vm.bookListTableData = data.documents;
                     $scope.hasPrev = (currentPage == 1) ? false : true;
