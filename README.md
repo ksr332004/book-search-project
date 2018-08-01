@@ -25,7 +25,7 @@ book-search-project
    * JPA
    * [MySQL](https://dev.mysql.com/downloads/)
    * H2
-* Angularjs 2.x
+* AngularJS
    * [Node.js](https://nodejs.org/ko/)
    * [Blur Admin](https://github.com/akveo/blur-admin)
 
