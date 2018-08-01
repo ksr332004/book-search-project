@@ -37,7 +37,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/user/delete")
+    @PutMapping("/user/delete")
     public ResponseEntity<Void> deleteUser(Authentication authentication) {
         Integer userId = AuthUtil.getUserId(authentication);
         userService.deleteUserById(userId);

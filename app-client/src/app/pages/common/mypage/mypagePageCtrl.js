@@ -90,7 +90,7 @@
                     }
                 }
             }).result.then(function() {
-                ApiService.get('/user/delete', null).success(function(data, status) {
+                ApiService.put('/user/delete', null).success(function(data, status) {
                     if (status == 200) {
                         $auth.logout();
                         $scope.$emit('menuChangeForUser');
