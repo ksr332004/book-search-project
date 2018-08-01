@@ -27,15 +27,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
 
     private static final String AUTH_ENTRY_POINT = "/api/auth/**";
     private static final String H2_ENTRY_POINT = "/h2-console/**";
-    private static final String TOKEN_ENTRY_POINT = "/token";
-    private static final String ERROR_ENTRY_POINT = "/error";
 
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers("/resources/**")
-                .antMatchers("/h2-console/**")
-                .antMatchers(HttpMethod.OPTIONS, "/**");
+                .antMatchers("/resources/**");
     }
 
     @Override
@@ -45,23 +41,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        String[] patterns = new String[] {
-                "/",
-                "/*.html",
-                "/**/*.html"
-        };
-
         http
                 .csrf()
                 .disable()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
                 .authorizeRequests()
-                .antMatchers(patterns).permitAll()
-                .antMatchers(TOKEN_ENTRY_POINT).permitAll()
+                .antMatchers("/**", "OPTIONS").permitAll()
                 .antMatchers(AUTH_ENTRY_POINT).permitAll()
-                .antMatchers(ERROR_ENTRY_POINT).permitAll()
+                .antMatchers(H2_ENTRY_POINT).permitAll()
                 .anyRequest().authenticated();
         http
                 .addFilterBefore(jwtAuthenticationFilter(), FilterSecurityInterceptor.class);
@@ -77,9 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter  {
     @Bean
     public SkipPathRequestMatcher skipPathRequestMatcher() {
         return new SkipPathRequestMatcher(Arrays.asList(AUTH_ENTRY_POINT
-                                                        , H2_ENTRY_POINT
-                                                        , TOKEN_ENTRY_POINT
-                                                        , ERROR_ENTRY_POINT));
+                                                        , H2_ENTRY_POINT));
     }
 
     @Bean
