@@ -47,7 +47,6 @@ dependencies {
     
     /* Data-processing Tool */
     compile('com.fasterxml.jackson.core:jackson-databind')
-	compile('org.assertj:assertj-core:3.10.0')
 	compile('org.json:json:20180130')
 	
 	/* Querydsl : unified queries tool */
@@ -64,6 +63,7 @@ dependencies {
 	runtime("com.h2database:h2")
 	
     /* Test Tool */
+    compile('org.assertj:assertj-core:3.10.0')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
     testCompile('org.mockito:mockito-core:1.+')
