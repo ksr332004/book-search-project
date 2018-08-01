@@ -25,7 +25,7 @@ book-search-project
    * JPA
    * [MySQL](https://dev.mysql.com/downloads/)
    * H2
-* Angularjs 2.x
+* AngularJS
    * [Node.js](https://nodejs.org/ko/)
    * [Blur Admin](https://github.com/akveo/blur-admin)
 
@@ -131,10 +131,10 @@ gulp release      #배포용 소스 생성
 |----------|:---------------------------------|:------------------------------------------:|------------------------------|
 | POST     | /api/auth/login                  | email, password                            | 로그인                        |
 | POST     | /api/auth/signup                 | email, password, name                      | 회원가입                      |
-| GET      | /refresh                         |                                            | 토큰 재연장                   |
+| GET      | /api/auth/refresh                |                                            | 토큰 재연장                   |
 | GET      | /api/user/info                   |                                            | 사용자 정보 가져오기           |
 | PUT      | /api/user/update                 | password, name                             | 사용자 정보 업데이트           |
-| GET      | /api/user/delete                 |                                            | 사용자 disable 처리           |
+| PUT      | /api/user/delete                 |                                            | 사용자 disable 처리           |
 | POST     | /api/search/book                 | query, target, sort, page, size, category  | 책 검색 / 검색 키워드 저장     |
 | GET      | /api/search/history              |                                            | 최근 검색 히스토리 (최근20건)  |
 | GET      | /api/bookmark/view               | query, target, sort, page                  | 북마크 검색                   |
