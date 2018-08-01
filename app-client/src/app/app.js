@@ -96,7 +96,7 @@ var appClient = angular.module('BlurAdmin', [
 
         return factory;
     })
-    .factory('MenuParsingService', function($http, $auth, $log) {
+    .factory('MenuParsingService', function($auth, $log) {
 
         var factory = {};
         factory.parse = function() {
@@ -105,9 +105,7 @@ var appClient = angular.module('BlurAdmin', [
 
             $log.debug('MenuParsingService is occurred.');
 
-            if (angular.isUndefined($auth.getToken())
-                || $auth.getToken() == null
-                || $auth.getToken() === "") {
+            if (!$auth.isAuthenticated()) {
                 menu = [
                     {
                         title : '로그인',
@@ -192,11 +190,10 @@ var appClient = angular.module('BlurAdmin', [
 
         $rootScope.$on('validatingAccessTokens', function() {
             $log.debug('validatingAccessTokens is occurred.');
-            if (angular.isUndefined($auth.getToken())
-                || $auth.getToken() == null
-                || $auth.getToken() === "") {
+
+            $rootScope.$broadcast('menuChangeForUser');
+            if (!$auth.isAuthenticated()) {
                 $state.go('login');
-                $rootScope.$broadcast('menuChangeForUser');
             }
         });
 

@@ -37,7 +37,6 @@
       };
 
       $scope.$on('$stateChangeSuccess', function() {
-        $log.debug('stateChangeSuccess is occurred.');
           if (baSidebarService.canSidebarBeHidden()) {
               baSidebarService.setMenuCollapsed(true);
           }

@@ -3,12 +3,12 @@
     <a href="#/intro" class="al-logo clearfix"><span>책</span>검색</a>
     <div class="user-profile clearfix">
 
-        <div class="al-user-profile" ng-hide="pageTopMenu(true)">
+        <div class="al-user-profile" ng-if="!isAuthenticated()">
             <a href="#/login" class="al-logo clearfix" style="font-size: 14px;">로그인 &nbsp&nbsp</a>
             <a href="#/signup" class="al-logo clearfix" style="font-size: 14px;">회원가입</a>
         </div>
 
-        <div class="al-user-profile" ng-hide="!pageTopMenu(true)">
+        <div class="al-user-profile" ng-if="isAuthenticated()">
             <a href="#/logout" class="al-logo clearfix" style="font-size: 14px;">로그아웃</a>
         </div>
 
