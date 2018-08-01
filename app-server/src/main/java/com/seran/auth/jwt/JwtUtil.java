@@ -16,7 +16,7 @@ public class JwtUtil {
 
     public static String createToken(UserDetails userDetails) {
         return createToken(userDetails
-                , Date.from(LocalDateTime.now().plusDays(JwtInfo.EXPIRES_LIMIT).toInstant(ZoneOffset.ofHoursMinutes(0, 3))));
+                , Date.from(LocalDateTime.now().plusDays(JwtInfo.EXPIRES_LIMIT).toInstant(ZoneOffset.ofHoursMinutes(3, 30))));
     }
     
     private static String createToken(UserDetails userDetails, Date date) {

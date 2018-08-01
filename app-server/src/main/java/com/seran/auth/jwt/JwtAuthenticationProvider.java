@@ -10,8 +10,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
+    private final JwtUserDetailsServiceImpl jwtUserDetailsServiceImpl;
+
     @Autowired
-    private JwtUserDetailsServiceImpl jwtUserDetailsServiceImpl;
+    public JwtAuthenticationProvider(JwtUserDetailsServiceImpl jwtUserDetailsServiceImpl) {
+        this.jwtUserDetailsServiceImpl = jwtUserDetailsServiceImpl;
+    }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

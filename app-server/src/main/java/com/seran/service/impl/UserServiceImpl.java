@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
         try {
             Optional<User> user = userRepository.findById(id);
             user.get().setName(updateUser.getName());
-            user.get().setPassword(updateUser.getPassword());
+            user.get().setPassword(bCryptPasswordEncoder.encode(updateUser.getPassword()));
             userRepository.save(user.get());
         } catch (Exception e) {
             throw new BadCredentialsException("update error.");

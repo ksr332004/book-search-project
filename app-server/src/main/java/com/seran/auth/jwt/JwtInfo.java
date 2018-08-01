@@ -7,8 +7,8 @@ import java.io.UnsupportedEncodingException;
 public class JwtInfo {
 
     public static final String HEADER_NAME = "Authorization";
-    public static final String ISSUER = "issuer";
-    public static final String TOKEN_KEY = "token.key";
+    public static final String ISSUER = "seran.issuer";
+    public static final String TOKEN_KEY = "seran.token.key";
     public static final long EXPIRES_LIMIT = 3L;
 
     public static Algorithm getAlgorithm() {

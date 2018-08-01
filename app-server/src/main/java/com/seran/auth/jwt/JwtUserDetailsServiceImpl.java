@@ -15,8 +15,13 @@ import java.util.Optional;
 @Component
 public class JwtUserDetailsServiceImpl implements UserDetailsService {
 
-    @Autowired
+    private final
     UserRepository userRepository;
+
+    @Autowired
+    public JwtUserDetailsServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String token) {
