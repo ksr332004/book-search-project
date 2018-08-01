@@ -98,6 +98,7 @@ gradle bootRun
 
 **4. Client 실행**
 
+* npm을 이용하여 설치할 경우
 *book-search-project\app-client 경로에서 다음 명령어를 실행*
 ```bash
 #go to directory
@@ -117,7 +118,7 @@ gulp serve:dist   #로컬 실행 및 배포용 소스 생성
 gulp release      #배포용 소스 생성
 ```
 
-* bower_components & node_modules zip 파일을 이용해 실행 할 경우,
+* bower_components & node_modules zip 파일을 이용해 실행할 경우
    1. 각각 app-client/bower_components와 app-client/node_modules에 압축 해제
    2. app-client/node_modules/.bin 경로에서 gulp serve 명령어 실행
 
@@ -126,19 +127,19 @@ gulp release      #배포용 소스 생성
 ### 구현 된 기능
 * 서버 API
 
-| Mtehod   |Path                              | RequestParam                         | ResponseBody                 |
-|----------|:---------------------------------|:------------------------------------:|------------------------------|
-| POST     | /api/auth/login                  | email, password                      | 로그인                        |
-| POST     | /api/auth/signup                 | email, password, name                | 회원가입                      |
-| GET      | /refresh                         |                                      | 토큰 재연장                   |
-| GET      | /api/user/info                   |                                      | 사용자 정보 가져오기           |
-| POST     | /api/user/update                 | password, name                       | 사용자 정보 업데이트           |
-| GET      | /api/user/delete                 |                                      | 사용자 disable 처리           |
-| POST     | /api/search/book                 | query, target, sort, page, size ...  | 책 검색 / 검색 키워드 저장     |
-| GET      | /api/search/history              |                                      | 최근 검색 히스토리 (최근20건)  |
-| GET      | /api/bookmark/view               | query, target, sort, page            | 북마크 검색                   |
-| POST     | /api/bookmark/add                | Document                             | 북마크 등록                   |
-| DELETE   | /api/bookmark/{id}               | 북마크 ID                             | 북마크 삭제                   |
+| Mtehod   |Path                              | RequestParam                               | ResponseBody                 |
+|----------|:---------------------------------|:------------------------------------------:|------------------------------|
+| POST     | /api/auth/login                  | email, password                            | 로그인                        |
+| POST     | /api/auth/signup                 | email, password, name                      | 회원가입                      |
+| GET      | /refresh                         |                                            | 토큰 재연장                   |
+| GET      | /api/user/info                   |                                            | 사용자 정보 가져오기           |
+| PUT      | /api/user/update                 | password, name                             | 사용자 정보 업데이트           |
+| GET      | /api/user/delete                 |                                            | 사용자 disable 처리           |
+| POST     | /api/search/book                 | query, target, sort, page, size, category  | 책 검색 / 검색 키워드 저장     |
+| GET      | /api/search/history              |                                            | 최근 검색 히스토리 (최근20건)  |
+| GET      | /api/bookmark/view               | query, target, sort, page                  | 북마크 검색                   |
+| POST     | /api/bookmark/add                | Document                                   | 북마크 등록                   |
+| DELETE   | /api/bookmark/{id}               | 북마크 ID                                   | 북마크 삭제                   |
 
 
 * ERD
