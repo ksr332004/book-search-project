@@ -29,8 +29,6 @@ public class BookSearchController {
 
     @GetMapping("/book")
     public ResponseEntity<Book> getSearchList(Authentication authentication, SearchInfo searchInfo) {
-        Optional<Book> book = searchService.searchBooks(searchInfo);
-
         if (!Optional.ofNullable(searchInfo.getQuery()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -46,6 +44,8 @@ public class BookSearchController {
         		(searchInfo.getPage() <= 0 || searchInfo.getPage() > 50)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+
+        Optional<Book> book = searchService.searchBooks(searchInfo);
 
 	    return book.map(b -> new ResponseEntity<>(b, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
